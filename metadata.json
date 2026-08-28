@@ -1,0 +1,6 @@
+{
+  "name": "Ballpit Interactive Landing",
+  "description": "Portfolio & digital store modern dengan interactive 3D physics ballpit, scroll velocity banner, serta halaman home, project, blog, shop, contact, dan about.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
