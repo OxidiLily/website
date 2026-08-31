@@ -51,7 +51,7 @@ export const BackToTop: React.FC = () => {
           whileTap={{ scale: 0.92 }}
           transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
           aria-label="Kembali ke atas"
-          className="fixed bottom-8 right-8 z-40 p-3 rounded-full bg-neutral-900/90 text-white border border-neutral-700/80 shadow-2xl backdrop-blur-md hover:bg-neutral-800 hover:border-neutral-500 transition-colors group flex items-center justify-center cursor-pointer"
+          className="fixed bottom-24 md:bottom-28 right-4 md:right-[42px] z-40 p-2.5 sm:p-3 rounded-full bg-neutral-900/90 text-white border border-neutral-700/80 shadow-2xl backdrop-blur-md hover:bg-neutral-800 hover:border-neutral-500 transition-colors group flex items-center justify-center cursor-pointer"
         >
           {/* Circular Progress Indicator Ring */}
           <svg className="w-10 h-10 -rotate-90 pointer-events-none absolute" viewBox="0 0 44 44">

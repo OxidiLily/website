@@ -76,14 +76,15 @@ export const Ballpit: React.FC<BallpitProps> = ({
     const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     camera.position.set(0, 0, 20);
 
+    const isMobile = width < 640;
     const renderer = new THREE.WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: true,
+      antialias: !isMobile,
       powerPreference: 'high-performance',
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
     // Lighting
@@ -115,7 +116,8 @@ export const Ballpit: React.FC<BallpitProps> = ({
 
     let bounds = getBounds();
 
-    const sphereGeometry = new THREE.SphereGeometry(1, 32, 32);
+    const sphereSegments = isMobile ? 20 : 32;
+    const sphereGeometry = new THREE.SphereGeometry(1, sphereSegments, sphereSegments);
     const sphereMaterial = new THREE.MeshPhysicalMaterial({
       roughness: 0.2,
       metalness: 0.1,
@@ -123,7 +125,8 @@ export const Ballpit: React.FC<BallpitProps> = ({
       clearcoatRoughness: 0.1,
     });
 
-    const activeCount = configRef.current.count;
+    // Compute active particle count based on screen width
+    const activeCount = isMobile ? Math.min(configRef.current.count, 45) : configRef.current.count;
     const instancedMesh = new THREE.InstancedMesh(sphereGeometry, sphereMaterial, activeCount);
     instancedMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     scene.add(instancedMesh);
@@ -235,10 +238,26 @@ export const Ballpit: React.FC<BallpitProps> = ({
     });
     resizeObserver.observe(container);
 
-    let animationFrameId: number;
+    let animationFrameId: number = 0;
     let lastTime = performance.now();
+    let isVisible = true;
+
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      isVisible = entry.isIntersecting;
+      if (isVisible && !animationFrameId) {
+        lastTime = performance.now();
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    }, { threshold: 0.05 });
+
+    intersectionObserver.observe(container);
 
     const animate = (now: number) => {
+      if (!isVisible) {
+        animationFrameId = 0;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
 
       const dt = Math.min((now - lastTime) / 1000, 0.033);
@@ -372,6 +391,7 @@ export const Ballpit: React.FC<BallpitProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       canvas.removeEventListener('mousemove', onMouseMove);
       canvas.removeEventListener('mousedown', onMouseDown);
       window.removeEventListener('mouseup', onMouseUp);

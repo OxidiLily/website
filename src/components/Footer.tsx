@@ -17,71 +17,71 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer
       id="footer-section"
-      className="relative z-20 w-full min-h-screen bg-transparent text-white flex flex-col justify-between p-3 sm:p-6 md:p-8 lg:p-10 box-border"
+      className="relative z-20 w-full min-h-[85vh] md:min-h-[88vh] lg:min-h-screen bg-transparent text-white flex flex-col justify-between p-3 sm:p-5 md:p-6 lg:p-8 box-border"
     >
-      {/* Main Fullscreen Transparent Glass Card */}
-      <div className="w-full flex-1 flex flex-col justify-between bg-black/40 backdrop-blur-xl border border-white/10 text-white rounded-3xl sm:rounded-[36px] p-6 sm:p-10 md:p-14 lg:p-20 shadow-2xl">
+      {/* Main Fullscreen Semi-Transparent White Glass Card */}
+      <div className="w-full flex-1 flex flex-col justify-between bg-white/90 backdrop-blur-2xl border border-white/60 text-black rounded-2xl sm:rounded-3xl md:rounded-[32px] p-5 sm:p-8 md:p-10 lg:p-14 xl:p-16 shadow-2xl overflow-hidden">
         {/* Top Spacer or Small Tag */}
-        <div className="w-full flex justify-between items-center text-xs font-semibold tracking-widest text-neutral-400 uppercase">
-          <span>Studio Craft • Portfolio & Store</span>
+        <div className="w-full flex justify-between items-center text-[10px] sm:text-xs md:text-xs font-semibold tracking-widest text-neutral-600 uppercase">
+          <span>Studio Craft • Portfolio</span>
           <span>San Francisco, CA 🇺🇸</span>
         </div>
 
-        {/* Big Header Title */}
-        <div className="my-auto py-8 sm:py-12 md:py-16 text-center">
-          <h2 className="text-6xl sm:text-8xl md:text-9xl lg:text-[11rem] xl:text-[13rem] font-extrabold tracking-tighter text-white select-none leading-none">
+        {/* Big Header Title (Fluid typography calibrated for mobile, tab, and desktop so it never wraps or overflows) */}
+        <div className="my-auto py-6 sm:py-8 md:py-10 lg:py-12 text-center overflow-hidden">
+          <h2 className="text-[11vw] sm:text-[9.5vw] md:text-[8.5vw] lg:text-[7.5rem] xl:text-[9rem] 2xl:text-[11rem] font-extrabold tracking-tighter text-black select-none leading-none whitespace-nowrap">
             Studio.craft
           </h2>
         </div>
 
         {/* Bottom Section inside Card */}
-        <div className="w-full space-y-8">
+        <div className="w-full space-y-5 sm:space-y-6 md:space-y-8">
           {/* Thin Divider Line */}
-          <div className="w-full border-t border-white/10" />
+          <div className="w-full border-t border-black/10" />
 
-          {/* 3 Columns Section: EMAIL | FOLLOW US | LOCATION */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-4 items-start">
+          {/* 3 Columns Section: EMAIL | CHANNELS | LOCATION */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6 md:gap-6 lg:gap-8 items-start">
             {/* Column 1: EMAIL */}
-            <div className="space-y-2">
-              <span className="block text-xs font-bold tracking-widest uppercase text-neutral-400">
+            <div className="space-y-1.5 sm:space-y-2">
+              <span className="block text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-600">
                 DIRECT INQUIRY
               </span>
               <a
                 href="mailto:hello@independent-designer.com"
-                className="inline-flex items-center gap-1.5 text-sm sm:text-base font-medium text-white hover:text-neutral-300 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm md:text-sm lg:text-base font-semibold text-black hover:text-neutral-600 transition-colors max-w-full"
               >
-                <span>hello@independent-designer.com</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <span className="truncate">hello@independent-designer.com</span>
+                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
               </a>
             </div>
 
-            {/* Column 2: FOLLOW US */}
-            <div className="space-y-2">
-              <span className="block text-xs font-bold tracking-widest uppercase text-neutral-400">
+            {/* Column 2: CHANNELS */}
+            <div className="space-y-1.5 sm:space-y-2">
+              <span className="block text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-600">
                 CHANNELS
               </span>
-              <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm sm:text-base font-medium text-white">
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-neutral-300 transition-colors">
+              <div className="flex flex-wrap items-center gap-x-3.5 sm:gap-x-5 gap-y-1.5 text-xs sm:text-sm md:text-sm lg:text-base font-semibold text-black">
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-neutral-600 transition-colors">
                   X / Twitter
                 </a>
-                <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-neutral-300 transition-colors">
+                <a href="https://github.com" target="_blank" rel="noreferrer" className="hover:text-neutral-600 transition-colors">
                   GitHub
                 </a>
-                <a href="https://dribbble.com" target="_blank" rel="noreferrer" className="hover:text-neutral-300 transition-colors">
+                <a href="https://dribbble.com" target="_blank" rel="noreferrer" className="hover:text-neutral-600 transition-colors">
                   Dribbble
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-neutral-300 transition-colors">
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="hover:text-neutral-600 transition-colors">
                   LinkedIn
                 </a>
               </div>
             </div>
 
             {/* Column 3: LOCATION & AVAILABILITY */}
-            <div className="space-y-2 md:text-right">
-              <span className="block text-xs font-bold tracking-widest uppercase text-neutral-400">
+            <div className="space-y-1.5 sm:space-y-2 sm:col-span-2 md:col-span-1 md:text-right">
+              <span className="block text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-600">
                 BASE & TIMEZONE
               </span>
-              <p className="text-sm sm:text-base font-medium text-white">
+              <p className="text-xs sm:text-sm md:text-sm lg:text-base font-semibold text-black">
                 San Francisco, CA (PT UTC-7)
               </p>
             </div>
@@ -90,32 +90,37 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       </div>
 
       {/* Bottom Sub-bar below Card */}
-      <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 px-4 pt-6 pb-2 text-xs sm:text-sm text-neutral-400 font-normal">
+      <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 pt-4 pb-24 md:pb-6 text-xs sm:text-sm text-neutral-400 font-normal text-center sm:text-left">
         {/* Left Navigation links */}
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-          <button onClick={() => handleNav('home')} className="hover:text-white transition-colors cursor-pointer">
+        <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3.5 sm:gap-6">
+          <button onClick={() => handleNav('home')} className="hover:text-white transition-colors cursor-pointer py-1">
             Home
           </button>
-          <button onClick={() => handleNav('project')} className="hover:text-white transition-colors cursor-pointer">
+          <button onClick={() => handleNav('project')} className="hover:text-white transition-colors cursor-pointer py-1">
             Project
           </button>
-          <button onClick={() => handleNav('blog')} className="hover:text-white transition-colors cursor-pointer">
+          <button onClick={() => handleNav('blog')} className="hover:text-white transition-colors cursor-pointer py-1">
             Blog
           </button>
-          <button onClick={() => handleNav('shop')} className="hover:text-white transition-colors cursor-pointer">
-            Shop
-          </button>
-          <button onClick={() => handleNav('about')} className="hover:text-white transition-colors cursor-pointer">
+          <button onClick={() => handleNav('about')} className="hover:text-white transition-colors cursor-pointer py-1">
             About
           </button>
-          <button onClick={() => handleNav('contact')} className="hover:text-white transition-colors cursor-pointer">
+          <button onClick={() => handleNav('contact')} className="hover:text-white transition-colors cursor-pointer py-1">
             Contact
           </button>
         </div>
 
-        {/* Right Copyright info */}
-        <div>
+        {/* Right Copyright info & discreet admin portal trigger */}
+        <div className="flex items-center gap-3">
           <span>© 2026 Studio.craft. All rights reserved.</span>
+          <button
+            onClick={() => handleNav('admin')}
+            title="Admin Backend CMS"
+            className="text-neutral-700 hover:text-neutral-400 transition-colors p-1 rounded cursor-pointer"
+            aria-label="Admin Portal"
+          >
+            <span className="text-[10px] uppercase font-mono tracking-wider opacity-60 hover:opacity-100">🔒 Admin</span>
+          </button>
         </div>
       </div>
     </footer>

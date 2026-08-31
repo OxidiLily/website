@@ -24,6 +24,15 @@ export const BlogPage: React.FC<BlogPageProps> = ({
     return null;
   });
 
+  React.useEffect(() => {
+    if (initialPostId) {
+      const found = blogPostsData.find((p) => p.id === initialPostId);
+      if (found) {
+        setSelectedPost(found);
+      }
+    }
+  }, [initialPostId]);
+
   const categories = ['All', 'Productivity', 'Accessibility', 'Performance'];
 
   // Identify featured hero post
@@ -78,7 +87,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black text-neutral-900 dark:text-white pt-24 pb-24 transition-colors duration-200">
+    <div className="min-h-screen bg-[#fafafa] dark:bg-black text-neutral-900 dark:text-white pt-16 sm:pt-20 md:pt-24 pb-24 transition-colors duration-200">
       {/* Top Hero Section with Dot Matrix Background */}
       <section className="relative w-full bg-[#fbfbfb] dark:bg-neutral-950/60 overflow-hidden">
         {/* Dot pattern background */}
@@ -90,17 +99,10 @@ export const BlogPage: React.FC<BlogPageProps> = ({
           }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:py-10 md:py-12 lg:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Hero Left Content */}
             <div className="lg:col-span-7 space-y-4">
-              {/* Breadcrumb */}
-              <div className="flex items-center gap-1.5 text-xs text-neutral-500 font-medium tracking-wide">
-                <span>Resources</span>
-                <span className="text-neutral-400">/</span>
-                <span className="text-neutral-700 dark:text-neutral-300">Blogs</span>
-              </div>
-
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-neutral-950 dark:text-white">
                 Best Blog Articles
               </h1>

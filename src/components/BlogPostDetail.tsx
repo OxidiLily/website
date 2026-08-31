@@ -66,7 +66,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -15 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full bg-black text-white min-h-screen pt-24 pb-28 px-4 sm:px-6 md:px-12 lg:px-20"
+      className="w-full bg-black text-white min-h-screen pt-16 sm:pt-20 md:pt-28 pb-28 px-4 sm:px-6 md:px-8 lg:px-16"
     >
       <div className="max-w-6xl mx-auto">
         {/* Top Back and Utility Bar */}
@@ -117,24 +117,24 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.1] max-w-4xl">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] max-w-4xl">
           {post.title}
         </h1>
 
         {/* Subtitle / Lead */}
         {post.subtitle && (
-          <p className="mt-4 sm:mt-5 text-base sm:text-lg text-neutral-300 max-w-2xl leading-relaxed">
+          <p className="mt-3 sm:mt-5 text-sm sm:text-base md:text-lg text-neutral-300 max-w-2xl leading-relaxed">
             {post.subtitle}
           </p>
         )}
 
         {/* Action Buttons */}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
           <button
             onClick={() => {
               if (post.sections?.[0]?.id) scrollToSection(post.sections[0].id);
             }}
-            className="px-4 py-2 rounded-lg bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 transition-colors shadow-sm cursor-pointer"
+            className="min-h-[40px] px-4 py-2 rounded-lg bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 active:scale-95 transition-all shadow-sm cursor-pointer"
           >
             {post.actionLabel || 'Get Started'}
           </button>
@@ -142,14 +142,41 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             onClick={() => {
               if (post.sections?.[1]?.id) scrollToSection(post.sections[1].id);
             }}
-            className="px-4 py-2 rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-300 font-medium text-xs sm:text-sm hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
+            className="min-h-[40px] px-4 py-2 rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-300 font-medium text-xs sm:text-sm hover:bg-neutral-900 active:scale-95 hover:text-white transition-all cursor-pointer"
           >
             {post.guideType || 'Gardening Guide'}
           </button>
         </div>
 
+        {/* Mobile-Only Quick Jump Table of Contents Pill Bar */}
+        {post.sections && post.sections.length > 0 && (
+          <div className="md:hidden mt-6 pt-4 border-t border-neutral-900">
+            <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-2">
+              JUMP TO SECTION:
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
+              {post.sections.map((sec) => {
+                const isActive = activeSection === sec.id;
+                return (
+                  <button
+                    key={sec.id}
+                    onClick={() => scrollToSection(sec.id)}
+                    className={`min-h-[34px] px-3.5 py-1.5 rounded-full text-xs shrink-0 font-medium transition-all cursor-pointer whitespace-nowrap active:scale-95 ${
+                      isActive
+                        ? 'bg-white text-black font-semibold shadow'
+                        : 'bg-neutral-900 border border-neutral-800 text-neutral-400'
+                    }`}
+                  >
+                    {sec.title}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Editorial 3-Column Layout */}
-        <div className="mt-14 sm:mt-16 grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <div className="mt-8 sm:mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Topics & Last Updated */}
           <div className="md:col-span-3 space-y-8">
             {/* Topics */}

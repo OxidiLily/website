@@ -224,7 +224,8 @@ export const Orb: React.FC<OrbProps> = ({
 
     function resize() {
       if (!container) return;
-      const dpr = window.devicePixelRatio || 1;
+      const isMobile = window.innerWidth < 768;
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.5);
       const width = container.clientWidth || window.innerWidth;
       const height = container.clientHeight || window.innerHeight;
       renderer.setSize(width * dpr, height * dpr);
@@ -266,8 +267,26 @@ export const Orb: React.FC<OrbProps> = ({
     container.addEventListener('mousemove', handleMouseMove);
     container.addEventListener('mouseleave', handleMouseLeave);
 
-    let rafId: number;
+    let rafId: number = 0;
+    let isVisible = true;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        isVisible = entry.isIntersecting;
+        if (isVisible && !rafId) {
+          rafId = requestAnimationFrame(update);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(container);
+
     const update = (t: number) => {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
       rafId = requestAnimationFrame(update);
       const dt = (t - lastTime) * 0.001;
       lastTime = t;
@@ -290,6 +309,7 @@ export const Orb: React.FC<OrbProps> = ({
 
     return () => {
       cancelAnimationFrame(rafId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       container.removeEventListener('mousemove', handleMouseMove);
       container.removeEventListener('mouseleave', handleMouseLeave);

@@ -134,10 +134,12 @@ export const Aurora: React.FC<AuroraProps> = (props) => {
     const ctn = ctnDom.current;
     if (!ctn) return;
 
+    const isMobile = window.innerWidth < 768;
     const renderer = new Renderer({
       alpha: true,
       premultipliedAlpha: true,
-      antialias: true
+      antialias: !isMobile,
+      dpr: Math.min(window.devicePixelRatio || 1, isMobile ? 1.0 : 1.5)
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -187,7 +189,22 @@ export const Aurora: React.FC<AuroraProps> = (props) => {
     ctn.appendChild(gl.canvas);
 
     let animateId = 0;
+    let isVisible = true;
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      isVisible = entry.isIntersecting;
+      if (isVisible && !animateId) {
+        animateId = requestAnimationFrame(update);
+      }
+    }, { threshold: 0.05 });
+    observer.observe(ctn);
+
     const update = (t: number) => {
+      if (!isVisible) {
+        animateId = 0;
+        return;
+      }
       animateId = requestAnimationFrame(update);
       const { time = t * 0.01, speed = 1.0 } = propsRef.current;
       program.uniforms.uTime.value = time * speed * 0.1;
@@ -206,6 +223,7 @@ export const Aurora: React.FC<AuroraProps> = (props) => {
 
     return () => {
       cancelAnimationFrame(animateId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       if (ctn && gl.canvas.parentNode === ctn) {
         ctn.removeChild(gl.canvas);

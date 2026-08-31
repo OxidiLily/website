@@ -1,4 +1,4 @@
-export type PageId = 'home' | 'project' | 'blog' | 'shop' | 'contact' | 'about';
+export type PageId = 'home' | 'project' | 'blog' | 'contact' | 'about' | 'admin';
 
 export interface BallpitConfig {
   gravity: number;

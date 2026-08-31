@@ -32,6 +32,8 @@ export const AboutMe: React.FC = () => {
             alt="Designer working on laptop with geometric studio setup"
             className="w-full h-auto object-cover object-center aspect-[16/9] sm:aspect-[21/9] lg:aspect-[16/9] hover:scale-[1.01] transition-transform duration-700 ease-out"
             referrerPolicy="no-referrer"
+            loading="lazy"
+            decoding="async"
           />
         </motion.div>
 
@@ -66,6 +68,8 @@ export const AboutMe: React.FC = () => {
                 alt="Portrait of designer in orange sweater"
                 className="w-full h-auto object-cover object-center aspect-[4/3] sm:aspect-[16/10] hover:scale-[1.01] transition-transform duration-700 ease-out"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                decoding="async"
               />
             </div>
           </div>
