@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { motion } from 'motion/react';
 import { AboutMe } from '../components/AboutMe';
-import { SideRays } from '../components/SideRays';
 import { ToolsAndStack } from '../components/ToolsAndStack';
+import { isLowPowerDevice } from '../lib/device';
+
+// SideRays (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
+const SideRays = lazy(() => import('../components/SideRays').then(m => ({ default: m.SideRays })));
 import { Milestone } from 'lucide-react';
 
 export const AboutPage: React.FC = () => {
@@ -17,6 +20,8 @@ export const AboutPage: React.FC = () => {
     <div className="relative w-full pb-24 overflow-x-clip min-h-screen">
       {/* SideRays React Bits WebGL Component Background (Fixed to Top-Right) */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-100 overflow-hidden">
+        {!isLowPowerDevice && (
+        <Suspense fallback={null}>
         <SideRays
           speed={2.8}
           rayColor1="#F59E0B"
@@ -30,6 +35,8 @@ export const AboutPage: React.FC = () => {
           falloff={1.25}
           opacity={1.0}
         />
+        </Suspense>
+        )}
       </div>
 
       <div className="relative z-10 space-y-16">

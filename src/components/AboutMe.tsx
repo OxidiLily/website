@@ -1,6 +1,11 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { motion } from 'motion/react';
-import Lanyard from './Lanyard';
+import { isLowPowerDevice } from '../lib/device';
+import cardFront from '../assets/lanyard/card-front.jpg';
+
+// Lanyard = react-three-fiber + drei + rapier (WASM fisika). Paling berat di
+// seluruh situs, jadi hanya diunduh kalau perangkatnya sanggup menjalankannya.
+const Lanyard = lazy(() => import('./Lanyard'));
 
 export const AboutMe: React.FC = () => {
   return (
@@ -8,7 +13,27 @@ export const AboutMe: React.FC = () => {
       {/* Full-width 100% Canvas Layer spanning entire width & height */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
         <div className="w-full h-full pointer-events-auto">
-          <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+          {isLowPowerDevice ? (
+            // Perangkat lemah: kartu statis menggantikan simulasi fisika, supaya
+            // kolom kiri tidak kosong tanpa menyalakan WebGL sama sekali.
+            <div className="w-full h-full flex justify-center lg:justify-start lg:pl-[14%] pt-24 sm:pt-28">
+              <div className="flex flex-col items-center">
+                <div className="w-px h-16 sm:h-20 bg-white/25" />
+                <div className="w-4 h-1.5 rounded-sm bg-white/40" />
+                <img
+                  src={cardFront}
+                  alt="Kartu identitas OxidiLily"
+                  className="mt-1 w-36 sm:w-44 rounded-xl shadow-2xl -rotate-3 border border-white/10"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
+          ) : (
+            <Suspense fallback={null}>
+              <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+            </Suspense>
+          )}
         </div>
       </div>
 

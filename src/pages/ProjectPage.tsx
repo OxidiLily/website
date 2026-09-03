@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { projectsData } from '../data/siteData';
 import { ProjectItem } from '../types';
-import { Aurora } from '../components/Aurora';
+import { isLowPowerDevice } from '../lib/device';
+
+// Aurora (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
+const Aurora = lazy(() => import('../components/Aurora').then(m => ({ default: m.Aurora })));
 import { ExternalLink, Github, Sparkles, Filter, X, ArrowUpRight } from 'lucide-react';
 
 interface ProjectPageProps {
   initialProjectId?: string | null;
+  onSelectProject?: (projectId: string) => void;
+  onCloseProject?: () => void;
 }
 
-export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) => {
+export const ProjectPage: React.FC<ProjectPageProps> = ({
+  initialProjectId,
+  onSelectProject,
+  onCloseProject,
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(() => {
     if (initialProjectId) {
@@ -20,13 +29,21 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
 
   // If initialProjectId changes, open that project
   React.useEffect(() => {
-    if (initialProjectId) {
-      const found = projectsData.find((p) => p.id === initialProjectId);
-      if (found) {
-        setActiveModalProject(found);
-      }
+    if (!initialProjectId) {
+      // Id hilang dari URL (tombol Back browser) → tutup modalnya.
+      setActiveModalProject(null);
+      return;
+    }
+    const found = projectsData.find((p) => p.id === initialProjectId);
+    if (found) {
+      setActiveModalProject(found);
     }
   }, [initialProjectId]);
+
+  // Judul tab untuk project yang sedang dibuka di modal.
+  React.useEffect(() => {
+    if (activeModalProject) document.title = `${activeModalProject.title} — OxidiLily`;
+  }, [activeModalProject]);
 
   const categories = ['All', 'UI System', '3D / Physics', 'Mobile', 'Web'];
 
@@ -38,12 +55,16 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
     <div className="relative w-full min-h-screen bg-black">
       {/* Background Aurora Layer - Fixed position so it stays in place during scroll */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-        <Aurora
-          colorStops={['#ffffff', '#888888', '#222222']}
-          blend={0.65}
-          amplitude={1.1}
-          speed={1.3}
-        />
+        {!isLowPowerDevice && (
+          <Suspense fallback={null}>
+            <Aurora
+              colorStops={['#ffffff', '#888888', '#222222']}
+              blend={0.65}
+              amplitude={1.1}
+              speed={1.3}
+            />
+          </Suspense>
+        )}
         {/* Subtle dark vignette overlay to keep text ultra crisp */}
         <div className="absolute inset-0 bg-black/40 pointer-events-none" />
       </div>
@@ -95,7 +116,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.35, delay: idx * 0.04 }}
-            onClick={() => setActiveModalProject(project)}
+            onClick={() => onSelectProject?.(project.id)}
             className="group cursor-pointer rounded-2xl bg-neutral-950/90 border border-neutral-800/90 hover:border-neutral-600 active:scale-[0.98] overflow-hidden transition-all duration-300 shadow-xl flex flex-col justify-between"
           >
             <div className="aspect-[16/10] overflow-hidden bg-neutral-900 relative">
@@ -106,10 +127,10 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
                 referrerPolicy="no-referrer"
                 loading="lazy"
               />
-              <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/80 backdrop-blur-md text-[10px] sm:text-[11px] font-medium text-neutral-200 border border-neutral-700">
+              <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/85 text-[10px] sm:text-[11px] font-medium text-neutral-200 border border-neutral-700">
                 {project.category}
               </div>
-              <div className="absolute top-2.5 right-2.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/80 backdrop-blur-md flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity border border-neutral-700">
+              <div className="absolute top-2.5 right-2.5 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/85 flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity border border-neutral-700">
                 <ArrowUpRight className="w-3.5 h-3.5 text-white" />
               </div>
             </div>
@@ -151,7 +172,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setActiveModalProject(null)}
+              onClick={() => onCloseProject?.()}
               className="absolute inset-0 bg-black/85 backdrop-blur-md"
             />
 
@@ -171,8 +192,8 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
                   referrerPolicy="no-referrer"
                 />
                 <button
-                  onClick={() => setActiveModalProject(null)}
-                  className="absolute top-3 right-3 p-2 rounded-full bg-black/80 backdrop-blur-md border border-neutral-700 text-white hover:bg-black active:scale-95 transition-all cursor-pointer"
+                  onClick={() => onCloseProject?.()}
+                  className="absolute top-3 right-3 p-2 rounded-full bg-black/85 border border-neutral-700 text-white hover:bg-black active:scale-95 transition-all cursor-pointer"
                   aria-label="Close modal"
                 >
                   <X className="w-4 h-4" />
@@ -217,7 +238,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({ initialProjectId }) =>
 
                 <div className="pt-4 border-t border-neutral-900 flex items-center justify-end gap-3">
                   <button
-                    onClick={() => setActiveModalProject(null)}
+                    onClick={() => onCloseProject?.()}
                     className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-neutral-200 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
                   >
                     Close

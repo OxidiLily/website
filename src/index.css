@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Tailwind v4 defaults `dark:` to prefers-color-scheme. Switch it to class-based
+   so a wrapper can opt one page into its dark design (blog page). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   html {
     scroll-behavior: smooth;

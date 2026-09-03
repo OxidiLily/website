@@ -1006,7 +1006,9 @@ export const SplashCursor: React.FC<SplashCursorProps> = ({
     }
 
     function scaleByPixelRatio(input: number) {
-      const pixelRatio = window.devicePixelRatio || 1;
+      // Dipatok 1.5: di layar retina/4K, dpr mentah melipatgandakan jumlah
+      // piksel yang disimulasikan tiap frame padahal hasilnya kabur.
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
       return Math.floor(input * pixelRatio);
     }
 

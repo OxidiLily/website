@@ -123,7 +123,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <path d="M12 22V12" stroke="currentColor" strokeWidth="2" />
             </svg>
           </div>
-          <span className="font-semibold text-white tracking-tight text-sm">Studio.craft</span>
+          <span className="font-semibold text-white tracking-tight text-sm">OxidiLily</span>
         </button>
 
         {/* Mobile Header Quick Actions - intentionally empty to keep mobile clean as requested */}
@@ -183,7 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <path d="M7.5 4.5 16.5 9.5" stroke="currentColor" strokeWidth="1.5" strokeDasharray="1 1" />
               </svg>
             </div>
-            <span className="font-semibold text-black tracking-tight text-sm sm:text-base">Studio.craft</span>
+            <span className="font-semibold text-black tracking-tight text-sm sm:text-base">OxidiLily</span>
           </button>
 
           {/* Desktop/Tablet Center Navigation Links */}

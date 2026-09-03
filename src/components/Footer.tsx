@@ -17,20 +17,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
     <footer
       id="footer-section"
-      className="relative z-20 w-full min-h-[85vh] md:min-h-[88vh] lg:min-h-screen bg-transparent text-white flex flex-col justify-between p-3 sm:p-5 md:p-6 lg:p-8 box-border"
+      className="relative z-20 w-full min-h-[85vh] md:min-h-[88vh] lg:min-h-screen bg-black text-white flex flex-col justify-between p-3 sm:p-5 md:p-6 lg:p-8 box-border"
     >
       {/* Main Fullscreen Semi-Transparent White Glass Card */}
       <div className="w-full flex-1 flex flex-col justify-between bg-white/90 backdrop-blur-2xl border border-white/60 text-black rounded-2xl sm:rounded-3xl md:rounded-[32px] p-5 sm:p-8 md:p-10 lg:p-14 xl:p-16 shadow-2xl overflow-hidden">
         {/* Top Spacer or Small Tag */}
         <div className="w-full flex justify-between items-center text-[10px] sm:text-xs md:text-xs font-semibold tracking-widest text-neutral-600 uppercase">
-          <span>Studio Craft • Portfolio</span>
-          <span>San Francisco, CA 🇺🇸</span>
+          <span>OxidiLily • Portfolio</span>
+          <span>Batang, Jawa Tengah, Indonesia 🇮🇩</span>
         </div>
 
         {/* Big Header Title (Fluid typography calibrated for mobile, tab, and desktop so it never wraps or overflows) */}
         <div className="my-auto py-6 sm:py-8 md:py-10 lg:py-12 text-center overflow-hidden">
           <h2 className="text-[11vw] sm:text-[9.5vw] md:text-[8.5vw] lg:text-[7.5rem] xl:text-[9rem] 2xl:text-[11rem] font-extrabold tracking-tighter text-black select-none leading-none whitespace-nowrap">
-            Studio.craft
+            OxidiLily
           </h2>
         </div>
 
@@ -82,7 +82,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 BASE & TIMEZONE
               </span>
               <p className="text-xs sm:text-sm md:text-sm lg:text-base font-semibold text-black">
-                San Francisco, CA (PT UTC-7)
+                Batang, Jawa Tengah (WIB UTC+7)
               </p>
             </div>
           </div>
@@ -90,7 +90,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       </div>
 
       {/* Bottom Sub-bar below Card */}
-      <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 pt-4 pb-24 md:pb-6 text-xs sm:text-sm text-neutral-400 font-normal text-center sm:text-left">
+      <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 pt-4 pb-24 md:pb-6 text-xs sm:text-sm text-neutral-200 font-normal text-center sm:text-left">
         {/* Left Navigation links */}
         <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3.5 sm:gap-6">
           <button onClick={() => handleNav('home')} className="hover:text-white transition-colors cursor-pointer py-1">
@@ -110,17 +110,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </button>
         </div>
 
-        {/* Right Copyright info & discreet admin portal trigger */}
+        {/* Right Copyright info. Pintu masuk admin sengaja TIDAK dipasang di UI —
+            satu-satunya jalan adalah mengetik /admin/login langsung. */}
         <div className="flex items-center gap-3">
-          <span>© 2026 Studio.craft. All rights reserved.</span>
-          <button
-            onClick={() => handleNav('admin')}
-            title="Admin Backend CMS"
-            className="text-neutral-700 hover:text-neutral-400 transition-colors p-1 rounded cursor-pointer"
-            aria-label="Admin Portal"
-          >
-            <span className="text-[10px] uppercase font-mono tracking-wider opacity-60 hover:opacity-100">🔒 Admin</span>
-          </button>
+          <span>© 2026 OxidiLily. All rights reserved.</span>
         </div>
       </div>
     </footer>

@@ -1,19 +1,27 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { blogPostsData } from '../data/siteData';
 import { BlogPost, PageId } from '../types';
 import { BlogPostDetail } from '../components/BlogPostDetail';
 import { BlogGeometricGraphic } from '../components/BlogGeometricGraphic';
 import { ArrowRight, ChevronRight } from 'lucide-react';
+import { isLowPowerDevice } from '../lib/device';
+
+// LightPillar itu raymarching 80 iterasi per piksel — paling berat di halaman ini.
+const LightPillar = lazy(() => import('../components/LightPillar'));
 
 interface BlogPageProps {
   onNavigate?: (page: PageId) => void;
   initialPostId?: string | null;
+  onSelectPost?: (postId: string) => void;
+  onClosePost?: () => void;
 }
 
 export const BlogPage: React.FC<BlogPageProps> = ({
   onNavigate,
   initialPostId,
+  onSelectPost,
+  onClosePost,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [visibleCount, setVisibleCount] = useState<number>(3);
@@ -25,13 +33,22 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   });
 
   React.useEffect(() => {
-    if (initialPostId) {
-      const found = blogPostsData.find((p) => p.id === initialPostId);
-      if (found) {
-        setSelectedPost(found);
-      }
+    if (!initialPostId) {
+      // Id hilang dari URL (tombol Back browser) → tutup detailnya.
+      setSelectedPost(null);
+      return;
+    }
+    const found = blogPostsData.find((p) => p.id === initialPostId);
+    if (found) {
+      setSelectedPost(found);
     }
   }, [initialPostId]);
+
+  // Judul tab untuk post yang sedang dibuka. App yang memulihkan judul halaman
+  // saat post ditutup, jadi di sini cukup cabang "ada post".
+  React.useEffect(() => {
+    if (selectedPost) document.title = `${selectedPost.title} — OxidiLily`;
+  }, [selectedPost]);
 
   const categories = ['All', 'Productivity', 'Accessibility', 'Performance'];
 
@@ -64,11 +81,13 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
   const handleSelectPost = (post: BlogPost) => {
     setSelectedPost(post);
+    onSelectPost?.(post.id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleBackToList = () => {
     setSelectedPost(null);
+    onClosePost?.();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -87,9 +106,32 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-black text-neutral-900 dark:text-white pt-16 sm:pt-20 md:pt-24 pb-24 transition-colors duration-200">
+    <div className="dark min-h-screen bg-[#fafafa] dark:bg-black text-neutral-900 dark:text-white transition-colors duration-200">
+      {/* LightPillar React Bits WebGL Background — fixed ke viewport supaya DIAM
+          saat halaman di-scroll. Batas bawahnya bukan dari tinggi layer ini,
+          tapi dari blok hitam opak "All Blogs" yang naik menutupinya. */}
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        {!isLowPowerDevice && (
+          <Suspense fallback={null}>
+            <LightPillar
+              topColor="#5227FF"
+              bottomColor="#FF9FFC"
+              intensity={1.0}
+              rotationSpeed={0.25}
+              glowAmount={0.005}
+              pillarWidth={3.0}
+              pillarHeight={0.4}
+              noiseIntensity={0.35}
+              pillarRotation={32}
+              interactive={false}
+              quality="medium"
+            />
+          </Suspense>
+        )}
+      </div>
+
       {/* Top Hero Section with Dot Matrix Background */}
-      <section className="relative w-full bg-[#fbfbfb] dark:bg-neutral-950/60 overflow-hidden">
+      <section className="relative z-10 w-full overflow-hidden pt-16 sm:pt-20 md:pt-24">
         {/* Dot pattern background */}
         <div
           className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20"
@@ -107,7 +149,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                 Best Blog Articles
               </h1>
 
-              <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-400 max-w-xl leading-relaxed">
+              <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-200 max-w-xl leading-relaxed">
                 The best blog is one that captivates readers with engaging, well-researched content presented in a clear and relatable way.
               </p>
             </div>
@@ -135,7 +177,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                     {featuredPost.title}
                   </h2>
 
-                  <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-3">
+                  <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed line-clamp-3">
                     {featuredPost.excerpt}
                   </p>
 
@@ -153,6 +195,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
       </section>
 
       {/* Main Blog Grid Section */}
+      <div className="relative z-10 w-full bg-[#fafafa] dark:bg-black pb-24">
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16">
         {/* Section Header & Radio Filters */}
         <div className="space-y-6 mb-10">
@@ -174,7 +217,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                     className={`w-3.5 h-3.5 rounded-full flex items-center justify-center border transition-all ${
                       isSelected
                         ? 'border-neutral-950 dark:border-white'
-                        : 'border-neutral-400 dark:border-neutral-600 group-hover:border-neutral-700 dark:group-hover:border-neutral-400'
+                        : 'border-neutral-400 dark:border-neutral-400 group-hover:border-neutral-700 dark:group-hover:border-white'
                     }`}
                   >
                     {isSelected && (
@@ -185,7 +228,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                     className={`font-medium ${
                       isSelected
                         ? 'text-neutral-950 dark:text-white font-semibold'
-                        : 'text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-950 dark:group-hover:text-neutral-200'
+                        : 'text-neutral-600 dark:text-neutral-200 group-hover:text-neutral-950 dark:group-hover:text-white'
                     }`}
                   >
                     {cat}
@@ -225,7 +268,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                       {post.title}
                     </h3>
 
-                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed line-clamp-2">
+                    <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-200 leading-relaxed line-clamp-2">
                       {post.subtitle || post.excerpt}
                     </p>
                   </div>
@@ -255,6 +298,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
           </div>
         )}
       </section>
+      </div>
     </div>
   );
 };

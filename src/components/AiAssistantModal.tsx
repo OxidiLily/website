@@ -35,7 +35,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     {
       id: 'welcome',
       sender: 'ai',
-      text: 'Halo! Saya Studio AI Assistant. Saya siap membantu kamu mengeksplorasi portfolio, proyek 3D physics, artikel engineering, atau mendiskusikan peluang kolaborasi.',
+      text: 'Halo! Saya OxidiLily AI Assistant. Saya siap membantu kamu mengeksplorasi portfolio, proyek 3D physics, artikel engineering, atau mendiskusikan peluang kolaborasi.',
     },
   ]);
   const [inputVal, setInputVal] = useState('');
@@ -69,7 +69,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
       const lower = text.toLowerCase();
       if (lower.includes('proyek') || lower.includes('project') || lower.includes('karya') || lower.includes('portfolio')) {
-        reply = 'Studio ini memiliki beberapa proyek unggulan seperti 3D WebGL Ballpit, Design System Neomorphic, dan E-Commerce Platform berkecapatan tinggi.';
+        reply = 'OxidiLily memiliki beberapa proyek unggulan seperti 3D WebGL Ballpit, Design System Neomorphic, dan E-Commerce Platform berkecapatan tinggi.';
         action = { label: 'Buka Halaman Projects', targetPage: 'project' };
       } else if (lower.includes('tech') || lower.includes('skill') || lower.includes('stack') || lower.includes('bahasa')) {
         reply = 'Stack utama mencakup React 19, TypeScript, Tailwind CSS, Three.js / OGL untuk visual 3D WebGL, Motion, serta Next.js dan Node.js di sisi arsitektur modern.';
@@ -80,9 +80,6 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
       } else if (lower.includes('kontak') || lower.includes('hubungi') || lower.includes('email') || lower.includes('hire') || lower.includes('kolaborasi')) {
         reply = 'Kami terbuka untuk freelance, proyek studio, dan konsultasi arsitektur frontend. Silakan kirim pesan melalui halaman Contact.';
         action = { label: 'Kirim Pesan', targetPage: 'contact' };
-      } else if (lower.includes('admin') || lower.includes('dashboard') || lower.includes('backend') || lower.includes('cms')) {
-        reply = 'Dashboard backend admin digunakan untuk mengelola konten website, pelacak sprint, kanban backlog, proyek aktif/arsip, dan integrasi API.';
-        action = { label: 'Buka Admin Portal', targetPage: 'admin' };
       } else {
         reply = `Terima kasih atas pertanyaannya mengenai "${text}". Kamu dapat menjelajahi seluruh bagian website kami untuk melihat detail lebih lengkap.`;
         action = { label: 'Kembali ke Home', targetPage: 'home' };
@@ -227,7 +224,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
-                placeholder="Tanyakan sesuatu pada Studio AI..."
+                placeholder="Tanyakan sesuatu pada OxidiLily AI..."
                 className="flex-1 bg-neutral-900 border border-white/15 rounded-full px-4 py-2.5 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-indigo-400 transition-colors"
               />
               <button

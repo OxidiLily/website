@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { motion } from 'motion/react';
-import { Ballpit } from '../components/Ballpit';
 import { ScrollVelocity } from '../components/ScrollVelocity';
-import { Orb } from '../components/Orb';
 import { projectsData, blogPostsData } from '../data/siteData';
 import { PageId } from '../types';
 import { ArrowRight, Sparkles, ExternalLink, Code2, Layers } from 'lucide-react';
 import aboutMePortrait from '../assets/images/about_me_portrait_1787881947027.jpg';
+
+import { isLowPowerDevice } from '../lib/device';
+
+// Ballpit (three.js) dan Orb (ogl) hanya diunduh kalau memang akan dirender.
+const Ballpit = lazy(() => import('../components/Ballpit').then(m => ({ default: m.Ballpit })));
+const Orb = lazy(() => import('../components/Orb').then(m => ({ default: m.Orb })));
 
 interface HomePageProps {
   onNavigate: (page: PageId) => void;
@@ -22,15 +26,23 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       >
         {/* Fullscreen 3D Ballpit Background */}
         <div className="absolute inset-0 w-full h-full z-0">
-          <Ballpit
-            count={100}
-            gravity={0.3}
-            friction={1}
-            wallBounce={0.9}
-            followCursor={false}
-            colors={['#ffffff', '#000000']}
-            className="w-full h-full"
-          />
+          {isLowPowerDevice ? (
+            // Perangkat lemah: simulasi 100 bola diganti gradien statis, hero
+            // tetap punya kedalaman tanpa satu pun frame WebGL.
+            <div className="w-full h-full bg-[radial-gradient(ellipse_at_50%_40%,#2a2a2a_0%,#111_45%,#000_75%)]" />
+          ) : (
+            <Suspense fallback={null}>
+              <Ballpit
+                count={100}
+                gravity={0.3}
+                friction={1}
+                wallBounce={0.9}
+                followCursor={false}
+                colors={['#ffffff', '#000000']}
+                className="w-full h-full"
+              />
+            </Suspense>
+          )}
         </div>
 
         {/* Hero Overlay Text */}
@@ -74,15 +86,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <div className="relative w-full overflow-hidden bg-black">
         {/* Ambient Orb Background Layer */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden flex items-center justify-center">
-          <div className="w-full h-full max-w-6xl min-h-[1000px] relative opacity-75">
-            <Orb
-              hue={0}
-              hoverIntensity={0}
-              rotateOnHover={true}
-              forceHoverState={false}
-              backgroundColor="#000000"
-            />
-          </div>
+          {!isLowPowerDevice && (
+            <div className="w-full h-full max-w-6xl min-h-[1000px] relative opacity-75">
+              <Suspense fallback={null}>
+                <Orb
+                  hue={0}
+                  hoverIntensity={0}
+                  rotateOnHover={true}
+                  forceHoverState={false}
+                  backgroundColor="#000000"
+                />
+              </Suspense>
+            </div>
+          )}
           {/* Smooth blend from top and bottom */}
           <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
         </div>
@@ -160,7 +176,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="bg-neutral-950/90 backdrop-blur-md rounded-2xl sm:rounded-3xl p-6 sm:p-10 md:p-12 border border-neutral-800/80 relative overflow-hidden flex flex-col-reverse md:flex-row items-center justify-between gap-6 sm:gap-8">
               <div className="w-full max-w-xl space-y-3 sm:space-y-4">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-neutral-900 border border-neutral-800 text-neutral-400">
-                  <span>San Francisco, CA 🇺🇸</span>
+                  <span>Batang, Jawa Tengah, Indonesia 🇮🇩</span>
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight">
                   Design & Development Driven by Craft and Autonomy

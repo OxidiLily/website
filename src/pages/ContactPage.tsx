@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Phone, 
@@ -8,6 +8,10 @@ import {
   ArrowRight, 
   MapPin 
 } from 'lucide-react';
+import { isLowPowerDevice } from '../lib/device';
+
+// GhostFibers (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
+const GhostFibers = lazy(() => import('../components/GhostFibers'));
 
 interface FormState {
   firstName: string;
@@ -35,7 +39,42 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full pt-16 sm:pt-20 md:pt-28 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto space-y-14 sm:space-y-20 md:space-y-24">
+    <div className="relative w-full">
+      {/* GhostFibers React Bits WebGL Background (fixed di belakang halaman) */}
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+        {!isLowPowerDevice && (
+          <Suspense fallback={null}>
+            <GhostFibers
+              lineColor="#140E35"
+              glowColor="#3437A0"
+              speed={0.2}
+              scale={2}
+              rotation={0}
+              rotationSpeed={0.25}
+              layers={4}
+              waveAmplitude={0.015}
+              waveFrequency={3}
+              waveSpeed={0.15}
+              layerSpeed={0.08}
+              twist={0.1}
+              twistFrequency={5}
+              twistSpeed={1.2}
+              lineFrequency={5}
+              lineSpacing={2}
+              lineSharpness={16}
+              glowFalloff={10}
+              glowIntensity={1.6}
+              brightness={2}
+              blueBoost={1.25}
+              vignette={0.8}
+              grain={0.05}
+              dpr={1}
+            />
+          </Suspense>
+        )}
+      </div>
+
+    <div className="relative z-10 w-full pt-16 sm:pt-20 md:pt-28 pb-14 sm:pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
       {/* SECTION 1: Form & Direct Details */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
         {/* Left Column: Direct Info */}
@@ -209,7 +248,12 @@ export const ContactPage: React.FC = () => {
           </div>
         </div>
       </div>
+    </div>
 
+    {/* Mulai "Get in touch with us" ke bawah: blok hitam opak selebar layar yang
+        menutupi GhostFibers, sama seperti pola "All Blogs" di halaman blog. */}
+    <div className="relative z-10 w-full bg-black">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 md:pt-24 pb-20">
       {/* SECTION 2: Get In Touch Cards + Worldwide Map */}
       <div className="space-y-8 sm:space-y-12">
         {/* Title */}
@@ -358,6 +402,8 @@ export const ContactPage: React.FC = () => {
           </div>
         </div>
       </div>
+      </div>
+    </div>
     </div>
   );
 };
