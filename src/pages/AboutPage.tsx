@@ -14,9 +14,9 @@ export const AboutPage: React.FC = () => {
   ];
 
   return (
-    <div className="relative w-full pt-8 md:pt-28 pb-24 overflow-hidden min-h-screen">
+    <div className="relative w-full pb-24 overflow-x-clip min-h-screen">
       {/* SideRays React Bits WebGL Component Background (Fixed to Top-Right) */}
-      <div className="fixed top-0 right-0 w-full h-[900px] sm:h-[1050px] pointer-events-none z-0 opacity-100 overflow-hidden">
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-100 overflow-hidden">
         <SideRays
           speed={2.8}
           rayColor1="#F59E0B"

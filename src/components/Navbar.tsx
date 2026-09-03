@@ -93,7 +93,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navTransition = {
     duration: 0.45,
-    ease: [0.16, 1, 0.3, 1],
+    ease: [0.16, 1, 0.3, 1] as const,
   };
 
   return (
