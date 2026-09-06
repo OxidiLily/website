@@ -25,16 +25,18 @@ export default defineConfig(({mode}) => {
   // memasang header sungguhan, jadi frame-ancestors & nosniff benar-benar
   // terkirim, bukan hanya <meta> yang sebagian arahannya diabaikan browser.
   //
-  // TIDAK dipasang: Strict-Transport-Security (situs ini disajikan lewat HTTP
-  // polos di LAN — HSTS akan mengunci browser ke HTTPS yang tidak ada) dan
-  // X-XSS-Protection (sudah dibuang semua browser modern, CSP penggantinya).
-  // Kalau nanti ada reverse proxy ber-TLS di depannya, HSTS dipasang di sana.
+  // TIDAK dipasang, semuanya karena situs ini disajikan lewat HTTP polos di LAN:
+  //  - Strict-Transport-Security → akan mengunci browser ke HTTPS yang tak ada.
+  //  - Cross-Origin-Opener-Policy → butuh secure context; di HTTP browser
+  //    MENGABAIKANNYA sambil mencetak error di konsol tiap kali halaman dibuka,
+  //    jadi yang tersisa hanya kebisingannya.
+  //  - X-XSS-Protection → sudah dibuang semua browser modern, CSP penggantinya.
+  // Ketiganya dipasang di reverse proxy yang menerminasi TLS, bukan di sini.
   const securityHeaders: Record<string, string> = {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-    'Cross-Origin-Opener-Policy': 'same-origin',
     'X-Permitted-Cross-Domain-Policies': 'none',
     'Content-Security-Policy': [
       "default-src 'self'",
@@ -46,6 +48,10 @@ export default defineConfig(({mode}) => {
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
       ['connect-src', "'self'", supabaseOrigin, ...aiOrigins].filter(Boolean).join(' '),
+      // Peta lokasi di halaman Contact adalah <iframe> ke maps.google.com.
+      // Tanpa frame-src eksplisit, CSP jatuh ke default-src 'self' dan petanya
+      // diblokir tanpa jejak selain satu baris di konsol.
+      "frame-src https://maps.google.com https://www.google.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",

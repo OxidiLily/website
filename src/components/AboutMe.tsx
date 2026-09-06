@@ -7,6 +7,23 @@ import cardFront from '../assets/lanyard/card-front.jpg';
 // seluruh situs, jadi hanya diunduh kalau perangkatnya sanggup menjalankannya.
 const Lanyard = lazy(() => import('./Lanyard'));
 
+/** Kartu identitas versi diam — dipakai di perangkat lemah dan sebagai
+ *  penahan tempat selama chunk Lanyard yang berat masih dimuat. */
+const StaticCard: React.FC = () => (
+  <div className="w-full h-full flex justify-center lg:justify-start lg:pl-[14%] pt-24 sm:pt-28">
+    <div className="flex flex-col items-center">
+      <div className="w-px h-16 sm:h-20 bg-white/25" />
+      <div className="w-4 h-1.5 rounded-sm bg-white/40" />
+      <img
+        src={cardFront}
+        alt="Kartu identitas OxidiLily"
+        className="mt-1 w-36 sm:w-44 rounded-xl shadow-2xl -rotate-3 border border-white/10"
+        decoding="async"
+      />
+    </div>
+  </div>
+);
+
 export const AboutMe: React.FC = () => {
   return (
     <section id="about" className="relative w-full bg-transparent text-white min-h-[90vh] lg:min-h-screen overflow-visible">
@@ -14,23 +31,13 @@ export const AboutMe: React.FC = () => {
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
         <div className="w-full h-full pointer-events-auto">
           {isLowPowerDevice ? (
-            // Perangkat lemah: kartu statis menggantikan simulasi fisika, supaya
-            // kolom kiri tidak kosong tanpa menyalakan WebGL sama sekali.
-            <div className="w-full h-full flex justify-center lg:justify-start lg:pl-[14%] pt-24 sm:pt-28">
-              <div className="flex flex-col items-center">
-                <div className="w-px h-16 sm:h-20 bg-white/25" />
-                <div className="w-4 h-1.5 rounded-sm bg-white/40" />
-                <img
-                  src={cardFront}
-                  alt="Kartu identitas OxidiLily"
-                  className="mt-1 w-36 sm:w-44 rounded-xl shadow-2xl -rotate-3 border border-white/10"
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </div>
+            <StaticCard />
           ) : (
-            <Suspense fallback={null}>
+            // Fallback WAJIB terlihat: chunk Lanyard (r3f + drei + rapier) 2,5 MB
+            // dan pernah terukur baru siap setelah puluhan detik di mesin lambat.
+            // Dengan fallback null, kolom ini kosong selama itu dan halaman
+            // About terbaca "tidak load". Kartu statis 18 KB mengisi tempatnya.
+            <Suspense fallback={<StaticCard />}>
               <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
             </Suspense>
           )}

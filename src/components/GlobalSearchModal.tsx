@@ -317,6 +317,18 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                         animate={{ opacity: 1, y: 0 }}
                         onClick={() => handleSelectItem(item)}
                         onMouseEnter={() => setSelectedIndex(index)}
+                        // Hasil pencarian adalah div ber-onClick: tanpa role,
+                        // tabIndex, dan handler keyboard, pengguna keyboard dan
+                        // pembaca layar tidak punya cara memilihnya sama sekali.
+                        role="option"
+                        aria-selected={isSelected}
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleSelectItem(item);
+                          }
+                        }}
                         className={`group relative p-3 sm:p-3.5 rounded-xl transition-all duration-150 cursor-pointer flex items-start justify-between gap-3 border ${
                           isSelected
                             ? 'bg-neutral-900/90 border-neutral-700 shadow-md'

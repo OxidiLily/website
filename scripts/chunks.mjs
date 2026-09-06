@@ -1,0 +1,17 @@
+import { chromium } from 'playwright-core';
+const EXEC = `${process.env.HOME}/.cache/ms-playwright/chromium-1234/chrome-linux64/chrome`;
+const url = process.argv[2];
+const b = await chromium.launch({ executablePath: EXEC, args:['--no-sandbox','--use-gl=swiftshader','--enable-unsafe-swiftshader'] });
+const p = await b.newPage({ viewport:{width:1440,height:900} });
+const reqs=[], errs=[], failed=[];
+p.on('request', r => { const u=r.url(); if(u.includes('/assets/')) reqs.push(u.split('/').pop()); });
+p.on('requestfailed', r => failed.push(`${r.failure()?.errorText} ${r.url().split('/').pop()}`));
+p.on('console', m => { if(m.type()==='error') errs.push(m.text().slice(0,300)); });
+p.on('pageerror', e => errs.push('PAGEERROR: '+String(e).slice(0,500)));
+await p.goto(url, { waitUntil:'domcontentloaded', timeout:40000 });
+await p.waitForTimeout(12000);
+console.log('canvas:', await p.evaluate(()=>document.querySelectorAll('canvas').length));
+console.log('aset diminta:\n  ' + [...new Set(reqs)].join('\n  '));
+console.log(failed.length? 'REQUEST GAGAL:\n  '+[...new Set(failed)].join('\n  ') : 'REQUEST GAGAL: (tidak ada)');
+console.log(errs.length? 'ERRORS:\n  '+[...new Set(errs)].join('\n  ') : 'ERRORS: (tidak ada)');
+await b.close();

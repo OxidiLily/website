@@ -26,10 +26,63 @@ const PAGE_TITLES: Record<PageId, string> = {
   admin: 'Admin — OxidiLily',
 };
 
+/** Penanda muat antar-halaman. Sebelumnya kotak kosong tanpa tanda apa pun,
+ *  sehingga mengklik hasil pencarian terlihat seperti tidak terjadi apa-apa. */
+function PageLoading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center" role="status" aria-live="polite">
+      <span className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white/80 animate-spin" />
+      <span className="sr-only">Memuat halaman…</span>
+    </div>
+  );
+}
+
+interface Route {
+  page: PageId;
+  blogId: string | null;
+  projectId: string | null;
+}
+
+/**
+ * URL → halaman. Fungsi murni supaya bisa dipakai untuk NILAI AWAL state,
+ * bukan hanya di dalam efek.
+ *
+ * Ini penting untuk kecepatan, bukan kerapian: kalau rute baru diselesaikan di
+ * useEffect, render pertama selalu HomePage, sehingga membuka /about atau
+ * /blog/<id> ikut mengunduh dan mem-parse chunk HomePage + Ballpit + Orb +
+ * three.js (734 KB) lebih dulu — terukur menunda konten yang diminta sampai
+ * puluhan detik di mesin lambat.
+ */
+function parseRoute(pathname: string, hash: string): Route {
+  // Tautan lama berbentuk #blog/<id> masih beredar (bookmark, riwayat).
+  // HANYA hash yang memang rute: ContactPage punya jangkar dalam-halaman
+  // `#form`, dan menerjemahkan semua hash membuat tombol Back melempar ke home.
+  const h = hash.replace(/^#+\/?/, '').trim().toLowerCase();
+  const legacy = /^(home|blog|project|contact|about|admin|dashboard|login)(\/|$)/.test(h);
+  const raw = (legacy ? h : pathname).replace(/^\/+/, '').replace(/\/+$/, '').trim().toLowerCase();
+
+  const none: Route = { page: 'home', blogId: null, projectId: null };
+  if (!raw || raw === 'home') return none;
+
+  const parts = raw.split('/');
+  const tail = parts.length > 1 ? parts.slice(1).join('/') : null;
+
+  if (raw.startsWith('blog')) return { page: 'blog', blogId: tail, projectId: null };
+  if (raw.startsWith('project')) return { page: 'project', blogId: null, projectId: tail };
+  if (raw.startsWith('admin') || raw.startsWith('dashboard') || raw.startsWith('login')) {
+    return { page: 'admin', blogId: null, projectId: null };
+  }
+  if (raw === 'contact' || raw === 'about') return { page: raw as PageId, blogId: null, projectId: null };
+
+  return none; // rute tak dikenal → home
+}
+
+const initialRoute = parseRoute(window.location.pathname, window.location.hash);
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageId>('home');
-  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState<PageId>(initialRoute.page);
+  const [selectedBlogId, setSelectedBlogId] = useState<string | null>(initialRoute.blogId);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(initialRoute.projectId);
 
   // Judul tab mengikuti halaman yang dibuka. Saat ada detail terbuka (post blog
   // atau modal project) judulnya diserahkan ke halaman itu, yang punya datanya —
@@ -65,79 +118,26 @@ export default function App() {
     };
   }, []);
 
-  // Routing berbasis PATH (History API): /home, /blog, /blog/<id>, /project/<id>,
-  // /contact, /about, /admin/login. Bukan hash — URL hash tidak pernah dikirim
-  // ke server, jadi tidak bisa dibedakan sebagai halaman nyata dan buruk untuk
-  // berbagi tautan maupun SEO. `vite preview` sudah punya SPA fallback, jadi
-  // memuat langsung /blog/<id> mengembalikan index.html.
+  // Rute awal sudah diselesaikan sebelum render pertama (lihat parseRoute).
+  // Efek ini hanya mengurus perpindahan setelahnya: tombol Back/Forward, dan
+  // penulisan ulang tautan hash lama menjadi path yang setara.
   useEffect(() => {
-    const applyTarget = (target: string) => {
-      target = target.replace(/^\/+/, '').replace(/\/+$/, '').trim().toLowerCase();
-
-      if (!target || target === 'home') {
-        setCurrentPage('home');
-        setSelectedBlogId(null);
-        setSelectedProjectId(null);
-        return;
-      }
-
-      if (target.startsWith('blog')) {
-        const parts = target.split('/');
-        setCurrentPage('blog');
-        setSelectedBlogId(parts.length > 1 ? parts.slice(1).join('/') : null);
-        setSelectedProjectId(null);
-        return;
-      }
-
-      if (target.startsWith('project')) {
-        const parts = target.split('/');
-        setCurrentPage('project');
-        setSelectedProjectId(parts.length > 1 ? parts.slice(1).join('/') : null);
-        setSelectedBlogId(null);
-        return;
-      }
-
-      if (target.startsWith('admin') || target.startsWith('dashboard') || target.startsWith('login')) {
-        setCurrentPage('admin');
-        setSelectedBlogId(null);
-        setSelectedProjectId(null);
-        return;
-      }
-
-      if (target === 'contact' || target === 'about') {
-        setCurrentPage(target as PageId);
-        setSelectedBlogId(null);
-        setSelectedProjectId(null);
-        return;
-      }
-
-      // Rute tak dikenal → home.
-      setCurrentPage('home');
-      setSelectedBlogId(null);
-      setSelectedProjectId(null);
+    const apply = () => {
+      const r = parseRoute(window.location.pathname, window.location.hash);
+      setCurrentPage(r.page);
+      setSelectedBlogId(r.blogId);
+      setSelectedProjectId(r.projectId);
     };
 
-    const resolveRoute = () => {
-      // Tautan lama berbentuk #blog/<id> masih beredar (bookmark, riwayat).
-      // Diterjemahkan sekali ke path yang setara, lalu hash dibuang supaya
-      // tidak ada dua bentuk URL untuk halaman yang sama.
-      //
-      // HANYA hash yang memang rute. ContactPage punya jangkar dalam-halaman
-      // `#form`; kalau semua hash diterjemahkan, menekan Back setelah mengklik
-      // jangkar itu akan melempar pengguna ke home.
-      const hash = window.location.hash.replace(/^#+\/?/, '').trim().toLowerCase();
-      const isRoute = /^(home|blog|project|contact|about|admin|dashboard|login)(\/|$)/.test(hash);
-      if (hash && isRoute) {
-        window.history.replaceState(null, '', `/${hash}`);
-        applyTarget(hash);
-        return;
+    if (window.location.hash) {
+      const h = window.location.hash.replace(/^#+\/?/, '').trim().toLowerCase();
+      if (/^(home|blog|project|contact|about|admin|dashboard|login)(\/|$)/.test(h)) {
+        window.history.replaceState(null, '', `/${h}`);
       }
-      applyTarget(window.location.pathname);
-    };
+    }
 
-    resolveRoute();
-    window.addEventListener('popstate', resolveRoute);
-    return () => window.removeEventListener('popstate', resolveRoute);
+    window.addEventListener('popstate', apply);
+    return () => window.removeEventListener('popstate', apply);
   }, []);
 
   /** Satu-satunya penulis URL. Path, tanpa hash. */
@@ -209,7 +209,7 @@ export default function App() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="w-full h-full"
           >
-            <Suspense fallback={<div className="min-h-screen" aria-busy="true" />}>
+            <Suspense fallback={<PageLoading />}>
             {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
             {currentPage === 'project' && (
               <ProjectPage
