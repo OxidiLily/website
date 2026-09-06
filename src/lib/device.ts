@@ -35,3 +35,32 @@ export const isLowPowerDevice: boolean = (() => {
  * GPU tanpa pernah terlihat bereaksi.
  */
 export const isDesktopPointer: boolean = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+/**
+ * Apakah browser ini benar-benar mau memberi konteks WebGL.
+ *
+ * Bukan pertanyaan teoretis: Brave dengan Shields "block fingerprinting",
+ * GPU yang masuk blacklist, driver bermasalah, atau WebGL yang dimatikan di
+ * flags semuanya membuat `getContext('webgl')` mengembalikan null. Yang terjadi
+ * kemudian tidak seragam — three.js MELEMPAR (tertangkap `Decor`), sedangkan
+ * react-three-fiber diam saja dan hanya meninggalkan <canvas> kosong yang tidak
+ * pernah menggambar. Kasus kedua itulah yang membuat kolom kartu di halaman
+ * About terlihat kosong tanpa pesan apa pun.
+ *
+ * Karena itu ketersediaan WebGL diperiksa lebih dulu, bukan disimpulkan dari
+ * ada-tidaknya error. Efek yang mustahil jalan tidak usah dipasang sama sekali —
+ * sekaligus menghemat unduhan chunk berat (Lanyard 2,5 MB, three.js 734 KB).
+ * `Decor` tetap dipertahankan sebagai jaring pengaman untuk WebGL yang ada tapi
+ * cacat sebagian.
+ */
+export const hasWebGL: boolean = (() => {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+  } catch {
+    return false;
+  }
+})();
+
+/** Efek dekoratif WebGL layak dipasang: perangkat mampu DAN browser mengizinkan. */
+export const canRenderWebGL: boolean = !isLowPowerDevice && hasWebGL;

@@ -3,7 +3,7 @@ import { Decor } from '../components/Decor';
 import { motion } from 'motion/react';
 import { AboutMe } from '../components/AboutMe';
 import { ToolsAndStack } from '../components/ToolsAndStack';
-import { isLowPowerDevice } from '../lib/device';
+import { canRenderWebGL } from '../lib/device';
 
 // SideRays (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const SideRays = lazy(() => import('../components/SideRays').then(m => ({ default: m.SideRays })));
@@ -21,7 +21,7 @@ export const AboutPage: React.FC = () => {
     <div className="relative w-full pb-24 overflow-x-clip min-h-screen">
       {/* SideRays React Bits WebGL Component Background (Fixed to Top-Right) */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-100 overflow-hidden">
-        {!isLowPowerDevice && (
+        {canRenderWebGL && (
         <Decor>
         <SideRays
           speed={2.8}

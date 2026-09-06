@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { projectsData } from '../data/siteData';
 import { fetchProjects } from '../lib/content';
 import { ProjectItem } from '../types';
-import { isLowPowerDevice } from '../lib/device';
+import { canRenderWebGL } from '../lib/device';
 
 // Aurora (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const Aurora = lazy(() => import('../components/Aurora').then(m => ({ default: m.Aurora })));
@@ -63,7 +63,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
     <div className="relative w-full min-h-screen bg-black">
       {/* Background Aurora Layer - Fixed position so it stays in place during scroll */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-        {!isLowPowerDevice && (
+        {canRenderWebGL && (
           <Decor>
             <Aurora
               colorStops={['#ffffff', '#888888', '#222222']}

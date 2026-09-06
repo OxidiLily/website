@@ -13,6 +13,8 @@
 - `nowebgl.mjs` — memblokir konteks WebGL (meniru Brave Shields "block
   fingerprinting"). Penjaga regresi terpenting: sebelum ada `Decor`, kegagalan
   WebGL meng-unmount SELURUH aplikasi dan halaman jadi hitam kosong.
+- `lanyard.mjs` — memastikan kolom About menampilkan Lanyard React Bits saat
+  WebGL tersedia, dan kartu statis (bukan canvas mati) saat WebGL diblokir.
 - `chunks.mjs` — daftar aset yang diunduh sebuah halaman. Penjaga regresi supaya
   chunk HomePage/Ballpit/Orb tidak bocor lagi ke `/about` (rute kini diselesaikan
   sebelum render pertama).

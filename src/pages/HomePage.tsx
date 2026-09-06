@@ -8,7 +8,7 @@ import { PageId } from '../types';
 import { ArrowRight, Sparkles, ExternalLink, Code2, Layers } from 'lucide-react';
 import aboutMePortrait from '../assets/images/about_me_portrait_1787881947027.jpg';
 
-import { isLowPowerDevice } from '../lib/device';
+import { canRenderWebGL } from '../lib/device';
 
 // Ballpit (three.js) dan Orb (ogl) hanya diunduh kalau memang akan dirender.
 const Ballpit = lazy(() => import('../components/Ballpit').then(m => ({ default: m.Ballpit })));
@@ -34,9 +34,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       >
         {/* Fullscreen 3D Ballpit Background */}
         <div className="absolute inset-0 w-full h-full z-0">
-          {isLowPowerDevice ? (
-            // Perangkat lemah: simulasi 100 bola diganti gradien statis, hero
-            // tetap punya kedalaman tanpa satu pun frame WebGL.
+          {!canRenderWebGL ? (
+            // Perangkat lemah ATAU WebGL tak tersedia (mis. Brave Shields):
+            // simulasi 100 bola diganti gradien statis, hero tetap punya
+            // kedalaman tanpa satu pun frame WebGL.
             <div className="w-full h-full bg-[radial-gradient(ellipse_at_50%_40%,#2a2a2a_0%,#111_45%,#000_75%)]" />
           ) : (
             <Decor>
@@ -94,7 +95,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <div className="relative w-full overflow-hidden bg-black">
         {/* Ambient Orb Background Layer */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden flex items-center justify-center">
-          {!isLowPowerDevice && (
+          {canRenderWebGL && (
             <div className="w-full h-full max-w-6xl min-h-[1000px] relative opacity-75">
               <Decor>
                 <Orb

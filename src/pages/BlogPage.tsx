@@ -7,7 +7,7 @@ import { BlogPost, PageId } from '../types';
 import { BlogPostDetail } from '../components/BlogPostDetail';
 import { BlogGeometricGraphic } from '../components/BlogGeometricGraphic';
 import { ArrowRight, ChevronRight } from 'lucide-react';
-import { isLowPowerDevice } from '../lib/device';
+import { canRenderWebGL } from '../lib/device';
 
 // LightPillar itu raymarching 80 iterasi per piksel — paling berat di halaman ini.
 const LightPillar = lazy(() => import('../components/LightPillar'));
@@ -115,7 +115,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
           saat halaman di-scroll. Batas bawahnya bukan dari tinggi layer ini,
           tapi dari blok hitam opak "All Blogs" yang naik menutupinya. */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-        {!isLowPowerDevice && (
+        {canRenderWebGL && (
           <Decor>
             <LightPillar
               topColor="#5227FF"

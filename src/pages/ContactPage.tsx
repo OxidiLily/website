@@ -9,7 +9,7 @@ import {
   ArrowRight, 
   MapPin 
 } from 'lucide-react';
-import { isLowPowerDevice } from '../lib/device';
+import { canRenderWebGL } from '../lib/device';
 
 // GhostFibers (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const GhostFibers = lazy(() => import('../components/GhostFibers'));
@@ -76,7 +76,7 @@ export const ContactPage: React.FC = () => {
     <div className="relative w-full">
       {/* GhostFibers React Bits WebGL Background (fixed di belakang halaman) */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-        {!isLowPowerDevice && (
+        {canRenderWebGL && (
           <Decor>
             <GhostFibers
               lineColor="#140E35"

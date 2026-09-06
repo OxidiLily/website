@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Decor } from './Decor';
 import { motion } from 'motion/react';
-import { isLowPowerDevice } from '../lib/device';
+import { canRenderWebGL } from '../lib/device';
 import cardFront from '../assets/lanyard/card-front.jpg';
 
 // Lanyard = react-three-fiber + drei + rapier (WASM fisika). Paling berat di
@@ -31,7 +31,7 @@ export const AboutMe: React.FC = () => {
       {/* Full-width 100% Canvas Layer spanning entire width & height */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
         <div className="w-full h-full pointer-events-auto">
-          {isLowPowerDevice ? (
+          {!canRenderWebGL ? (
             <StaticCard />
           ) : (
             // Fallback WAJIB terlihat: chunk Lanyard (r3f + drei + rapier) 2,5 MB

@@ -5,7 +5,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
 import { PageId } from './types';
-import { isDesktopPointer, isLowPowerDevice } from './lib/device';
+import { canRenderWebGL, isDesktopPointer } from './lib/device';
 
 // Tiap halaman dipecah jadi chunk sendiri. Tanpa ini seluruh three.js, ogl,
 // rapier, dan drei ikut terunduh & di-parse di kunjungan pertama walau user
@@ -183,7 +183,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black flex flex-col justify-between">
       {/* Fluid Interactive Splash Cursor (on public pages) */}
-      {!isAdminPage && isDesktopPointer && !isLowPowerDevice && (
+      {!isAdminPage && isDesktopPointer && canRenderWebGL && (
         <Decor>
           <SplashCursor />
         </Decor>
