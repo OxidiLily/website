@@ -5,7 +5,6 @@ import { blogPostsData } from '../data/siteData';
 import { fetchBlogPosts, useSettings } from '../lib/content';
 import { BlogPost, PageId } from '../types';
 import { BlogPostDetail } from '../components/BlogPostDetail';
-import { CardImage } from '../components/CardImage';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { canRenderWebGL } from '../lib/device';
 
@@ -168,17 +167,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                 onClick={() => handleSelectPost(featuredPost)}
                 className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-neutral-400 dark:hover:border-neutral-700 transition-all duration-300 cursor-pointer group flex flex-col"
               >
-                {/* Visual Upper Box */}
-                <div className="bg-[#f4f4f5] dark:bg-neutral-950/90 h-52 flex items-center justify-center overflow-hidden border-b border-neutral-100 dark:border-neutral-800/80 transition-colors">
-                  <CardImage
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-                    logoClassName="w-28 h-28 object-contain transform group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-                {/* Content Lower Box */}
+                {/* Kartu blog sengaja tanpa gambar: judul dan ringkasan saja. */}
                 <div className="p-6 sm:p-7 space-y-3 bg-white dark:bg-neutral-900">
                   <h2 className="text-lg sm:text-xl font-bold text-neutral-950 dark:text-white leading-snug group-hover:text-black dark:group-hover:text-neutral-100 transition-colors">
                     {featuredPost.title}
@@ -261,17 +250,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                 className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-neutral-400 dark:hover:border-neutral-700 transition-all duration-300 cursor-pointer group flex flex-col justify-between"
               >
                 <div>
-                  {/* Top Graphic Panel */}
-                  <div className="bg-[#f4f4f5] dark:bg-neutral-950/90 h-48 sm:h-52 flex items-center justify-center overflow-hidden border-b border-neutral-100 dark:border-neutral-800/80 transition-colors">
-                    <CardImage
-                      src={post.image}
-                      alt={post.title}
-                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
-                      logoClassName="w-24 h-24 object-contain transform group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-
-                  {/* Body Content */}
+                  {/* Body Content — tanpa panel gambar, sesuai permintaan. */}
                   <div className="p-6 sm:p-7 space-y-2.5">
                     <h3 className="text-base sm:text-lg font-bold text-neutral-950 dark:text-white leading-snug group-hover:text-black dark:group-hover:text-neutral-100 transition-colors">
                       {post.title}

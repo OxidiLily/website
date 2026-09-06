@@ -56,8 +56,6 @@ export interface BlogPost {
   featuredHero?: boolean;
   sections?: BlogSection[];
   content: string;
-  /** Gambar kartu. Kosong → logo situs (lihat LOGO di lib/content.ts). */
-  image?: string;
   tags: string[];
 }
 

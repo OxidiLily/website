@@ -63,7 +63,6 @@ function toBlog(r: any): BlogPost {
     readTime: r.reading_time ? `${r.reading_time} min read` : (meta.readTime ?? '5 min read'),
     excerpt: meta.excerpt ?? strip(r.content).slice(0, 160),
     content: r.content ?? '',
-    image: r.featured_image || meta.image || LOGO,
     tags: meta.tags ?? [category],
   };
 }
@@ -78,7 +77,7 @@ export async function fetchProjects(): Promise<ProjectItem[]> {
 export async function fetchBlogPosts(): Promise<BlogPost[]> {
   // RLS membatasi anon ke status=published, jadi tak perlu filter eksplisit.
   const rows = await rest(
-    'blogs?select=slug,title,content,featured_image,reading_time,author,created_at,meta,blog_categories(name)&order=created_at.desc',
+    'blogs?select=slug,title,content,reading_time,author,created_at,meta,blog_categories(name)&order=created_at.desc',
   );
   return rows ? rows.map(toBlog) : blogPostsData;
 }

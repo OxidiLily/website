@@ -203,7 +203,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                 <button
                   onClick={() => onCloseProject?.()}
                   className="absolute top-3 right-3 p-2 rounded-full bg-black/85 border border-neutral-700 text-white hover:bg-black active:scale-95 transition-all cursor-pointer"
-                  aria-label="Close modal"
+                  aria-label={t.project_modal_close_label}
                 >
                   <X className="w-4 h-4" />
                 </button>

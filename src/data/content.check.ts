@@ -118,6 +118,33 @@ for (const berkas of HALAMAN_PUBLIK) {
     membandel.push(`${berkas}: "${bersih}"`);
   }
 }
+// Teks juga bisa bersembunyi DI DALAM ekspresi JSX, bukan di antara tag:
+// nilai cadangan (`{post.actionLabel || 'Get Started'}`) dan atribut yang
+// dibaca pembaca layar. Bentuk ini tidak terlihat oleh pemeriksaan di atas,
+// dan justru di situlah kalimat terakhir yang masih dipatri ditemukan.
+//
+// Aturan pemilahnya: atribut teks selalu diperiksa, sedangkan literal
+// cadangan hanya dihitung kalau berbentuk kalimat — diawali huruf besar dan
+// memuat huruf kecil. Itu memisahkannya dari kelas CSS (`p-0 pb-0`), rute
+// (`/admin/login`), ukuran (`1040px`), dan id bagian, yang semuanya memang
+// bukan teks untuk dibaca orang.
+const ATRIBUT_TEKS = /(?:placeholder|title|alt|aria-label)="([^"]{2,80})"/g;
+const CADANGAN = /(?:\|\|\s*|\?\s*)'([A-Z][^']{1,69})'/g;
+const kalimat = (v: string) => /^[A-Z]/.test(v) && /[a-z]/.test(v);
+
+for (const berkas of HALAMAN_PUBLIK) {
+  for (const baris of readFileSync(join(akar, berkas), 'utf8').split('\n')) {
+    const t = baris.trim();
+    if (t.startsWith('//') || t.startsWith('*') || t.startsWith('/*')) continue;
+    for (const [, v] of baris.matchAll(ATRIBUT_TEKS)) {
+      if (/[A-Za-z]{2}/.test(v)) membandel.push(`${berkas}: atribut "${v}"`);
+    }
+    for (const [, v] of baris.matchAll(CADANGAN)) {
+      if (kalimat(v)) membandel.push(`${berkas}: cadangan "${v}"`);
+    }
+  }
+}
+
 assert.deepEqual(
   membandel,
   [],

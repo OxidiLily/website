@@ -251,7 +251,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     setQuery('');
                     inputRef.current?.focus();
                   }}
-                  aria-label="Clear search input"
+                  aria-label={t.search_clear_input_label}
                   className="p-1 rounded-full text-neutral-400 hover:text-white hover:bg-neutral-800 transition-colors mr-2 cursor-pointer"
                 >
                   <X className="w-4 h-4" />
@@ -260,7 +260,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
 
               <button
                 onClick={onClose}
-                aria-label="Close search"
+                aria-label={t.search_close_label}
                 className="px-2 py-1 rounded-md bg-neutral-900 border border-neutral-800 text-[11px] font-mono text-neutral-400 hover:text-white hover:border-neutral-700 transition-all cursor-pointer shrink-0"
               >
                 ESC

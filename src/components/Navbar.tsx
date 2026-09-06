@@ -57,7 +57,7 @@ const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
 
   if (gagal) {
     return (
-      <svg className={`${className} object-contain`} viewBox="0 0 24 24" aria-label="OxidiLily" role="img">
+      <svg className={`${className} object-contain`} viewBox="0 0 24 24" aria-label="" role="presentation">
         <rect width="24" height="24" rx="5" fill="#000" />
         <path d="M12 4.5L4.5 9v6L12 19.5 19.5 15V9L12 4.5z" fill="none" stroke="#fff" strokeWidth="1.4" />
       </svg>
@@ -270,7 +270,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Floating Dock with Center Curved Notch & Circular Disc Buttons */}
       <nav
-        aria-label="Mobile Navigation"
+        aria-label={t.nav_mobile_label}
         className="md:hidden fixed bottom-4 left-0 right-0 z-50 flex justify-center pointer-events-none px-2 pb-[env(safe-area-inset-bottom)]"
       >
         <motion.div

@@ -70,7 +70,7 @@ export const RESOURCES = {
   blogs: {
     table: 'blogs',
     title: 'Manage Blog',
-    subtitle: 'Artikel yang tampil di halaman blog publik.',
+    subtitle: 'Artikel yang tampil di halaman blog publik. Kartu dan halaman detailnya sengaja tanpa gambar — hanya teks.',
     order: { column: 'created_at', ascending: false },
     canCreate: true,
     canEdit: true,
@@ -85,7 +85,6 @@ export const RESOURCES = {
       },
       { name: 'status', label: 'Status', type: 'select', required: true, list: true, filter: true, options: STATUS_BLOG },
       { name: 'author', label: 'Penulis', type: 'text', list: true },
-      { name: 'featured_image', label: 'Gambar utama', type: 'image' },
       { name: 'content', label: 'Isi (HTML)', type: 'textarea', required: true },
       { name: 'reading_time', label: 'Waktu baca (menit)', type: 'number', form: false, list: true },
     ],

@@ -147,7 +147,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
               <button
                 onClick={onClose}
                 className="w-8 h-8 rounded-full bg-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-700 flex items-center justify-center transition-colors cursor-pointer"
-                aria-label="Tutup AI modal"
+                aria-label={t.assistant_close_label}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -238,7 +238,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 type="submit"
                 disabled={!inputVal.trim() || isTyping}
                 className="w-10 h-10 rounded-full bg-white text-black hover:bg-neutral-200 disabled:opacity-40 disabled:hover:bg-white flex items-center justify-center transition-all shrink-0 cursor-pointer shadow-md"
-                aria-label="Kirim pesan"
+                aria-label={t.assistant_send_label}
               >
                 <Send className="w-4 h-4" />
               </button>

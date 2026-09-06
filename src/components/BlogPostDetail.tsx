@@ -138,7 +138,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             }}
             className="min-h-[40px] px-4 py-2 rounded-lg bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 active:scale-95 transition-all shadow-sm cursor-pointer"
           >
-            {post.actionLabel || 'Get Started'}
+            {post.actionLabel || t.post_action_default}
           </button>
           <button
             onClick={() => {
@@ -146,7 +146,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             }}
             className="min-h-[40px] px-4 py-2 rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-300 font-medium text-xs sm:text-sm hover:bg-neutral-900 active:scale-95 hover:text-white transition-all cursor-pointer"
           >
-            {post.guideType || 'Gardening Guide'}
+            {post.guideType || t.post_guide_type_default}
           </button>
         </div>
 
@@ -219,87 +219,13 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             </div>
           </div>
 
-          {/* Center Column: Visual Graphic & Article Guide Content */}
+          {/* Center Column: isi artikel. Sengaja tanpa kartu grafis — halaman
+              detail blog memang tidak menampilkan gambar. */}
           <div className="md:col-span-6 space-y-8">
-            {/* Visual Media Graphic Card */}
-            <div className="w-full aspect-[16/10] bg-neutral-950 rounded-2xl sm:rounded-3xl border border-neutral-800 flex items-center justify-center p-8 overflow-hidden shadow-2xl select-none">
-              {/* Isometric Striped Geometric Cube Illustration in Monochrome */}
-              <div className="w-36 h-36 sm:w-44 sm:h-44 relative flex items-center justify-center">
-                <svg
-                  viewBox="0 0 200 200"
-                  className="w-full h-full text-white drop-shadow-md"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {/* Isometric Group */}
-                  <g transform="translate(100, 100)">
-                    {/* Top Face Outer */}
-                    <path
-                      d="M 0,-48 L 48,-24 L 0,0 L -48,-24 Z"
-                      fill="#171717"
-                      stroke="#404040"
-                      strokeWidth="1"
-                    />
-                    {/* Top Face Inner Inset */}
-                    <path
-                      d="M 0,-44 L 44,-22 L 0,0 L -44,-22 Z"
-                      fill="#0a0a0a"
-                    />
-                    {/* Top inner vertical slats */}
-                    <path d="M -36,-20 L -36,-14" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M -24,-26 L -24,-8" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M -12,-32 L -12,-2" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M 0,-38 L 0,0" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
-                    <path d="M 12,-32 L 12,-2" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M 24,-26 L 24,-8" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M 36,-20 L 36,-14" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-
-                    {/* Left Face */}
-                    <path
-                      d="M -48,-24 L 0,0 L 0,54 L -48,30 Z"
-                      fill="#171717"
-                      stroke="#404040"
-                      strokeWidth="1"
-                    />
-                    {/* Inner hollow cutout on Left Face */}
-                    <path
-                      d="M -40,-16 L -8,0 L -8,44 L -40,28 Z"
-                      fill="#0a0a0a"
-                    />
-                    {/* Left Face Vertical Slats */}
-                    <path d="M -32, -8 L -32, 28" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M -24, -4 L -24, 32" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M -16, 0 L -16, 36" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-
-                    {/* Right Face */}
-                    <path
-                      d="M 0,0 L 48,-24 L 48,30 L 0,54 Z"
-                      fill="#262626"
-                      stroke="#525252"
-                      strokeWidth="1"
-                    />
-                    {/* Right Face Slats with cutout */}
-                    <path
-                      d="M 8,0 L 40,-16 L 40,28 L 8,44 Z"
-                      fill="#0a0a0a"
-                    />
-                    <path d="M 16, 0 L 16, 36" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M 24, -4 L 24, 32" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M 32, -8 L 32, 28" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" />
-
-                    {/* Solid Geometric Accent Cutouts in Center */}
-                    <polygon points="0,6 -20,16 -20,38 0,48" fill="#ffffff" />
-                    <polygon points="0,6 20,16 20,38 0,48" fill="#a3a3a3" />
-                    <polygon points="0,6 -20,-4 0,-14 20,-4" fill="#525252" />
-                  </g>
-                </svg>
-              </div>
-            </div>
-
             {/* Main Section Header */}
             <div className="pt-2">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                {post.mainHeading || "Beginner's Guide"}
+                {post.mainHeading || t.post_main_heading}
               </h2>
             </div>
 
