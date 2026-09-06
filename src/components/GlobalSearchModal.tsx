@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { fetchBlogPosts, fetchProjects } from '../lib/content';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
@@ -23,7 +24,8 @@ import {
   SearchCategoryFilter, 
   searchAllContent, 
   popularSearchQueries,
-  searchIndex 
+  searchIndex,
+  mergeLiveContent,
 } from '../data/searchIndex';
 
 interface GlobalSearchModalProps {
@@ -50,6 +52,19 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   onSelectBlog,
   onSelectProject,
 }) => {
+  // Indeks pencarian mengikuti isi database, bukan hanya siteData.ts statis.
+  // Diambil sekali saat modal pertama dibuka supaya halaman publik tidak
+  // membayar permintaan ini kalau pencarian tidak pernah dipakai.
+  const [index, setIndex] = useState(searchIndex);
+  const sudahAmbil = useRef(false);
+  useEffect(() => {
+    if (!isOpen || sudahAmbil.current) return;
+    sudahAmbil.current = true;
+    Promise.all([fetchProjects(), fetchBlogPosts()])
+      .then(([pr, po]) => setIndex(mergeLiveContent(searchIndex, pr, po)))
+      .catch(() => {});
+  }, [isOpen]);
+
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<SearchCategoryFilter>('all');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -84,12 +99,12 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
     if (!query.trim()) {
       // When query is empty, show curated highlights or filter by active category
       if (activeCategory === 'all') {
-        return searchIndex.slice(0, 6);
+        return index.slice(0, 6);
       }
-      return searchIndex.filter((item) => item.page === activeCategory);
+      return index.filter((item) => item.page === activeCategory);
     }
-    return searchAllContent(query, activeCategory);
-  }, [query, activeCategory]);
+    return searchAllContent(query, activeCategory, index);
+  }, [query, activeCategory, index]);
 
   // Keep selected index in bound
   useEffect(() => {

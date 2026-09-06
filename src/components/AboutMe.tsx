@@ -2,28 +2,10 @@ import React, { Suspense, lazy } from 'react';
 import { Decor } from './Decor';
 import { motion } from 'motion/react';
 import { hasWebGL, isLowPowerDevice } from '../lib/device';
-import cardFront from '../assets/lanyard/card-front.jpg';
 
 // Lanyard = react-three-fiber + drei + rapier (WASM fisika). Paling berat di
 // seluruh situs, jadi hanya diunduh kalau perangkatnya sanggup menjalankannya.
 const Lanyard = lazy(() => import('./Lanyard'));
-
-/** Kartu identitas versi diam — dipakai di perangkat lemah dan sebagai
- *  penahan tempat selama chunk Lanyard yang berat masih dimuat. */
-const StaticCard: React.FC = () => (
-  <div className="w-full h-full flex justify-center lg:justify-start lg:pl-[14%] pt-24 sm:pt-28">
-    <div className="flex flex-col items-center">
-      <div className="w-px h-16 sm:h-20 bg-white/25" />
-      <div className="w-4 h-1.5 rounded-sm bg-white/40" />
-      <img
-        src={cardFront}
-        alt="Kartu identitas OxidiLily"
-        className="mt-1 w-36 sm:w-44 rounded-xl shadow-2xl -rotate-3 border border-white/10"
-        decoding="async"
-      />
-    </div>
-  </div>
-);
 
 export const AboutMe: React.FC = () => {
   return (
@@ -32,16 +14,18 @@ export const AboutMe: React.FC = () => {
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
         <div className="w-full h-full pointer-events-auto">
           {!hasWebGL ? (
-            // Kartu statis HANYA saat browser benar-benar menolak WebGL
-            // (mis. Brave Shields). Perangkat lemah TIDAK diganti gambar —
-            // lanyard tetap dirender, kualitasnya saja yang diturunkan.
-            <StaticCard />
+            // Browser menolak WebGL sama sekali: kosongkan saja. Menaruh gambar
+            // pengganti di sini justru mengganggu — Endministrator memintanya
+            // TIDAK muncul.
+            null
           ) : (
             // Fallback WAJIB terlihat: chunk Lanyard (r3f + drei + rapier) 2,5 MB
             // dan pernah terukur baru siap setelah puluhan detik di mesin lambat.
             // Dengan fallback null, kolom ini kosong selama itu dan halaman
             // About terbaca "tidak load". Kartu statis 18 KB mengisi tempatnya.
-            <Decor fallback={<StaticCard />}>
+            // fallback null: selama chunk lanyard dimuat kolom ini dibiarkan
+            // kosong, bukan diisi gambar kartu yang sempat berkedip saat refresh.
+            <Decor fallback={null}>
               <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} reduced={isLowPowerDevice} />
             </Decor>
           )}

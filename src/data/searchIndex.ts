@@ -20,7 +20,57 @@ export interface SearchItem {
   };
 }
 
-// Statically compiled search index with deep content across all public pages
+/**
+ * Pemetaan satu project/post ke entri pencarian. Diekspor supaya konten yang
+ * datang dari Supabase (dibuat lewat panel admin) memakai bentuk yang PERSIS
+ * sama dengan entri statis — sebelumnya indeks hanya dibangun dari
+ * `siteData.ts`, sehingga apa pun yang ditambahkan lewat panel tidak pernah
+ * bisa ditemukan lewat pencarian navbar.
+ */
+export const projectToSearchItem = (project: ProjectItem): SearchItem => ({
+  id: `project-${project.id}`,
+  title: project.title,
+  subtitle: `${project.category} • Client: ${project.client} (${project.year})`,
+  description: project.description,
+  page: 'project',
+  pageName: 'Projects',
+  category: project.category,
+  tags: [...project.tags, project.client, project.year, project.category, 'Portfolio', 'Work', 'Case Study'].filter(Boolean),
+  contentSnippets: [
+    project.description,
+    `Technologies used: ${project.tags.join(', ')}`,
+    `Client: ${project.client}, Year: ${project.year}`,
+  ],
+  actionPayload: { type: 'project', targetId: project.id },
+});
+
+export const blogToSearchItem = (post: BlogPost): SearchItem => ({
+  id: `blog-${post.id}`,
+  title: post.title,
+  subtitle: `${post.category} • ${post.readTime} • ${post.date}`,
+  description: post.excerpt || post.subtitle || post.content,
+  page: 'blog',
+  pageName: 'Blog',
+  category: post.category,
+  tags: [
+    ...post.tags,
+    ...(post.topics || []),
+    post.category,
+    post.guideType || 'Article',
+    'Blog',
+    'Guide',
+    'Article',
+  ].filter(Boolean),
+  contentSnippets: [
+    post.excerpt,
+    ...(post.topics || []),
+    ...(post.sections?.map((s) => `${s.title}: ${s.content}`) || []),
+  ].filter(Boolean),
+  actionPayload: { type: 'blog', targetId: post.id },
+});
+
+// Indeks dasar. Bagian project/blog diganti data Supabase saat tersedia
+// (lihat mergeLiveContent).
 export const searchIndex: SearchItem[] = [
   // ================= HOME PAGE ITEMS =================
   {
@@ -93,54 +143,10 @@ export const searchIndex: SearchItem[] = [
   },
 
   // ================= PROJECT PAGE ITEMS =================
-  ...projectsData.map((project): SearchItem => ({
-    id: `project-${project.id}`,
-    title: project.title,
-    subtitle: `${project.category} • Client: ${project.client} (${project.year})`,
-    description: project.description,
-    page: 'project',
-    pageName: 'Projects',
-    category: project.category,
-    tags: [...project.tags, project.client, project.year, project.category, 'Portfolio', 'Work', 'Case Study'],
-    contentSnippets: [
-      project.description,
-      `Technologies used: ${project.tags.join(', ')}`,
-      `Client: ${project.client}, Year: ${project.year}`,
-    ],
-    actionPayload: {
-      type: 'project',
-      targetId: project.id,
-    },
-  })),
+  ...projectsData.map(projectToSearchItem),
 
   // ================= BLOG PAGE ITEMS =================
-  ...blogPostsData.map((post): SearchItem => ({
-    id: `blog-${post.id}`,
-    title: post.title,
-    subtitle: `${post.category} • ${post.readTime} • ${post.date}`,
-    description: post.excerpt || post.subtitle || post.content,
-    page: 'blog',
-    pageName: 'Blog',
-    category: post.category,
-    tags: [
-      ...post.tags,
-      ...(post.topics || []),
-      post.category,
-      post.guideType || 'Article',
-      'Blog',
-      'Guide',
-      'Article',
-    ],
-    contentSnippets: [
-      post.excerpt,
-      ...(post.topics || []),
-      ...(post.sections?.map((s) => `${s.title}: ${s.content}`) || []),
-    ],
-    actionPayload: {
-      type: 'blog',
-      targetId: post.id,
-    },
-  })),
+  ...blogPostsData.map(blogToSearchItem),
 
   // ================= ABOUT PAGE ITEMS =================
   {
@@ -302,14 +308,17 @@ export const popularSearchQueries = [
 // Search execution engine with keyword matching and scoring
 export function searchAllContent(
   query: string,
-  filterCategory: SearchCategoryFilter = 'all'
+  filterCategory: SearchCategoryFilter = 'all',
+  // Indeks bisa diganti dengan hasil mergeLiveContent supaya konten yang
+  // dibuat lewat panel admin ikut tercari. Default tetap indeks statis.
+  index: SearchItem[] = searchIndex
 ): SearchItem[] {
   const cleanQuery = query.trim().toLowerCase();
   if (!cleanQuery) return [];
 
   const searchTokens = cleanQuery.split(/\s+/).filter(Boolean);
 
-  const filteredItems = searchIndex.filter((item) => {
+  const filteredItems = index.filter((item) => {
     // Apply page category filter
     if (filterCategory !== 'all') {
       if (item.page !== filterCategory) return false;
@@ -347,4 +356,18 @@ export function searchAllContent(
     .filter(({ score }) => score > 0)
     .sort((a, b) => b.score - a.score)
     .map(({ item }) => item);
+}
+
+/**
+ * Ganti entri project/blog bawaan dengan konten nyata dari Supabase, sambil
+ * mempertahankan entri halaman statis (Home, About, Contact) yang memang tidak
+ * ada di database.
+ */
+export function mergeLiveContent(
+  base: SearchItem[],
+  projects: ProjectItem[],
+  posts: BlogPost[],
+): SearchItem[] {
+  const halamanStatis = base.filter((i) => i.page !== 'project' && i.page !== 'blog');
+  return [...halamanStatis, ...projects.map(projectToSearchItem), ...posts.map(blogToSearchItem)];
 }
