@@ -47,7 +47,11 @@ export default defineConfig(({mode}) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' data: https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
-      ['connect-src', "'self'", supabaseOrigin, ...aiOrigins].filter(Boolean).join(' '),
+      // `blob:` WAJIB ada di connect-src: THREE.GLTFLoader memuat tekstur yang
+      // tertanam di card.glb lewat blob: URL. Tanpa itu teksturnya diblokir dan
+      // kartu lanyard tampil polos tanpa gambar — tanpa error selain satu baris
+      // "GLTFLoader: Couldn't load texture blob:..." di konsol.
+      ['connect-src', "'self'", 'blob:', 'data:', supabaseOrigin, ...aiOrigins].filter(Boolean).join(' '),
       // Peta lokasi di halaman Contact adalah <iframe> ke maps.google.com.
       // Tanpa frame-src eksplisit, CSP jatuh ke default-src 'self' dan petanya
       // diblokir tanpa jejak selain satu baris di konsol.

@@ -35,6 +35,8 @@ export interface LanyardProps {
   lanyardWidth?: number;
   className?: string;
   anchorX?: number;
+  /** Mode hemat: kualitas diturunkan, tapi lanyard TETAP dirender. */
+  reduced?: boolean;
 }
 
 export default function Lanyard({
@@ -48,9 +50,15 @@ export default function Lanyard({
   lanyardImage = null,
   lanyardWidth = 1,
   className = '',
-  anchorX
+  anchorX,
+  reduced = false
 }: LanyardProps) {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+
+  // Satu sakelar kualitas. `reduced` dipakai untuk perangkat lemah di desktop:
+  // yang diturunkan hanya biaya render (dpr, langkah fisika, jumlah titik
+  // kurva, clearcoat) — lanyard-nya sendiri tetap tampil, bukan diganti gambar.
+  const lite = isMobile || reduced;
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -62,15 +70,15 @@ export default function Lanyard({
     <div className={`lanyard-wrapper ${className}`}>
       <Canvas
         camera={{ position: position, fov: fov }}
-        dpr={[1, isMobile ? 1.5 : 2]}
+        dpr={[1, lite ? 1.25 : 2]}
         gl={{ alpha: transparent }}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
         <Suspense fallback={null}>
-          <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+          <Physics gravity={gravity} timeStep={lite ? 1 / 30 : 1 / 60}>
             <Band
-              isMobile={isMobile}
+              isMobile={lite}
               frontImage={frontImage}
               backImage={backImage}
               imageFit={imageFit}

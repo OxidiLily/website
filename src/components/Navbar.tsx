@@ -39,6 +39,29 @@ const desktopNavLinks: { id: PageId; name: string; href: string; badge?: string 
   { id: 'contact', name: 'Contact', href: '#contact' },
 ];
 
+/**
+ * Ikon situs. Memakai `public/logo.png`; kalau berkas itu belum ada, `onError`
+ * menyembunyikan gambarnya dan SVG kubus bawaan yang tampil — jadi navbar tidak
+ * pernah menunjukkan gambar rusak.
+ */
+const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
+  const [pakaiGambar, setPakaiGambar] = useState(true);
+  if (!pakaiGambar) {
+    return (
+      <SiteLogo className="w-full h-full" />
+    );
+  }
+  return (
+    <img
+      src="/logo.png"
+      alt="OxidiLily"
+      className={`${className} object-contain`}
+      onError={() => setPakaiGambar(false)}
+      decoding="async"
+    />
+  );
+};
+
 export const Navbar: React.FC<NavbarProps> = ({ 
   currentPage, 
   onNavigate,
@@ -109,19 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center gap-2 text-white font-bold tracking-tight text-base cursor-pointer focus:outline-none"
         >
           <div className="relative w-5 h-5 flex items-center justify-center">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="w-5 h-5 text-white"
-            >
-              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" fill="currentColor" fillOpacity="0.12" />
-              <path d="m3.3 7 8.7 5 8.7-5" stroke="currentColor" strokeWidth="2" />
-              <path d="M12 22V12" stroke="currentColor" strokeWidth="2" />
-            </svg>
+            <SiteLogo className="w-full h-full" />
           </div>
           <span className="font-semibold text-white tracking-tight text-sm">OxidiLily</span>
         </button>
@@ -168,20 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             {/* Isometric Cube Icon */}
             <div className="relative w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-5 h-5 sm:w-6 sm:h-6 text-black transform group-hover:scale-105 transition-transform"
-              >
-                <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" fill="currentColor" fillOpacity="0.06" />
-                <path d="m3.3 7 8.7 5 8.7-5" stroke="currentColor" strokeWidth="2.2" />
-                <path d="M12 22V12" stroke="currentColor" strokeWidth="2.2" />
-                <path d="M7.5 4.5 16.5 9.5" stroke="currentColor" strokeWidth="1.5" strokeDasharray="1 1" />
-              </svg>
+              <SiteLogo className="w-full h-full" />
             </div>
             <span className="font-semibold text-black tracking-tight text-sm sm:text-base">OxidiLily</span>
           </button>
