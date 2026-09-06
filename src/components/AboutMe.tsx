@@ -2,14 +2,17 @@ import React, { Suspense, lazy } from 'react';
 import { Decor } from './Decor';
 import { motion } from 'motion/react';
 import { hasWebGL, isLowPowerDevice } from '../lib/device';
+import { useSettings } from '../lib/content';
 
 // Lanyard = react-three-fiber + drei + rapier (WASM fisika). Paling berat di
 // seluruh situs, jadi hanya diunduh kalau perangkatnya sanggup menjalankannya.
 const Lanyard = lazy(() => import('./Lanyard'));
 
 export const AboutMe: React.FC = () => {
+  const t = useSettings();
+
   return (
-    <section id="about" className="relative w-full bg-transparent text-white min-h-[90vh] lg:min-h-screen overflow-visible">
+    <section id="about" className="scroll-mt-24 relative w-full bg-transparent text-white min-h-[90vh] lg:min-h-screen overflow-visible">
       {/* Full-width 100% Canvas Layer spanning entire width & height */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible">
         <div className="w-full h-full pointer-events-auto">
@@ -47,22 +50,19 @@ export const AboutMe: React.FC = () => {
           <div className="lg:col-span-6 flex flex-col justify-center space-y-8 lg:space-y-12 max-w-2xl pt-8 sm:pt-16 lg:pt-36 pb-16 sm:pb-24 pointer-events-none">
             <div className="pointer-events-auto">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
-                About Me
+                {t.about_heading}
               </h2>
             </div>
 
             {/* Primary Bio Paragraph */}
-            <p className="text-neutral-300 text-base sm:text-lg lg:text-xl leading-relaxed font-normal pointer-events-auto select-text">
-              I am an independent designer and developer focused on building clear, useful products.
-              With years of experience shipping for startups and teams, I take on work I can own
-              from concept through launch.
+            <p className="text-neutral-300 text-base sm:text-lg lg:text-xl leading-relaxed font-normal pointer-events-auto select-text whitespace-pre-line">
+              {t.about_bio}
             </p>
 
             {/* Bottom Row: Philosophy Statement */}
             <div className="pt-4 border-t border-neutral-800/80 items-center pointer-events-auto">
-              <p className="text-neutral-400 text-sm sm:text-base leading-relaxed select-text">
-                I start from the purpose, the people it serves, and the simplest path forward.
-                Clarity first, then the work gets better.
+              <p className="text-neutral-400 text-sm sm:text-base leading-relaxed select-text whitespace-pre-line">
+                {t.about_philosophy}
               </p>
             </div>
           </div>

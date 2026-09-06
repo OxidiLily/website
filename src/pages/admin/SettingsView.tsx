@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Loader2, Bot } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { AI_KEYS, aiComplete, cspAllowsOrigin, loadAiConfig, type AiConfig } from '../../lib/ai';
+import { ImageInput } from './ResourceManager';
+import { SettingsForm } from './SettingsForm';
 
 const inputClass =
   'w-full px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-700 text-sm text-neutral-100 ' +
@@ -44,12 +46,15 @@ const Note: React.FC<{ msg: { kind: 'ok' | 'err'; text: string } | null }> = ({ 
     </p>
   ) : null;
 
-export const SettingsView: React.FC<{ email: string; name: string; onNameChange: (n: string) => void }> = ({
-  email,
-  name,
-  onNameChange,
-}) => {
+export const SettingsView: React.FC<{
+  email: string;
+  name: string;
+  onNameChange: (n: string) => void;
+  avatar: string;
+  onAvatarChange: (url: string) => void;
+}> = ({ email, name, onNameChange, avatar, onAvatarChange }) => {
   const [profileName, setProfileName] = useState(name);
+  const [profileAvatar, setProfileAvatar] = useState(avatar);
   const [profileMsg, setProfileMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
   const [profileBusy, setProfileBusy] = useState(false);
 
@@ -59,39 +64,33 @@ export const SettingsView: React.FC<{ email: string; name: string; onNameChange:
   const [pwMsg, setPwMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
   const [pwBusy, setPwBusy] = useState(false);
 
-  const [site, setSite] = useState<Record<string, string>>({});
   const [ai, setAi] = useState<AiConfig | null>(null);
   const [aiMsg, setAiMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
   const [aiBusy, setAiBusy] = useState(false);
   const [aiTesting, setAiTesting] = useState(false);
 
-  const [siteMsg, setSiteMsg] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
-  const [siteBusy, setSiteBusy] = useState(false);
 
   useEffect(() => {
     loadAiConfig().then(setAi).catch(() => setAi(null));
-  }, []);
-
-  useEffect(() => {
-    supabase
-      .from('settings')
-      .select('key, value')
-      .then(({ data }) =>
-        setSite(Object.fromEntries((data ?? []).map((r: any) => [r.key, r.value ?? '']))),
-      );
   }, []);
 
   const saveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setProfileBusy(true);
     const { data: u } = await supabase.auth.getUser();
+    // avatar_url dikirim sebagai null saat dikosongkan, bukan string kosong:
+    // kolomnya nullable dan '' akan lolos sebagai "ada foto" di pengecekan
+    // mana pun yang cuma melihat apakah kolomnya terisi.
     const { error } = await supabase
       .from('profiles')
-      .update({ name: profileName })
+      .update({ name: profileName, avatar_url: profileAvatar || null })
       .eq('id', u.user!.id);
     setProfileBusy(false);
     setProfileMsg(error ? { kind: 'err', text: error.message } : { kind: 'ok', text: 'Profil tersimpan.' });
-    if (!error) onNameChange(profileName);
+    if (!error) {
+      onNameChange(profileName);
+      onAvatarChange(profileAvatar);
+    }
   };
 
   const savePassword = async (e: React.FormEvent) => {
@@ -115,23 +114,6 @@ export const SettingsView: React.FC<{ email: string; name: string; onNameChange:
     setNext('');
     setConfirm('');
     setPwMsg({ kind: 'ok', text: 'Password diperbarui.' });
-  };
-
-  const saveSite = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSiteBusy(true);
-    const { error } = await supabase
-      .from('settings')
-      .upsert(
-        SITE_KEYS.map(({ key }) => ({ key, value: site[key] ?? '' })),
-        { onConflict: 'key' },
-      );
-    setSiteBusy(false);
-    setSiteMsg(
-      error
-        ? { kind: 'err', text: error.code === '42501' ? 'Ditolak database: akun ini bukan admin.' : error.message }
-        : { kind: 'ok', text: 'Pengaturan situs tersimpan.' },
-    );
   };
 
   const saveAi = async (e: React.FormEvent) => {
@@ -186,6 +168,14 @@ export const SettingsView: React.FC<{ email: string; name: string; onNameChange:
             <span className="text-[11px] font-semibold text-neutral-300">Nama</span>
             <input value={profileName} onChange={(e) => setProfileName(e.target.value)} className={inputClass} required />
           </label>
+          <div className="flex flex-col gap-1.5">
+            <span className="text-[11px] font-semibold text-neutral-300">Foto profil</span>
+            <ImageInput value={profileAvatar} onChange={setProfileAvatar} />
+            <span className="text-[10px] text-neutral-500">
+              Unggah, tempel URL, atau tekan Hapus untuk mengosongkan — lalu tekan Simpan profil.
+              Kosong → logo situs yang dipakai.
+            </span>
+          </div>
           <Note msg={profileMsg} />
           <button
             type="submit"
@@ -355,31 +345,11 @@ export const SettingsView: React.FC<{ email: string; name: string; onNameChange:
         )}
       </Card>
 
-      <Card title="Situs" desc="Pasangan key/value di tabel settings.">
-        <form onSubmit={saveSite} className="flex flex-col gap-3">
-          <div className="grid sm:grid-cols-2 gap-3">
-            {SITE_KEYS.map(({ key, label, type }) => (
-              <label key={key} className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-semibold text-neutral-300">{label}</span>
-                <input
-                  type={type ?? 'text'}
-                  value={site[key] ?? ''}
-                  onChange={(e) => setSite((p) => ({ ...p, [key]: e.target.value }))}
-                  className={inputClass}
-                />
-              </label>
-            ))}
-          </div>
-          <Note msg={siteMsg} />
-          <button
-            type="submit"
-            disabled={siteBusy}
-            className="self-start px-4 py-2 rounded-lg bg-neutral-100 text-neutral-900 text-xs font-semibold hover:bg-white disabled:opacity-60 transition-colors flex items-center gap-2"
-          >
-            {siteBusy && <Loader2 className="w-3.5 h-3.5 animate-spin" />} Simpan pengaturan
-          </button>
-        </form>
-      </Card>
+      <SettingsForm
+        title="Situs"
+        desc="Identitas dasar yang dipakai beberapa halaman sekaligus. Teks per-halaman ada di menu Halaman."
+        fields={SITE_KEYS.map(({ key, label, type }) => ({ key, label, type: type as any }))}
+      />
     </div>
   );
 };

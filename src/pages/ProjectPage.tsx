@@ -1,8 +1,9 @@
 import React, { Suspense, lazy, useState } from 'react';
 import { Decor } from '../components/Decor';
 import { motion, AnimatePresence } from 'motion/react';
+import { CardImage } from '../components/CardImage';
 import { projectsData } from '../data/siteData';
-import { fetchProjects } from '../lib/content';
+import { fetchProjects, useSettings } from '../lib/content';
 import { ProjectItem } from '../types';
 import { canRenderWebGL } from '../lib/device';
 
@@ -23,6 +24,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [projects, setProjects] = useState(projectsData);
+  const t = useSettings();
   React.useEffect(() => { fetchProjects().then(setProjects).catch(() => {}); }, []);
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(() => {
     if (initialProjectId) {
@@ -81,10 +83,10 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
         {/* Header */}
         <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
-            Selected Projects
+            {t.project_heading}
           </h1>
           <p className="text-neutral-400 text-xs sm:text-base md:text-lg max-w-2xl leading-relaxed">
-            A showcase of design systems, WebGL physics engines, responsive mobile apps, and scalable web platforms crafted with modern precision.
+            {t.project_intro}
           </p>
         </div>
 
@@ -128,12 +130,11 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
             className="group cursor-pointer rounded-2xl bg-neutral-950/90 border border-neutral-800/90 hover:border-neutral-600 active:scale-[0.98] overflow-hidden transition-all duration-300 shadow-xl flex flex-col justify-between"
           >
             <div className="aspect-[16/10] overflow-hidden bg-neutral-900 relative">
-              <img
+              <CardImage
                 src={project.image}
                 alt={project.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
-                referrerPolicy="no-referrer"
-                loading="lazy"
+                logoClassName="w-full h-full object-contain p-10 opacity-90 group-hover:scale-105 transition-transform duration-500 ease-out"
               />
               <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full bg-black/85 text-[10px] sm:text-[11px] font-medium text-neutral-200 border border-neutral-700">
                 {project.category}
@@ -193,11 +194,11 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
             >
               {/* Modal Image & Sticky Close Bar */}
               <div className="relative aspect-[16/9] w-full bg-neutral-900 shrink-0">
-                <img
+                <CardImage
                   src={activeModalProject.image}
                   alt={activeModalProject.title}
                   className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
+                  logoClassName="w-full h-full object-contain p-12 opacity-90"
                 />
                 <button
                   onClick={() => onCloseProject?.()}

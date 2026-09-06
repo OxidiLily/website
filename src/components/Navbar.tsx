@@ -20,7 +20,7 @@ import { GlobalSearchModal } from './GlobalSearchModal';
 
 interface NavbarProps {
   currentPage: PageId;
-  onNavigate: (page: PageId) => void;
+  onNavigate: (page: PageId, sectionId?: string) => void;
   onSelectBlog?: (postId: string) => void;
   onSelectProject?: (projectId: string) => void;
 }
@@ -40,23 +40,32 @@ const desktopNavLinks: { id: PageId; name: string; href: string; badge?: string 
 ];
 
 /**
- * Ikon situs. Memakai `public/logo.png`; kalau berkas itu belum ada, `onError`
- * menyembunyikan gambarnya dan SVG kubus bawaan yang tampil — jadi navbar tidak
- * pernah menunjukkan gambar rusak.
+ * Ikon situs (`public/logo.png`).
+ *
+ * Cabang gagal-muat sebelumnya memanggil <SiteLogo> lagi: anak yang baru mulai
+ * dengan state "pakai gambar", memuat berkas yang sama, gagal lagi, dan
+ * memanggil dirinya lagi — rekursi tanpa dasar yang menghabiskan stack begitu
+ * logo.png benar-benar hilang. Sekarang cadangannya SVG kubus yang digambar di
+ * tempat, jadi rantainya berhenti di satu langkah.
  */
 const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
-  const [pakaiGambar, setPakaiGambar] = useState(true);
-  if (!pakaiGambar) {
+  const [gagal, setGagal] = useState(false);
+
+  if (gagal) {
     return (
-      <SiteLogo className="w-full h-full" />
+      <svg className={`${className} object-contain`} viewBox="0 0 24 24" aria-label="OxidiLily" role="img">
+        <rect width="24" height="24" rx="5" fill="#000" />
+        <path d="M12 4.5L4.5 9v6L12 19.5 19.5 15V9L12 4.5z" fill="none" stroke="#fff" strokeWidth="1.4" />
+      </svg>
     );
   }
+
   return (
     <img
       src="/logo.png"
       alt="OxidiLily"
       className={`${className} object-contain`}
-      onError={() => setPakaiGambar(false)}
+      onError={() => setGagal(true)}
       decoding="async"
     />
   );
@@ -109,9 +118,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const handleNavClick = (pageId: PageId) => {
-    onNavigate(pageId);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleNavClick = (pageId: PageId, sectionId?: string) => {
+    onNavigate(pageId, sectionId);
+    // Menu biasa selalu mulai dari puncak halaman. Untuk hasil pencarian yang
+    // menyebut bagian tertentu, App yang menggulirkan ke jangkarnya — memaksa
+    // scrollTo(0) di sini akan membatalkan guliran itu.
+    if (!sectionId) window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const navTransition = {

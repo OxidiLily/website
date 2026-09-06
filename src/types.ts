@@ -53,10 +53,11 @@ export interface BlogPost {
   actionLabel?: string;
   guideType?: string;
   mainHeading?: string;
-  iconType?: string;
   featuredHero?: boolean;
   sections?: BlogSection[];
   content: string;
+  /** Gambar kartu. Kosong → logo situs (lihat LOGO di lib/content.ts). */
+  image?: string;
   tags: string[];
 }
 
@@ -72,3 +73,24 @@ export interface ShopItem {
   features: string[];
   badge?: string;
 }
+
+/** Satu kartu di "Tools & Stack" halaman About. `icon` kosong = pakai ikon
+ *  merek bawaan kalau namanya dikenali, kalau tidak logo situs. */
+export interface ToolItem {
+  id: string;
+  name: string;
+  category: string;
+  icon?: string;
+  link?: string;
+}
+
+/** Satu baris di timeline "Experience & Journey". */
+export interface ExperienceItem {
+  id: string;
+  year: string;
+  title: string;
+  description: string;
+}
+
+/** Isi tabel `settings` yang boleh dibaca publik: teks tiap halaman. */
+export type SiteSettings = Record<string, string>;

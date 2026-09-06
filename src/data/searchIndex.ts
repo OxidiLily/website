@@ -1,4 +1,4 @@
-import { PageId, ProjectItem, BlogPost } from '../types';
+import { PageId, ProjectItem, BlogPost, SiteSettings } from '../types';
 import { projectsData, blogPostsData } from './siteData';
 
 export type SearchCategoryFilter = 'all' | 'home' | 'project' | 'blog' | 'about' | 'contact';
@@ -101,7 +101,7 @@ export const searchIndex: SearchItem[] = [
     contentSnippets: [
       'Highlights from Kinetic Design System, Astral 3D Physics WebGL, and Strata Banking & Treasury',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'featured-projects' },
   },
   {
     id: 'home-scroll-velocity',
@@ -113,7 +113,7 @@ export const searchIndex: SearchItem[] = [
     category: 'Components',
     tags: ['ScrollVelocity', 'React Bits', 'Marquee', 'Typography', 'Physics'],
     contentSnippets: ['React Bits Scroll Velocity — Interactive Physics'],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'marquee-section' },
   },
   {
     id: 'home-craft-vision',
@@ -127,7 +127,7 @@ export const searchIndex: SearchItem[] = [
     contentSnippets: [
       'Based in Batang, Jawa Tengah, Indonesia. Fusing meticulous design systems with robust frontend engineering.',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'about-teaser' },
   },
   {
     id: 'home-cta',
@@ -139,7 +139,7 @@ export const searchIndex: SearchItem[] = [
     category: 'Contact',
     tags: ['Hire', 'Inquiry', 'Availability', 'Work Together', 'CTA'],
     contentSnippets: ['Get in touch for custom design systems and WebGL interactive builds.'],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'home-cta' },
   },
 
   // ================= PROJECT PAGE ITEMS =================
@@ -162,7 +162,7 @@ export const searchIndex: SearchItem[] = [
       'Based in Batang, Jawa Tengah, Indonesia. Years of experience shipping for startups and high-impact teams.',
       'Taking projects from concept through launch with craftsmanship and autonomy.',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'about' },
   },
   {
     id: 'about-experience-milestones',
@@ -179,7 +179,7 @@ export const searchIndex: SearchItem[] = [
       '2022 - 2024: Senior Frontend Developer @ Sphere Interactive - WebGL interactive canvases, 3D visualizers, shader pipelines.',
       '2020 - 2022: Product Designer @ Atelier Studio - SaaS dashboards and brand design systems.',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'experience-section' },
   },
   {
     id: 'about-tools-stack',
@@ -212,7 +212,7 @@ export const searchIndex: SearchItem[] = [
       'Frontend & Full Stack: React, Next.js, TypeScript, Tailwind CSS, Astro, Shadcn/ui',
       'Build & Workflow: Vite, GitHub, Vercel, VS Code, Cursor, v0',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'tools-section' },
   },
 
   // ================= CONTACT PAGE ITEMS =================
@@ -230,7 +230,7 @@ export const searchIndex: SearchItem[] = [
       'Phone: +1 (555) 010-2400',
       'Website: portfolio-atelier.design',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'contact-info' },
   },
   {
     id: 'contact-form',
@@ -244,7 +244,7 @@ export const searchIndex: SearchItem[] = [
     contentSnippets: [
       'Fill in your First Name, Last Name, Email, Subject, and Message to start a project conversation.',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'contact-form' },
   },
   {
     id: 'contact-inquiry-types',
@@ -260,7 +260,7 @@ export const searchIndex: SearchItem[] = [
       'Support: Platform FAQs and assistance.',
       'General Inquiries: Business proposals and collaborations.',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'contact-cards' },
   },
   {
     id: 'contact-location-batang',
@@ -287,7 +287,7 @@ export const searchIndex: SearchItem[] = [
       'Headquarters located at Alun-Alun Batang, Central Java, Indonesia.',
       'Interactive Google Maps embed with dark theme styling and external navigation link.',
     ],
-    actionPayload: { type: 'page' },
+    actionPayload: { type: 'page', sectionId: 'contact-map' },
   },
 ];
 
@@ -359,15 +359,68 @@ export function searchAllContent(
 }
 
 /**
+ * Entri halaman statis → kunci `settings` yang menjadi isinya di layar.
+ *
+ * Judul dan ringkasan entri pencarian ditulis tangan di berkas ini, sementara
+ * teks yang benar-benar tampil sekarang disunting dari panel. Tanpa pemetaan
+ * ini keduanya berpisah: mengganti judul hero lewat panel membuat hasil
+ * pencarian tetap menawarkan kalimat lama yang sudah tidak ada di halaman.
+ */
+const KUNCI_SETTING: Record<string, { title?: string; description?: string; snippets?: string[] }> = {
+  'home-hero': { title: 'home_hero_title', description: 'home_hero_subtitle' },
+  'home-featured-projects': { title: 'home_featured_heading' },
+  'home-craft-vision': { title: 'home_teaser_heading', description: 'home_teaser_text' },
+  'home-cta': { title: 'home_cta_heading', description: 'home_cta_text' },
+  'about-bio': { description: 'about_bio', snippets: ['about_bio', 'about_philosophy'] },
+  'about-experience-milestones': { title: 'about_experience_heading' },
+  'about-tools-stack': { title: 'about_tools_heading' },
+  'contact-direct-info': {
+    description: 'contact_intro',
+    snippets: ['site_email', 'site_phone', 'site_website'],
+  },
+  'contact-form': { title: 'contact_form_heading', description: 'contact_form_note' },
+  'contact-location-batang': {
+    title: 'contact_map_title',
+    description: 'contact_map_address',
+    snippets: ['contact_map_label', 'contact_map_title', 'contact_map_address'],
+  },
+};
+
+/** Entri statis mengikuti teks yang sedang tayang. Kunci yang kosong dilewati. */
+function applySettings(items: SearchItem[], settings: SiteSettings): SearchItem[] {
+  return items.map((item) => {
+    const peta = KUNCI_SETTING[item.id];
+    if (!peta) return item;
+
+    const nilai = (k?: string) => (k ? settings[k]?.trim() : '');
+    const isiSnippet = (peta.snippets ?? []).map(nilai).filter(Boolean) as string[];
+
+    return {
+      ...item,
+      title: nilai(peta.title) || item.title,
+      description: nilai(peta.description) || item.description,
+      // Cuplikan lama ikut dipertahankan: kata kunci di dalamnya (nama tempat,
+      // nama teknologi) tetap membantu pencarian walau teksnya sudah berganti.
+      contentSnippets: isiSnippet.length
+        ? [...isiSnippet, ...(item.contentSnippets ?? [])]
+        : item.contentSnippets,
+      tags: isiSnippet.length ? [...item.tags, ...isiSnippet] : item.tags,
+    };
+  });
+}
+
+/**
  * Ganti entri project/blog bawaan dengan konten nyata dari Supabase, sambil
  * mempertahankan entri halaman statis (Home, About, Contact) yang memang tidak
- * ada di database.
+ * ada di database — tapi dengan teksnya disegarkan dari `settings`.
  */
 export function mergeLiveContent(
   base: SearchItem[],
   projects: ProjectItem[],
   posts: BlogPost[],
+  settings?: SiteSettings,
 ): SearchItem[] {
-  const halamanStatis = base.filter((i) => i.page !== 'project' && i.page !== 'blog');
+  let halamanStatis = base.filter((i) => i.page !== 'project' && i.page !== 'blog');
+  if (settings) halamanStatis = applySettings(halamanStatis, settings);
   return [...halamanStatis, ...projects.map(projectToSearchItem), ...posts.map(blogToSearchItem)];
 }

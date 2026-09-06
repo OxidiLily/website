@@ -1,11 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
-
-interface ToolItem {
-  name: string;
-  category: string;
-  icon: React.ReactNode;
-}
+import type { ToolItem } from '../types';
+import { LOGO, useSettings, useTools } from '../lib/content';
 
 const ToolIcons = {
   Figma: () => (
@@ -122,30 +118,58 @@ const ToolIcons = {
   ),
 };
 
-export const ToolsAndStack: React.FC = () => {
-  const leftColumn: ToolItem[] = [
-    { name: 'Figma', category: 'DESIGN TOOL', icon: <ToolIcons.Figma /> },
-    { name: 'Next.js', category: 'FULL STACK FRAMEWORK', icon: <ToolIcons.Nextjs /> },
-    { name: 'v0', category: 'AI TOOL', icon: <ToolIcons.V0 /> },
-    { name: 'TypeScript', category: 'PROGRAMMING LANGUAGE', icon: <ToolIcons.TypeScript /> },
-    { name: 'VS Code', category: 'CODE EDITOR', icon: <ToolIcons.VSCode /> },
-    { name: 'Notion', category: 'PRODUCTIVITY TOOL', icon: <ToolIcons.Notion /> },
-    { name: 'Astro', category: 'WEB FRAMEWORK', icon: <ToolIcons.Astro /> },
-  ];
+/**
+ * Ikon merek bawaan, dikunci pada nama tool yang dinormalkan ("Next.js" dan
+ * "next js" sama-sama jatuh ke `nextjs`). Ini yang dipakai kalau admin belum
+ * mengunggah ikon sendiri untuk tool itu.
+ */
+const BRAND_ICONS: Record<string, () => React.ReactElement> = {
+  figma: ToolIcons.Figma,
+  nextjs: ToolIcons.Nextjs,
+  v0: ToolIcons.V0,
+  typescript: ToolIcons.TypeScript,
+  vscode: ToolIcons.VSCode,
+  notion: ToolIcons.Notion,
+  astro: ToolIcons.Astro,
+  react: ToolIcons.React,
+  tailwindcss: ToolIcons.Tailwind,
+  vite: ToolIcons.Vite,
+  github: ToolIcons.GitHub,
+  vercel: ToolIcons.Vercel,
+  cursor: ToolIcons.Cursor,
+  shadcnui: ToolIcons.Shadcn,
+};
 
-  const rightColumn: ToolItem[] = [
-    { name: 'React', category: 'JAVASCRIPT LIBRARY', icon: <ToolIcons.React /> },
-    { name: 'Tailwind CSS', category: 'CSS FRAMEWORK', icon: <ToolIcons.Tailwind /> },
-    { name: 'Vite', category: 'BUILD TOOL', icon: <ToolIcons.Vite /> },
-    { name: 'GitHub', category: 'VERSION CONTROL', icon: <ToolIcons.GitHub /> },
-    { name: 'Vercel', category: 'HOSTING PLATFORM', icon: <ToolIcons.Vercel /> },
-    { name: 'Cursor', category: 'AI CODE EDITOR', icon: <ToolIcons.Cursor /> },
-    { name: 'Shadcn/ui', category: 'COMPONENT LIBRARY', icon: <ToolIcons.Shadcn /> },
-  ];
+const brandKey = (name: string): string => name.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+/**
+ * Urutan pemilihan ikon: gambar yang diunggah admin → ikon merek bawaan →
+ * logo situs. Tool baru yang dibuat dari panel karena itu selalu punya ikon,
+ * bukan kotak kosong, walau adminnya belum sempat mengunggah apa pun.
+ */
+const ToolIcon: React.FC<{ tool: ToolItem }> = ({ tool }) => {
+  if (tool.icon) {
+    return <img src={tool.icon} alt="" className="w-6 h-6 object-contain" loading="lazy" />;
+  }
+  const Brand = BRAND_ICONS[brandKey(tool.name)];
+  if (Brand) return <Brand />;
+  return <img src={LOGO} alt="" className="w-6 h-6 object-contain" loading="lazy" />;
+};
+
+export const ToolsAndStack: React.FC = () => {
+  const t = useSettings();
+  const tools = useTools();
+
+  // Dua kolom seimbang; ganjil ditaruh di kolom kiri. Sebelumnya isi tiap
+  // kolom ditulis manual, jadi menambah satu tool dari panel akan membuat
+  // kolomnya timpang selamanya.
+  const tengah = Math.ceil(tools.length / 2);
+  const leftColumn = tools.slice(0, tengah);
+  const rightColumn = tools.slice(tengah);
 
   const renderCard = (item: ToolItem, index: number) => (
     <motion.div
-      key={item.name}
+      key={item.id}
       initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-20px' }}
@@ -153,16 +177,17 @@ export const ToolsAndStack: React.FC = () => {
       className="group relative flex items-center justify-between p-4 sm:p-5 rounded-2xl bg-neutral-950/70 hover:bg-neutral-900/90 border border-neutral-800/80 hover:border-neutral-700 transition-all duration-200 backdrop-blur-sm overflow-hidden"
     >
       {/* Subtle Diagonal Hatch Texture matching reference */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-30 group-hover:opacity-45 transition-opacity" 
+      <div
+        className="absolute inset-0 pointer-events-none opacity-30 group-hover:opacity-45 transition-opacity"
         style={{
-          backgroundImage: 'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 0, transparent 10px)'
+          backgroundImage:
+            'repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 0, transparent 10px)',
         }}
       />
 
       <div className="relative z-10 flex items-center gap-4">
         <div className="w-10 h-10 rounded-xl bg-neutral-900/90 border border-neutral-800 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shrink-0 shadow-inner">
-          {item.icon}
+          <ToolIcon tool={item} />
         </div>
         <div className="space-y-0.5">
           <h4 className="text-sm sm:text-base font-semibold text-white group-hover:text-amber-300 transition-colors">
@@ -177,20 +202,18 @@ export const ToolsAndStack: React.FC = () => {
   );
 
   return (
-    <section className="py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <section id="tools-section" className="scroll-mt-24 py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
       <div className="space-y-8">
         <div className="space-y-2">
           <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            Tools & Stack
+            {t.about_tools_heading}
           </h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4">{leftColumn.map((item, idx) => renderCard(item, idx))}</div>
           <div className="space-y-4">
-            {leftColumn.map((item, idx) => renderCard(item, idx))}
-          </div>
-          <div className="space-y-4">
-            {rightColumn.map((item, idx) => renderCard(item, idx + 7))}
+            {rightColumn.map((item, idx) => renderCard(item, idx + tengah))}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
   Bot, ChevronDown, FileText, FolderKanban, Globe, LayoutDashboard,
-  LogOut, Mail, Menu, Settings, ShoppingBag,
+  LogOut, Mail, Menu, Settings, ShoppingBag, PanelsTopLeft,
 } from 'lucide-react';
 import { PageId } from '../types';
 import { supabase } from '../lib/supabase';
@@ -9,8 +9,10 @@ import { RESOURCES, type ResourceKey } from './admin/resources';
 import { ResourceManager } from './admin/ResourceManager';
 import { Overview } from './admin/Overview';
 import { SettingsView } from './admin/SettingsView';
+import { PAGE_EDITORS, type PageEditorKey } from './admin/pageContent';
+import { PageEditorView } from './admin/SettingsForm';
 
-export type AdminView = 'dashboard' | 'settings' | ResourceKey;
+export type AdminView = 'dashboard' | 'settings' | ResourceKey | PageEditorKey;
 
 // Susunan menu mengikuti sidebar repo acuan: satu grup per domain, dengan
 // "Manage <entitas>" dan "Manage Kategori" di dalamnya.
@@ -22,6 +24,19 @@ const NAV: {
   children?: { view: AdminView; label: string }[];
 }[] = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, view: 'dashboard' },
+  {
+    id: 'pages', label: 'Halaman', icon: PanelsTopLeft,
+    children: [
+      { view: 'page_home', label: 'Home' },
+      { view: 'page_project', label: 'Project' },
+      { view: 'page_blog', label: 'Blog' },
+      { view: 'page_about', label: 'About' },
+      { view: 'tools', label: 'About — Tools & Stack' },
+      { view: 'experiences', label: 'About — Timeline' },
+      { view: 'page_contact', label: 'Contact' },
+      { view: 'page_footer', label: 'Footer & identitas' },
+    ],
+  },
   {
     id: 'blog', label: 'Blog', icon: FileText,
     children: [
@@ -68,7 +83,7 @@ const labelOf = (view: AdminView): string => {
 interface DashboardPageProps {
   onNavigate: (page: PageId) => void;
   onLogout: () => void;
-  user: { email: string; name: string } | null;
+  user: { email: string; name: string; avatarUrl: string } | null;
 }
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogout, user }) => {
@@ -76,6 +91,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogo
   const [openGroup, setOpenGroup] = useState<string>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [name, setName] = useState(user?.name ?? '');
+  const [avatar, setAvatar] = useState(user?.avatarUrl ?? '');
   const [unread, setUnread] = useState(0);
 
   useEffect(() => setOpenGroup(groupOf(view)), [view]);
@@ -98,9 +114,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogo
   const body = useMemo(() => {
     if (view === 'dashboard') return <Overview onOpen={(v) => go(v as AdminView)} />;
     if (view === 'settings')
-      return <SettingsView email={user?.email ?? ''} name={name} onNameChange={setName} />;
-    return <ResourceManager resource={RESOURCES[view]} />;
-  }, [view, user?.email, name]);
+      return (
+        <SettingsView
+          email={user?.email ?? ''}
+          name={name}
+          onNameChange={setName}
+          avatar={avatar}
+          onAvatarChange={setAvatar}
+        />
+      );
+    if (view in PAGE_EDITORS) return <PageEditorView editor={PAGE_EDITORS[view as PageEditorKey]} />;
+    return <ResourceManager resource={RESOURCES[view as ResourceKey]} />;
+  }, [view, user?.email, name, avatar]);
 
   return (
     <div className="dark min-h-screen w-full bg-neutral-950 text-neutral-100 flex">
@@ -112,9 +137,12 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogo
         className={`fixed md:sticky top-0 z-50 h-screen w-64 shrink-0 border-r border-neutral-800 bg-neutral-950
           flex flex-col transition-transform duration-200 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
       >
-        <div className="px-5 py-5 border-b border-neutral-800">
-          <p className="text-sm font-bold tracking-tight">OxidiLily</p>
-          <p className="text-[11px] text-neutral-500">Panel admin</p>
+        <div className="px-5 py-5 border-b border-neutral-800 flex items-center gap-2.5">
+          <img src="/logo.png" alt="" className="w-7 h-7 object-contain shrink-0" decoding="async" />
+          <div className="min-w-0">
+            <p className="text-sm font-bold tracking-tight">OxidiLily</p>
+            <p className="text-[11px] text-neutral-500">Panel admin</p>
+          </div>
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 py-4 flex flex-col gap-1">
@@ -215,10 +243,27 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogo
                 {unread} pesan baru
               </button>
             )}
-            <div className="text-right leading-tight">
-              <p className="text-[11px] text-neutral-200">{name || user?.email?.split('@')[0]}</p>
-              <p className="text-[10px] text-neutral-500">{user?.email}</p>
-            </div>
+            <button
+              onClick={() => go('settings')}
+              className="flex items-center gap-2.5 text-right group"
+              aria-label="Buka pengaturan profil"
+            >
+              <div className="leading-tight">
+                <p className="text-[11px] text-neutral-200 group-hover:text-white transition-colors">
+                  {name || user?.email?.split('@')[0]}
+                </p>
+                <p className="text-[10px] text-neutral-500">{user?.email}</p>
+              </div>
+              <img
+                src={avatar || '/logo.png'}
+                alt=""
+                className="w-8 h-8 rounded-full object-cover border border-neutral-700 bg-neutral-900 shrink-0"
+                onError={(e) => {
+                  e.currentTarget.src = '/logo.png';
+                }}
+                decoding="async"
+              />
+            </button>
           </div>
         </header>
 

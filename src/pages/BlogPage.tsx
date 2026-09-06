@@ -2,10 +2,10 @@ import React, { Suspense, lazy, useState } from 'react';
 import { Decor } from '../components/Decor';
 import { motion, AnimatePresence } from 'motion/react';
 import { blogPostsData } from '../data/siteData';
-import { fetchBlogPosts } from '../lib/content';
+import { fetchBlogPosts, useSettings } from '../lib/content';
 import { BlogPost, PageId } from '../types';
 import { BlogPostDetail } from '../components/BlogPostDetail';
-import { BlogGeometricGraphic } from '../components/BlogGeometricGraphic';
+import { CardImage } from '../components/CardImage';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { canRenderWebGL } from '../lib/device';
 
@@ -28,6 +28,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [visibleCount, setVisibleCount] = useState<number>(3);
   const [posts, setPosts] = useState(blogPostsData);
+  const t = useSettings();
   React.useEffect(() => { fetchBlogPosts().then(setPosts).catch(() => {}); }, []);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(() => {
     if (initialPostId) {
@@ -150,11 +151,11 @@ export const BlogPage: React.FC<BlogPageProps> = ({
             {/* Hero Left Content */}
             <div className="lg:col-span-7 space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-neutral-950 dark:text-white">
-                Best Blog Articles
+                {t.blog_hero_title}
               </h1>
 
               <p className="text-sm sm:text-base text-neutral-600 dark:text-neutral-200 max-w-xl leading-relaxed">
-                The best blog is one that captivates readers with engaging, well-researched content presented in a clear and relatable way.
+                {t.blog_hero_subtitle}
               </p>
             </div>
 
@@ -168,10 +169,12 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                 className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-neutral-400 dark:hover:border-neutral-700 transition-all duration-300 cursor-pointer group flex flex-col"
               >
                 {/* Visual Upper Box */}
-                <div className="bg-[#f4f4f5] dark:bg-neutral-950/90 h-52 flex items-center justify-center border-b border-neutral-100 dark:border-neutral-800/80 p-6 transition-colors">
-                  <BlogGeometricGraphic
-                    iconType={featuredPost.iconType || 'iso-striped-cube'}
-                    className="w-28 h-28 transform group-hover:scale-105 transition-transform duration-300"
+                <div className="bg-[#f4f4f5] dark:bg-neutral-950/90 h-52 flex items-center justify-center overflow-hidden border-b border-neutral-100 dark:border-neutral-800/80 transition-colors">
+                  <CardImage
+                    src={featuredPost.image}
+                    alt={featuredPost.title}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                    logoClassName="w-28 h-28 object-contain transform group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
 
@@ -204,7 +207,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
         {/* Section Header & Radio Filters */}
         <div className="space-y-6 mb-10">
           <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-950 dark:text-white">
-            All Blogs
+            {t.blog_heading}
           </h2>
 
           {/* Radio Style Categories */}
@@ -259,10 +262,12 @@ export const BlogPage: React.FC<BlogPageProps> = ({
               >
                 <div>
                   {/* Top Graphic Panel */}
-                  <div className="bg-[#f4f4f5] dark:bg-neutral-950/90 h-48 sm:h-52 flex items-center justify-center border-b border-neutral-100 dark:border-neutral-800/80 p-6 transition-colors">
-                    <BlogGeometricGraphic
-                      iconType={post.iconType || 'iso-striped-cube'}
-                      className="w-24 h-24 transform group-hover:scale-105 transition-transform duration-300"
+                  <div className="bg-[#f4f4f5] dark:bg-neutral-950/90 h-48 sm:h-52 flex items-center justify-center overflow-hidden border-b border-neutral-100 dark:border-neutral-800/80 transition-colors">
+                    <CardImage
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                      logoClassName="w-24 h-24 object-contain transform group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
 

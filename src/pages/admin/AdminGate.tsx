@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { PageId } from '../../types';
-import { fetchRole, supabase } from '../../lib/supabase';
+import { fetchProfile, supabase } from '../../lib/supabase';
 import { AdminLoginPage } from '../AdminLoginPage';
 import { DashboardPage } from '../DashboardPage';
 
-type Admin = { email: string; name: string };
+type Admin = { email: string; name: string; avatarUrl: string };
 
 /**
  * Pemulihan sesi + penjaga peran untuk seluruh area /admin.
@@ -24,15 +24,19 @@ export const AdminGate: React.FC<{ onNavigate: (page: PageId) => void }> = ({ on
         if (alive) { setAdmin(null); setChecking(false); }
         return;
       }
-      const role = await fetchRole(session.user.id);
+      const profil = await fetchProfile(session.user.id);
       if (!alive) return;
-      if (role !== 'admin') {
+      if (profil.role !== 'admin') {
         await supabase.auth.signOut();
         setAdmin(null);
       } else {
         setAdmin({
           email: session.user.email ?? '',
-          name: session.user.user_metadata?.name ?? (session.user.email ?? '').split('@')[0],
+          name:
+            profil.name ??
+            session.user.user_metadata?.name ??
+            (session.user.email ?? '').split('@')[0],
+          avatarUrl: profil.avatarUrl ?? '',
         });
       }
       setChecking(false);

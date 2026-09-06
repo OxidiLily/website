@@ -10,6 +10,7 @@ import {
   MapPin 
 } from 'lucide-react';
 import { canRenderWebGL } from '../lib/device';
+import { useSettings } from '../lib/content';
 
 // GhostFibers (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const GhostFibers = lazy(() => import('../components/GhostFibers'));
@@ -23,6 +24,7 @@ interface FormState {
 }
 
 export const ContactPage: React.FC = () => {
+  const t = useSettings();
   const [formData, setFormData] = useState<FormState>({
     firstName: '',
     lastName: '',
@@ -112,39 +114,39 @@ export const ContactPage: React.FC = () => {
       {/* SECTION 1: Form & Direct Details */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
         {/* Left Column: Direct Info */}
-        <div className="lg:col-span-5 space-y-6 sm:space-y-8">
+        <div id="contact-info" className="lg:col-span-5 space-y-6 sm:space-y-8 scroll-mt-28">
           <div className="space-y-3 sm:space-y-4">
             <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-              Contact Us
+              {t.contact_heading}
             </h1>
             <p className="text-neutral-400 text-xs sm:text-base leading-relaxed">
-              Building with cutting-edge design systems and Tailwind? Drop us a line if you need help architecting scalable components, 3D interactions, or wiring bespoke products.
+              {t.contact_intro}
             </p>
           </div>
 
           <div className="space-y-3 sm:space-y-4 pt-1">
             <a 
-              href="tel:+15550102400" 
+              href={`tel:${t.site_phone.replace(/[^+\d]/g, '')}`} 
               className="flex items-center gap-3.5 p-2 sm:p-0 rounded-xl active:bg-neutral-900/80 text-sm sm:text-base text-neutral-300 hover:text-white transition-colors group"
             >
               <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-700 transition-colors shrink-0">
                 <Phone className="w-4 h-4" />
               </div>
-              <span className="font-mono text-xs sm:text-sm tracking-wide">+1 (555) 010-2400</span>
+              <span className="font-mono text-xs sm:text-sm tracking-wide">{t.site_phone}</span>
             </a>
 
             <a 
-              href="mailto:hello@independent-designer.com" 
+              href={`mailto:${t.site_email}`} 
               className="flex items-center gap-3.5 p-2 sm:p-0 rounded-xl active:bg-neutral-900/80 text-sm sm:text-base text-neutral-300 hover:text-white transition-colors group"
             >
               <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-700 transition-colors shrink-0">
                 <Mail className="w-4 h-4" />
               </div>
-              <span className="font-mono text-xs sm:text-sm tracking-wide truncate">hello@independent-designer.com</span>
+              <span className="font-mono text-xs sm:text-sm tracking-wide truncate">{t.site_email}</span>
             </a>
 
             <a 
-              href="https://shadcnblocks.com" 
+              href={t.site_website_url} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center gap-3.5 p-2 sm:p-0 rounded-xl active:bg-neutral-900/80 text-sm sm:text-base text-neutral-300 hover:text-white transition-colors group"
@@ -152,20 +154,20 @@ export const ContactPage: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:text-white group-hover:border-neutral-700 transition-colors shrink-0">
                 <Globe className="w-4 h-4" />
               </div>
-              <span className="font-mono text-xs sm:text-sm tracking-wide">portfolio-atelier.design</span>
+              <span className="font-mono text-xs sm:text-sm tracking-wide">{t.site_website}</span>
             </a>
           </div>
         </div>
 
         {/* Right Column: Send Us A Message Form */}
-        <div className="lg:col-span-7">
+        <div id="contact-form" className="lg:col-span-7 scroll-mt-28">
           <div className="bg-neutral-950/90 border border-neutral-800/90 rounded-2xl sm:rounded-3xl p-5 sm:p-10 shadow-2xl backdrop-blur-sm space-y-5 sm:space-y-6">
             <div className="space-y-1">
               <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                Send us a message
+                {t.contact_form_heading}
               </h2>
               <p className="text-xs sm:text-sm text-neutral-400">
-                We usually reply within one business day.
+                {t.contact_form_note}
               </p>
             </div>
 
@@ -295,14 +297,14 @@ export const ContactPage: React.FC = () => {
     <div className="relative z-10 w-full bg-black">
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 md:pt-24 pb-20">
       {/* SECTION 2: Get In Touch Cards + Worldwide Map */}
-      <div className="space-y-8 sm:space-y-12">
+      <div id="contact-cards" className="space-y-8 sm:space-y-12 scroll-mt-28">
         {/* Title */}
         <div className="space-y-1.5 sm:space-y-2">
           <p className="text-xs sm:text-sm font-medium text-neutral-400">
-            Contact us
+            {t.contact_cards_eyebrow}
           </p>
           <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Get in touch with us<br />today to learn more
+            {t.contact_cards_heading}
           </h2>
         </div>
 
@@ -311,9 +313,9 @@ export const ContactPage: React.FC = () => {
           {/* Card 1: Sales */}
           <div className="p-5 sm:p-7 rounded-2xl bg-neutral-950/90 border border-neutral-800/90 hover:border-neutral-700 active:scale-[0.99] transition-all space-y-4 flex flex-col justify-between group">
             <div className="space-y-2 sm:space-y-3">
-              <h3 className="text-base sm:text-lg font-bold text-white">Sales</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white">{t.contact_sales_title}</h3>
               <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                Interested in learning more about our platform? Contact our sales team for more information.
+                {t.contact_sales_text}
               </p>
             </div>
             <a 
@@ -321,7 +323,7 @@ export const ContactPage: React.FC = () => {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-white group-hover:text-amber-300 transition-colors cursor-pointer py-1"
             >
-              <span>Request a demo</span>
+              <span>{t.contact_sales_cta}</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -329,9 +331,9 @@ export const ContactPage: React.FC = () => {
           {/* Card 2: Support */}
           <div className="p-5 sm:p-7 rounded-2xl bg-neutral-950/90 border border-neutral-800/90 hover:border-neutral-700 active:scale-[0.99] transition-all space-y-4 flex flex-col justify-between group">
             <div className="space-y-2 sm:space-y-3">
-              <h3 className="text-base sm:text-lg font-bold text-white">Support</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white">{t.contact_support_title}</h3>
               <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                We're here to help with any platform questions. Check out our FAQs and learn more.
+                {t.contact_support_text}
               </p>
             </div>
             <a 
@@ -339,7 +341,7 @@ export const ContactPage: React.FC = () => {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-white group-hover:text-amber-300 transition-colors cursor-pointer py-1"
             >
-              <span>Get support</span>
+              <span>{t.contact_support_cta}</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
@@ -347,9 +349,9 @@ export const ContactPage: React.FC = () => {
           {/* Card 3: General Inquiries */}
           <div className="p-5 sm:p-7 rounded-2xl bg-neutral-950/90 border border-neutral-800/90 hover:border-neutral-700 active:scale-[0.99] transition-all space-y-4 flex flex-col justify-between group sm:col-span-2 md:col-span-1">
             <div className="space-y-2 sm:space-y-3">
-              <h3 className="text-base sm:text-lg font-bold text-white">General Inquiries</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white">{t.contact_general_title}</h3>
               <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
-                For general inquiries, please reach out to us using the form above.
+                {t.contact_general_text}
               </p>
             </div>
             <a 
@@ -357,19 +359,19 @@ export const ContactPage: React.FC = () => {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-white group-hover:text-amber-300 transition-colors cursor-pointer py-1"
             >
-              <span>Contact us</span>
+              <span>{t.contact_general_cta}</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>
 
         {/* Real Interactive Google Map Container */}
-        <div className="flex flex-col gap-4">
+        <div id="contact-map" className="flex flex-col gap-4 scroll-mt-28">
           <div className="relative w-full h-[320px] sm:h-[420px] md:h-[480px] rounded-2xl sm:rounded-3xl overflow-hidden border border-neutral-800/90 bg-neutral-950 shadow-2xl group">
             {/* Real Google Map Embed (Alun-Alun Batang) */}
             <iframe
               title="Google Maps Location - Alun-Alun Batang"
-              src="https://maps.google.com/maps?q=-6.9078706,109.7302222&hl=en&z=16&output=embed"
+              src={`https://maps.google.com/maps?q=${t.contact_map_lat},${t.contact_map_lng}&hl=en&z=16&output=embed`}
               className="w-full h-full border-0 filter invert-[90%] hue-rotate-180 contrast-125 brightness-90 grayscale-[20%] group-hover:filter-none transition-all duration-500"
               loading="lazy"
               allowFullScreen
@@ -380,20 +382,20 @@ export const ContactPage: React.FC = () => {
             <div className="hidden sm:block absolute bottom-6 left-6 z-20 max-w-sm p-6 rounded-2xl bg-neutral-950/90 border border-neutral-800/90 shadow-2xl backdrop-blur-md space-y-3">
               <div className="flex items-center gap-2 text-xs font-semibold text-amber-400">
                 <MapPin className="w-4 h-4" />
-                <span>Studio & Headquarters</span>
+                <span>{t.contact_map_label}</span>
               </div>
               
               <h4 className="text-lg font-bold text-white tracking-tight">
-                Alun-Alun Batang, Central Java
+                {t.contact_map_title}
               </h4>
               
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Jl. Veteran, Kauman, Kec. Batang, Kabupaten Batang, Jawa Tengah 51216, Indonesia.
+                {t.contact_map_address}
               </p>
               
               <div className="pt-2 flex items-center justify-between gap-3">
                 <a 
-                  href="https://maps.app.goo.gl/jDBncCiGNfAWegQ66" 
+                  href={t.contact_map_link} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-colors shadow-md cursor-pointer"
@@ -403,7 +405,7 @@ export const ContactPage: React.FC = () => {
                 </a>
 
                 <span className="text-[11px] font-mono text-neutral-500">
-                  -6.9078°, 109.7302°
+                  {Number(t.contact_map_lat).toFixed(4)}°, {Number(t.contact_map_lng).toFixed(4)}°
                 </span>
               </div>
             </div>
@@ -413,20 +415,20 @@ export const ContactPage: React.FC = () => {
           <div className="sm:hidden p-4 rounded-2xl bg-neutral-950/90 border border-neutral-800/90 shadow-lg space-y-2.5">
             <div className="flex items-center gap-1.5 text-xs font-semibold text-amber-400">
               <MapPin className="w-3.5 h-3.5" />
-              <span>Studio & Headquarters</span>
+              <span>{t.contact_map_label}</span>
             </div>
             
             <h4 className="text-base font-bold text-white tracking-tight">
-              Alun-Alun Batang, Central Java
+              {t.contact_map_title}
             </h4>
             
             <p className="text-xs text-neutral-400 leading-relaxed">
-              Jl. Veteran, Kauman, Kec. Batang, Kabupaten Batang, Jawa Tengah 51216, Indonesia.
+              {t.contact_map_address}
             </p>
             
             <div className="pt-1 flex items-center justify-between gap-2">
               <a 
-                href="https://maps.app.goo.gl/jDBncCiGNfAWegQ66" 
+                href={t.contact_map_link} 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-black text-xs font-bold active:bg-neutral-200 transition-colors shadow-md cursor-pointer"
@@ -436,7 +438,7 @@ export const ContactPage: React.FC = () => {
               </a>
 
               <span className="text-[10px] font-mono text-neutral-500">
-                -6.9078°, 109.7302°
+                {Number(t.contact_map_lat).toFixed(4)}°, {Number(t.contact_map_lng).toFixed(4)}°
               </span>
             </div>
           </div>

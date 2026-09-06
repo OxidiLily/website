@@ -45,6 +45,45 @@ interface Route {
 }
 
 /**
+ * Menggulir ke satu bagian halaman setelah bagian itu benar-benar ada di DOM.
+ *
+ * Tiap halaman dimuat sebagai chunk terpisah (lihat React.lazy di atas), jadi
+ * pada saat hasil pencarian diklik elemen tujuannya biasanya BELUM dirender —
+ * `getElementById` sekali jalan mengembalikan null dan gulirannya diam-diam
+ * tidak terjadi. Itu yang membuat mengklik hasil pencarian terasa tidak
+ * melakukan apa-apa.
+ *
+ * Penantiannya lewat MutationObserver, bukan penjadwalan ulang tiap frame:
+ * unduhan chunk bisa memakan beberapa detik di jaringan lambat, sementara tab
+ * yang tidak terlihat mendapat frame jauh lebih jarang — kombinasi yang
+ * membuat loop berbasis frame kehabisan tenggat justru pada perangkat yang
+ * paling membutuhkannya. Observer terpicu oleh penyisipan node itu sendiri,
+ * jadi kecepatan render tidak lagi jadi syarat.
+ */
+function scrollToSection(id: string, timeoutMs = 15000) {
+  const coba = (): boolean => {
+    const el = document.getElementById(id);
+    if (!el) return false;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return true;
+  };
+
+  if (coba()) return;
+
+  const observer = new MutationObserver(() => {
+    if (coba()) {
+      observer.disconnect();
+      clearTimeout(batas);
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Jangkar yang salah ketik tidak boleh meninggalkan observer yang mengawasi
+  // seluruh dokumen selamanya.
+  const batas = window.setTimeout(() => observer.disconnect(), timeoutMs);
+}
+
+/**
  * URL → halaman. Fungsi murni supaya bisa dipakai untuk NILAI AWAL state,
  * bukan hanya di dalam efek.
  *
@@ -144,12 +183,16 @@ export default function App() {
   /** Satu-satunya penulis URL. Path, tanpa hash. */
   const pushPath = (path: string) => window.history.pushState(null, '', path);
 
-  const handleNavigate = (page: PageId) => {
+  const handleNavigate = (page: PageId, sectionId?: string) => {
     setCurrentPage(page);
     setSelectedBlogId(null);
     setSelectedProjectId(null);
     pushPath(page === 'admin' ? '/admin/login' : `/${page}`);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Dengan jangkar: gulir ke bagiannya, bukan ke puncak halaman. Tanpa
+    // cabang ini keduanya berebut dan yang terlihat cuma lompat ke atas.
+    if (sectionId) scrollToSection(sectionId);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectBlog = (postId: string) => {

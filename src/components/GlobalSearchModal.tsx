@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { fetchBlogPosts, fetchProjects } from '../lib/content';
+import { fetchBlogPosts, fetchProjects, fetchSettings } from '../lib/content';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
@@ -31,7 +31,7 @@ import {
 interface GlobalSearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onNavigate: (page: PageId) => void;
+  onNavigate: (page: PageId, sectionId?: string) => void;
   onSelectBlog?: (postId: string) => void;
   onSelectProject?: (projectId: string) => void;
 }
@@ -60,8 +60,8 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   useEffect(() => {
     if (!isOpen || sudahAmbil.current) return;
     sudahAmbil.current = true;
-    Promise.all([fetchProjects(), fetchBlogPosts()])
-      .then(([pr, po]) => setIndex(mergeLiveContent(searchIndex, pr, po)))
+    Promise.all([fetchProjects(), fetchBlogPosts(), fetchSettings()])
+      .then(([pr, po, st]) => setIndex(mergeLiveContent(searchIndex, pr, po, st)))
       .catch(() => {});
   }, [isOpen]);
 
@@ -143,7 +143,11 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
         onNavigate('project');
       }
     } else {
-      onNavigate(item.page);
+      // Entri halaman statis (Home/About/Contact). `sectionId` menunjuk
+      // jangkar bagian yang dimaksud entri itu; tanpa meneruskannya, mengklik
+      // hasil selagi sudah berada di halaman yang sama tidak mengubah apa pun
+      // di layar dan terbaca sebagai tombol mati.
+      onNavigate(item.page, item.actionPayload?.sectionId);
     }
   };
 

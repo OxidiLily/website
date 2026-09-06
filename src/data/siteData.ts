@@ -1,4 +1,4 @@
-import { ProjectItem, BlogPost, ShopItem } from '../types';
+import { ProjectItem, BlogPost, ShopItem, ToolItem, ExperienceItem, SiteSettings } from '../types';
 
 export const projectsData: ProjectItem[] = [
   {
@@ -84,7 +84,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Discover the Future',
     guideType: 'AI Engineering',
     mainHeading: 'AI-Augmented Development Workflows',
-    iconType: 'iso-striped-cube',
     featuredHero: true,
     sections: [
       {
@@ -125,7 +124,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Boost Your Editor',
     guideType: 'Tooling Guide',
     mainHeading: 'Essential VS Code Extensions',
-    iconType: 'cube-outline-stripes',
     sections: [
       {
         id: 'overview',
@@ -165,7 +163,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Learn Why',
     guideType: 'Design Strategy',
     mainHeading: 'Building Accessible Products from Day 1',
-    iconType: 'hex-layers',
     sections: [
       {
         id: 'overview',
@@ -205,7 +202,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Optimize Images',
     guideType: 'Performance Manual',
     mainHeading: 'Mastering Native Image Lazy Loading',
-    iconType: 'radial-star',
     sections: [
       {
         id: 'overview',
@@ -245,7 +241,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Manage Your Time',
     guideType: 'Productivity Blueprint',
     mainHeading: 'Developer Time Management Systems',
-    iconType: 'striped-cube-cutout',
     sections: [
       {
         id: 'overview',
@@ -285,7 +280,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Improve Semantics',
     guideType: 'Technical Guide',
     mainHeading: 'Demystifying ARIA Roles & Attributes',
-    iconType: 'nested-stairs-cube',
     sections: [
       {
         id: 'overview',
@@ -325,7 +319,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Shrink Your Code',
     guideType: 'Build Optimization',
     mainHeading: 'Advanced JavaScript Minification & Tree-Shaking',
-    iconType: 'iso-striped-block',
     sections: [
       {
         id: 'overview',
@@ -365,7 +358,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Automate Now',
     guideType: 'Workflow Guide',
     mainHeading: 'Building Modern Automation Pipelines',
-    iconType: 'hex-maze',
     sections: [
       {
         id: 'overview',
@@ -405,7 +397,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Check Contrast',
     guideType: 'Design Spec',
     mainHeading: 'Designing Legible & Compliant Color Palettes',
-    iconType: 'branch-rays',
     sections: [
       {
         id: 'overview',
@@ -445,7 +436,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Improve Vitals',
     guideType: 'Performance Spec',
     mainHeading: 'Mastering Google Core Web Vitals',
-    iconType: 'wireframe-box',
     sections: [
       {
         id: 'overview',
@@ -485,7 +475,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Find Your Flow',
     guideType: 'Lifestyle Guide',
     mainHeading: 'High-Impact Developer Daily Routines',
-    iconType: 'striped-offset-block',
     sections: [
       {
         id: 'overview',
@@ -525,7 +514,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Test Navigation',
     guideType: 'UX Manual',
     mainHeading: 'Designing Flawless Keyboard Experiences',
-    iconType: 'iso-slat-block-2',
     sections: [
       {
         id: 'overview',
@@ -565,7 +553,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Explore Options',
     guideType: 'Architecture Deep-Dive',
     mainHeading: 'SSR vs CSR: Benchmarks & Architectural Tradeoffs',
-    iconType: 'cutout-cube-2',
     sections: [
       {
         id: 'overview',
@@ -605,7 +592,6 @@ export const blogPostsData: BlogPost[] = [
     actionLabel: 'Get Started',
     guideType: 'Gardening Guide',
     mainHeading: "Beginner's Guide",
-    iconType: 'striped-cube-cutout',
     sections: [
       {
         id: 'overview',
@@ -699,5 +685,140 @@ export const shopItemsData: ShopItem[] = [
       'React Icon Wrapper Package',
       'Commercial License Included',
     ],
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────
+// Teks & daftar yang sekarang dikelola dari panel admin (tabel `settings`,
+// `tools`, `experiences`). Nilai di bawah adalah CADANGAN, dipakai persis
+// selama database belum terjangkau atau baris kuncinya belum ada — jadi
+// situs tidak pernah tampil dengan bagian kosong.
+//
+// Isinya wajib sama dengan blok seed di supabase/schema.sql. Kalau salah satu
+// diubah, ubah keduanya; kalau tidak, tampilan sebelum dan sesudah database
+// menjawab akan berkedip berganti teks.
+// ─────────────────────────────────────────────────────────────────────────
+
+export const defaultSettings: SiteSettings = {
+  home_hero_title: 'Crafting Digital Products with Physics & Precision',
+  home_hero_subtitle:
+    'Building clear, useful products with refined aesthetics, smooth 60fps WebGL simulations, and robust systems.',
+  home_hero_cta_primary: 'Explore Projects',
+  home_hero_cta_secondary: 'About Me',
+  home_marquee_text: 'React Bits | Scroll Velocity — Interactive Physics',
+  home_featured_heading: 'Featured Projects',
+  home_teaser_badge: 'Batang, Jawa Tengah, Indonesia 🇮🇩',
+  home_teaser_heading: 'Design & Development Driven by Craft and Autonomy',
+  home_teaser_text:
+    'I partner with early-stage teams and visionary founders to take ideas from zero to production launch, fusing meticulous design systems with robust frontend engineering.',
+  home_teaser_cta: 'Read full story & background',
+  home_teaser_image: '',
+  home_blog_heading: 'Latest from Blog',
+  home_cta_heading: "Have a project in mind? Let's build something exceptional.",
+  home_cta_text:
+    'Currently taking on select design systems, frontend engineering, and WebGL interactive projects.',
+  home_cta_button: 'Get In Touch',
+
+  about_heading: 'About Me',
+  about_bio:
+    'I am an independent designer and developer focused on building clear, useful products. With years of experience shipping for startups and teams, I take on work I can own from concept through launch.',
+  about_philosophy:
+    'I start from the purpose, the people it serves, and the simplest path forward. Clarity first, then the work gets better.',
+  about_tools_heading: 'Tools & Stack',
+  about_experience_heading: 'Experience & Journey',
+
+  project_heading: 'Selected Projects',
+  project_intro:
+    'A showcase of design systems, WebGL physics engines, responsive mobile apps, and scalable web platforms crafted with modern precision.',
+
+  contact_heading: 'Contact Us',
+  contact_intro:
+    'Building with cutting-edge design systems and Tailwind? Drop us a line if you need help architecting scalable components, 3D interactions, or wiring bespoke products.',
+  site_phone: '+1 (555) 010-2400',
+  site_email: 'hello@independent-designer.com',
+  site_website: 'portfolio-atelier.design',
+  site_website_url: 'https://shadcnblocks.com',
+  contact_form_heading: 'Send us a message',
+  contact_form_note: 'We usually reply within one business day.',
+  contact_cards_eyebrow: 'Contact us',
+  contact_cards_heading: 'Get in touch with us today to learn more',
+  contact_sales_title: 'Sales',
+  contact_sales_text:
+    'Interested in learning more about our platform? Contact our sales team for more information.',
+  contact_sales_cta: 'Request a demo',
+  contact_support_title: 'Support',
+  contact_support_text:
+    "We're here to help with any platform questions. Check out our FAQs and learn more.",
+  contact_support_cta: 'Get support',
+  contact_general_title: 'General Inquiries',
+  contact_general_text: 'For general inquiries, please reach out to us using the form above.',
+  contact_general_cta: 'Contact us',
+  contact_map_label: 'Studio & Headquarters',
+  contact_map_title: 'Alun-Alun Batang, Central Java',
+  contact_map_address:
+    'Jl. Veteran, Kauman, Kec. Batang, Kabupaten Batang, Jawa Tengah 51216, Indonesia.',
+  contact_map_lat: '-6.9078706',
+  contact_map_lng: '109.7302222',
+  contact_map_link: 'https://maps.app.goo.gl/jDBncCiGNfAWegQ66',
+
+  blog_hero_title: 'Best Blog Articles',
+  blog_hero_subtitle:
+    'The best blog is one that captivates readers with engaging, well-researched content presented in a clear and relatable way.',
+  blog_heading: 'All Blogs',
+
+  footer_brand: 'OxidiLily • Portfolio',
+  footer_wordmark: 'OxidiLily',
+  footer_base: 'Batang, Jawa Tengah (WIB UTC+7)',
+  footer_copyright: '© 2026 OxidiLily. All rights reserved.',
+  site_location: 'Batang, Jawa Tengah, Indonesia 🇮🇩',
+  social_twitter: 'https://twitter.com',
+  social_github: 'https://github.com',
+  social_dribbble: 'https://dribbble.com',
+  social_linkedin: 'https://linkedin.com',
+  social_facebook: '',
+};
+
+export const defaultTools: ToolItem[] = [
+  { id: 'figma', name: 'Figma', category: 'DESIGN TOOL' },
+  { id: 'nextjs', name: 'Next.js', category: 'FULL STACK FRAMEWORK' },
+  { id: 'v0', name: 'v0', category: 'AI TOOL' },
+  { id: 'typescript', name: 'TypeScript', category: 'PROGRAMMING LANGUAGE' },
+  { id: 'vscode', name: 'VS Code', category: 'CODE EDITOR' },
+  { id: 'notion', name: 'Notion', category: 'PRODUCTIVITY TOOL' },
+  { id: 'astro', name: 'Astro', category: 'WEB FRAMEWORK' },
+  { id: 'react', name: 'React', category: 'JAVASCRIPT LIBRARY' },
+  { id: 'tailwind', name: 'Tailwind CSS', category: 'CSS FRAMEWORK' },
+  { id: 'vite', name: 'Vite', category: 'BUILD TOOL' },
+  { id: 'github', name: 'GitHub', category: 'VERSION CONTROL' },
+  { id: 'vercel', name: 'Vercel', category: 'HOSTING PLATFORM' },
+  { id: 'cursor', name: 'Cursor', category: 'AI CODE EDITOR' },
+  { id: 'shadcn', name: 'Shadcn/ui', category: 'COMPONENT LIBRARY' },
+];
+
+export const defaultExperiences: ExperienceItem[] = [
+  {
+    id: '2026',
+    year: '2026',
+    title: 'Independent Creative Director & Developer',
+    description: 'Crafting bespoke web systems and 3D physics engines for high-impact teams.',
+  },
+  {
+    id: '2024-2025',
+    year: '2024 - 2025',
+    title: 'Staff Design Engineer @ HyperScale',
+    description: 'Led the multi-platform design token architecture and core component libraries.',
+  },
+  {
+    id: '2022-2024',
+    year: '2022 - 2024',
+    title: 'Senior Frontend Developer @ Sphere Interactive',
+    description:
+      'Engineered WebGL interactive canvases, 3D product visualizers, and shader pipelines.',
+  },
+  {
+    id: '2020-2022',
+    year: '2020 - 2022',
+    title: 'Product Designer @ Atelier Studio',
+    description: 'Designed high-growth SaaS dashboards and brand design systems.',
   },
 ];

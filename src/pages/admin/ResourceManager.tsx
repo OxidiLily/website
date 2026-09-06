@@ -372,7 +372,7 @@ export const ResourceManager: React.FC<{ resource: Resource }> = ({ resource }) 
  * (bucket_id='media' AND public.is_admin()), jadi pengunjung tidak bisa
  * menitipkan berkas walau tahu endpoint-nya.
  */
-const ImageInput: React.FC<{ value: string; onChange: (url: string) => void }> = ({ value, onChange }) => {
+export const ImageInput: React.FC<{ value: string; onChange: (url: string) => void }> = ({ value, onChange }) => {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
 
@@ -437,9 +437,12 @@ const RowForm: React.FC<{
   onSubmit: (row: Row) => void;
 }> = ({ fields, aiGenerate, refOptions, initial, busy, title, onCancel, onSubmit }) => {
   const [form, setForm] = useState<Row>(() => {
+    const barisBaru = !initial.id;
     const f: Row = {};
     for (const fd of fields) {
-      const v = initial[fd.name];
+      // `initial` kosong berarti tambah-baru: pakai defaultValue kalau field
+      // itu punya, bukan false/'' yang diam-diam menyembunyikan baris baru.
+      const v = initial[fd.name] ?? (barisBaru ? fd.defaultValue : undefined);
       if (fd.type === 'boolean') f[fd.name] = v ?? false;
       else if (fd.type === 'list') f[fd.name] = Array.isArray(v) ? v.join(', ') : '';
       else f[fd.name] = v ?? '';
@@ -486,7 +489,8 @@ const RowForm: React.FC<{
     const out: Row = {};
     for (const fd of fields) {
       const v = form[fd.name];
-      if (fd.type === 'number') out[fd.name] = v === '' ? null : Number(v);
+      if (fd.type === 'number')
+        out[fd.name] = v === '' ? (fd.defaultValue ?? null) : Number(v);
       else if (fd.type === 'boolean') out[fd.name] = Boolean(v);
       else if (fd.type === 'list')
         out[fd.name] = String(v).split(',').map((s) => s.trim()).filter(Boolean);

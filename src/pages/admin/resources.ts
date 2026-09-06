@@ -19,6 +19,16 @@ export interface Field {
   /** Jadikan dropdown penyaring di atas tabel. */
   filter?: boolean;
   placeholder?: string;
+  /**
+   * Nilai awal untuk baris BARU (diabaikan saat mengubah baris lama).
+   *
+   * Tanpa ini setiap kolom boolean mulai dari `false`: admin menambah produk
+   * atau tool, lupa mencentang "Aktif", dan barangnya tersimpan rapi di tabel
+   * tapi tidak pernah muncul di situs — kegagalan yang tidak memberi pesan
+   * error apa pun. Kolom angka `not null` juga butuh ini, karena mengirim
+   * null ke sana ditolak database alih-alih memakai default kolomnya.
+   */
+  defaultValue?: string | number | boolean;
 }
 
 export interface Resource {
@@ -167,7 +177,7 @@ export const RESOURCES = {
       { name: 'buy_link_tokopedia', label: 'Tautan Tokopedia', type: 'text' },
       { name: 'buy_link_shopee', label: 'Tautan Shopee', type: 'text' },
       { name: 'is_top_seller', label: 'Terlaris', type: 'boolean', list: true },
-      { name: 'is_active', label: 'Aktif', type: 'boolean', list: true },
+      { name: 'is_active', label: 'Aktif', type: 'boolean', list: true, defaultValue: true },
       { name: 'description', label: 'Deskripsi', type: 'textarea' },
     ],
   },
@@ -188,7 +198,42 @@ export const RESOURCES = {
       { name: 'image', label: 'Gambar', type: 'image' },
       { name: 'client', label: 'Klien', type: 'text', list: true },
       { name: 'year', label: 'Tahun', type: 'text', list: true },
-      { name: 'is_active', label: 'Aktif', type: 'boolean', list: true },
+      { name: 'is_active', label: 'Aktif', type: 'boolean', list: true, defaultValue: true },
+    ],
+  },
+
+  tools: {
+    table: 'tools',
+    title: 'Tools & Stack',
+    subtitle: 'Kartu perkakas di halaman About. Ikon kosong → ikon merek bawaan kalau namanya dikenali, kalau tidak logo situs.',
+    order: { column: 'sort_order', ascending: true },
+    canCreate: true,
+    canEdit: true,
+    search: 'name',
+    fields: [
+      { name: 'name', label: 'Nama', type: 'text', required: true, list: true },
+      { name: 'category', label: 'Kategori', type: 'text', list: true, placeholder: 'mis. CSS FRAMEWORK' },
+      { name: 'icon', label: 'Ikon', type: 'image' },
+      { name: 'link', label: 'Tautan', type: 'text', placeholder: 'https://…' },
+      { name: 'sort_order', label: 'Urutan', type: 'number', list: true, defaultValue: 0 },
+      { name: 'is_active', label: 'Tampil', type: 'boolean', list: true, defaultValue: true },
+    ],
+  },
+
+  experiences: {
+    table: 'experiences',
+    title: 'Experience & Journey',
+    subtitle: 'Timeline pengalaman di halaman About.',
+    order: { column: 'sort_order', ascending: true },
+    canCreate: true,
+    canEdit: true,
+    search: 'title',
+    fields: [
+      { name: 'year', label: 'Tahun', type: 'text', required: true, list: true, placeholder: 'mis. 2024 - 2025' },
+      { name: 'title', label: 'Peran', type: 'text', required: true, list: true },
+      { name: 'description', label: 'Keterangan', type: 'textarea' },
+      { name: 'sort_order', label: 'Urutan', type: 'number', list: true, defaultValue: 0 },
+      { name: 'is_active', label: 'Tampil', type: 'boolean', list: true, defaultValue: true },
     ],
   },
 

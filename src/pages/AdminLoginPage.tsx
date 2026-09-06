@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { AlertCircle, ArrowLeft, Loader2, Lock } from 'lucide-react';
 import { PageId } from '../types';
-import { fetchRole, supabase } from '../lib/supabase';
+import { fetchProfile, supabase } from '../lib/supabase';
 
 interface AdminLoginPageProps {
-  onLoginSuccess: (user: { email: string; name: string }) => void;
+  onLoginSuccess: (user: { email: string; name: string; avatarUrl: string }) => void;
   onNavigate?: (page: PageId) => void;
 }
 
@@ -38,8 +38,8 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
     // Pendaftaran terbuka di instance ini, jadi "berhasil login" belum berarti
     // berhak. Peran dicek lagi di sisi database lewat RLS; ini supaya panel
     // tidak terbuka kosong untuk akun biasa.
-    const role = await fetchRole(data.user.id);
-    if (role !== 'admin') {
+    const profil = await fetchProfile(data.user.id);
+    if (profil.role !== 'admin') {
       await supabase.auth.signOut();
       setIsLoading(false);
       setErrorMessage('Akun ini tidak berperan admin.');
@@ -49,7 +49,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
     setIsLoading(false);
     onLoginSuccess({
       email: data.user.email ?? email,
-      name: (data.user.user_metadata?.name as string) ?? (data.user.email ?? '').split('@')[0],
+      name:
+        profil.name ??
+        (data.user.user_metadata?.name as string) ??
+        (data.user.email ?? '').split('@')[0],
+      avatarUrl: profil.avatarUrl ?? '',
     });
   };
 
@@ -74,11 +78,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onLoginSuccess, 
         className="w-full max-w-[390px] bg-white rounded-2xl border border-neutral-200/90 shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-7 sm:p-8 flex flex-col relative z-10"
       >
         <div className="flex items-center justify-center gap-2.5 mb-1">
-          <div className="w-6 h-6 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" className="w-6 h-6 text-black fill-current" aria-hidden="true">
-              <path d="M12 1.5L2.5 7v10L12 22.5l9.5-5.5V7L12 1.5zm0 2.3l6.5 3.77-2.3 1.33-6.5-3.77L12 3.8zM4.5 8.17l6.5 3.77v6.86l-6.5-3.77V8.17zm8.5 10.63v-6.86l6.5-3.77v6.86L13 18.8z" />
-            </svg>
-          </div>
+          <img src="/logo.png" alt="" className="w-6 h-6 object-contain" decoding="async" />
           <span className="text-base sm:text-lg font-bold tracking-tight text-neutral-900">OxidiLily</span>
         </div>
         <p className="text-center text-[11px] text-neutral-500 mb-6">Masuk ke panel admin</p>
