@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import { Decor } from '../components/Decor';
 import { motion } from 'motion/react';
 import { AboutMe } from '../components/AboutMe';
 import { ToolsAndStack } from '../components/ToolsAndStack';
@@ -21,7 +22,7 @@ export const AboutPage: React.FC = () => {
       {/* SideRays React Bits WebGL Component Background (Fixed to Top-Right) */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-100 overflow-hidden">
         {!isLowPowerDevice && (
-        <Suspense fallback={null}>
+        <Decor>
         <SideRays
           speed={2.8}
           rayColor1="#F59E0B"
@@ -35,7 +36,7 @@ export const AboutPage: React.FC = () => {
           falloff={1.25}
           opacity={1.0}
         />
-        </Suspense>
+        </Decor>
         )}
       </div>
 

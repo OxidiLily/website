@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
+import { Decor, PageBoundary } from './components/Decor';
 import { AnimatePresence, motion } from 'motion/react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -183,9 +184,9 @@ export default function App() {
     <div className="min-h-screen bg-black text-white font-sans selection:bg-white selection:text-black flex flex-col justify-between">
       {/* Fluid Interactive Splash Cursor (on public pages) */}
       {!isAdminPage && isDesktopPointer && !isLowPowerDevice && (
-        <Suspense fallback={null}>
+        <Decor>
           <SplashCursor />
-        </Suspense>
+        </Decor>
       )}
 
       {/* Dynamic Sticky / Floating Navbar with Global Search & Mobile Notch (only on public frontend pages) */}
@@ -209,6 +210,7 @@ export default function App() {
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="w-full h-full"
           >
+            <PageBoundary>
             <Suspense fallback={<PageLoading />}>
             {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
             {currentPage === 'project' && (
@@ -230,6 +232,7 @@ export default function App() {
             {currentPage === 'contact' && <ContactPage />}
             {currentPage === 'about' && <AboutPage />}
             </Suspense>
+            </PageBoundary>
           </motion.div>
         </AnimatePresence>
 

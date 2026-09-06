@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useState } from 'react';
+import { Decor } from '../components/Decor';
 import { motion, AnimatePresence } from 'motion/react';
 import { projectsData } from '../data/siteData';
 import { fetchProjects } from '../lib/content';
@@ -63,14 +64,14 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
       {/* Background Aurora Layer - Fixed position so it stays in place during scroll */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         {!isLowPowerDevice && (
-          <Suspense fallback={null}>
+          <Decor>
             <Aurora
               colorStops={['#ffffff', '#888888', '#222222']}
               blend={0.65}
               amplitude={1.1}
               speed={1.3}
             />
-          </Suspense>
+          </Decor>
         )}
         {/* Subtle dark vignette overlay to keep text ultra crisp */}
         <div className="absolute inset-0 bg-black/40 pointer-events-none" />

@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useState } from 'react';
+import { Decor } from '../components/Decor';
 import { motion } from 'motion/react';
 import { 
   Phone, 
@@ -76,7 +77,7 @@ export const ContactPage: React.FC = () => {
       {/* GhostFibers React Bits WebGL Background (fixed di belakang halaman) */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         {!isLowPowerDevice && (
-          <Suspense fallback={null}>
+          <Decor>
             <GhostFibers
               lineColor="#140E35"
               glowColor="#3437A0"
@@ -103,7 +104,7 @@ export const ContactPage: React.FC = () => {
               grain={0.05}
               dpr={1}
             />
-          </Suspense>
+          </Decor>
         )}
       </div>
 

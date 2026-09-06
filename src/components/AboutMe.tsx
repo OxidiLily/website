@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import { Decor } from './Decor';
 import { motion } from 'motion/react';
 import { isLowPowerDevice } from '../lib/device';
 import cardFront from '../assets/lanyard/card-front.jpg';
@@ -37,9 +38,9 @@ export const AboutMe: React.FC = () => {
             // dan pernah terukur baru siap setelah puluhan detik di mesin lambat.
             // Dengan fallback null, kolom ini kosong selama itu dan halaman
             // About terbaca "tidak load". Kartu statis 18 KB mengisi tempatnya.
-            <Suspense fallback={<StaticCard />}>
+            <Decor fallback={<StaticCard />}>
               <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
-            </Suspense>
+            </Decor>
           )}
         </div>
       </div>

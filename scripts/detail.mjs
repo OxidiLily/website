@@ -29,24 +29,7 @@ let fail = 0;
 if (!(await report('/project/kinetic-design-system', 'Kinetic Design System'))) fail++;
 if (!(await report('/blog/how-ai-is-transforming-frontend-development', 'How AI is Transforming'))) fail++;
 
-// Klik navigasi: cari tombol/anchor bertuliskan Projects di navbar
-await page.goto(BASE + '/home', { waitUntil: 'domcontentloaded' });
-await page.waitForTimeout(2000);
-const labels = await page.evaluate(() =>
-  [...document.querySelectorAll('nav button, nav a')].map((e) => (e.innerText || '').trim()).filter(Boolean),
-);
-console.log('label nav:', JSON.stringify(labels.slice(0, 12)));
-const btn = page.locator('nav button, nav a').filter({ hasText: /^Projects?$/i }).first();
-if (await btn.count()) {
-  await btn.click();
-  await page.waitForTimeout(1800);
-  const u = new URL(page.url());
-  const ok = !page.url().includes('#') && u.pathname === '/project';
-  if (!ok) fail++;
-  console.log(`${ok ? 'OK  ' : 'FAIL'} klik nav Projects → ${u.pathname}`);
-} else {
-  console.log('(!) tombol nav "Projects" tidak ketemu — selektor uji, bukan bug app');
-}
+// Klik navigasi diuji di scripts/nav.mjs.
 
 console.log(fail ? `\n${fail} GAGAL` : '\nSEMUA LULUS');
 await browser.close();

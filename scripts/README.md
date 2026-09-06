@@ -10,6 +10,9 @@
   membuka halaman detail.
 - `diag.mjs` — isi `<main>`, jumlah canvas, error konsol, respons >=400 per halaman.
   Dipakai untuk memburu halaman yang "kelihatan load" tapi kolomnya kosong.
+- `nowebgl.mjs` — memblokir konteks WebGL (meniru Brave Shields "block
+  fingerprinting"). Penjaga regresi terpenting: sebelum ada `Decor`, kegagalan
+  WebGL meng-unmount SELURUH aplikasi dan halaman jadi hitam kosong.
 - `chunks.mjs` — daftar aset yang diunduh sebuah halaman. Penjaga regresi supaya
   chunk HomePage/Ballpit/Orb tidak bocor lagi ke `/about` (rute kini diselesaikan
   sebelum render pertama).

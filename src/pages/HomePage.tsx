@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
+import { Decor } from '../components/Decor';
 import { motion } from 'motion/react';
 import { ScrollVelocity } from '../components/ScrollVelocity';
 import { projectsData, blogPostsData } from '../data/siteData';
@@ -38,7 +39,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             // tetap punya kedalaman tanpa satu pun frame WebGL.
             <div className="w-full h-full bg-[radial-gradient(ellipse_at_50%_40%,#2a2a2a_0%,#111_45%,#000_75%)]" />
           ) : (
-            <Suspense fallback={null}>
+            <Decor>
               <Ballpit
                 count={100}
                 gravity={0.3}
@@ -48,7 +49,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 colors={['#ffffff', '#000000']}
                 className="w-full h-full"
               />
-            </Suspense>
+            </Decor>
           )}
         </div>
 
@@ -95,7 +96,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden flex items-center justify-center">
           {!isLowPowerDevice && (
             <div className="w-full h-full max-w-6xl min-h-[1000px] relative opacity-75">
-              <Suspense fallback={null}>
+              <Decor>
                 <Orb
                   hue={0}
                   hoverIntensity={0}
@@ -103,7 +104,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   forceHoverState={false}
                   backgroundColor="#000000"
                 />
-              </Suspense>
+              </Decor>
             </div>
           )}
           {/* Smooth blend from top and bottom */}

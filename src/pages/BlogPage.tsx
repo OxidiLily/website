@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useState } from 'react';
+import { Decor } from '../components/Decor';
 import { motion, AnimatePresence } from 'motion/react';
 import { blogPostsData } from '../data/siteData';
 import { fetchBlogPosts } from '../lib/content';
@@ -115,7 +116,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
           tapi dari blok hitam opak "All Blogs" yang naik menutupinya. */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         {!isLowPowerDevice && (
-          <Suspense fallback={null}>
+          <Decor>
             <LightPillar
               topColor="#5227FF"
               bottomColor="#FF9FFC"
@@ -129,7 +130,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
               interactive={false}
               quality="medium"
             />
-          </Suspense>
+          </Decor>
         )}
       </div>
 
