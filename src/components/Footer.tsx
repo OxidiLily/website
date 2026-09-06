@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             {/* Column 1: EMAIL */}
             <div className="space-y-1.5 sm:space-y-2">
               <span className="block text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-600">
-                DIRECT INQUIRY
+                {t.footer_label_inquiry}
               </span>
               <a
                 href={`mailto:${t.site_email}`}
@@ -61,17 +61,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             {/* Column 2: CHANNELS */}
             <div className="space-y-1.5 sm:space-y-2">
               <span className="block text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-600">
-                CHANNELS
+                {t.footer_label_channels}
               </span>
               <div className="flex flex-wrap items-center gap-x-3.5 sm:gap-x-5 gap-y-1.5 text-xs sm:text-sm md:text-sm lg:text-base font-semibold text-black">
                 {([
-                  ['X / Twitter', t.social_twitter],
-                  ['GitHub', t.social_github],
-                  ['Dribbble', t.social_dribbble],
-                  ['LinkedIn', t.social_linkedin],
-                  ['Facebook', t.social_facebook],
+                  [t.social_twitter_label, t.social_twitter],
+                  [t.social_github_label, t.social_github],
+                  [t.social_dribbble_label, t.social_dribbble],
+                  [t.social_linkedin_label, t.social_linkedin],
+                  [t.social_facebook_label, t.social_facebook],
                 ] as const)
-                  .filter(([, url]) => url)
+                  .filter(([label, url]) => label && url)
                   .map(([label, url]) => (
                     <a
                       key={label}
@@ -89,7 +89,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             {/* Column 3: LOCATION & AVAILABILITY */}
             <div className="space-y-1.5 sm:space-y-2 sm:col-span-2 md:col-span-1 md:text-right">
               <span className="block text-[10px] sm:text-xs font-bold tracking-widest uppercase text-neutral-600">
-                BASE & TIMEZONE
+                {t.footer_label_base}
               </span>
               <p className="text-xs sm:text-sm md:text-sm lg:text-base font-semibold text-black">
                 {t.footer_base}
@@ -103,21 +103,21 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 px-3 sm:px-4 pt-4 pb-24 md:pb-6 text-xs sm:text-sm text-neutral-200 font-normal text-center sm:text-left">
         {/* Left Navigation links */}
         <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3.5 sm:gap-6">
-          <button onClick={() => handleNav('home')} className="hover:text-white transition-colors cursor-pointer py-1">
-            Home
-          </button>
-          <button onClick={() => handleNav('project')} className="hover:text-white transition-colors cursor-pointer py-1">
-            Project
-          </button>
-          <button onClick={() => handleNav('blog')} className="hover:text-white transition-colors cursor-pointer py-1">
-            Blog
-          </button>
-          <button onClick={() => handleNav('about')} className="hover:text-white transition-colors cursor-pointer py-1">
-            About
-          </button>
-          <button onClick={() => handleNav('contact')} className="hover:text-white transition-colors cursor-pointer py-1">
-            Contact
-          </button>
+          {([
+            ['home', t.nav_home],
+            ['project', t.nav_project],
+            ['blog', t.nav_blog],
+            ['about', t.nav_about],
+            ['contact', t.nav_contact],
+          ] as const).map(([id, label]) => (
+            <button
+              key={id}
+              onClick={() => handleNav(id as PageId)}
+              className="hover:text-white transition-colors cursor-pointer py-1"
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
         {/* Right Copyright info. Pintu masuk admin sengaja TIDAK dipasang di UI —

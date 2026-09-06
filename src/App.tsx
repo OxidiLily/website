@@ -6,6 +6,7 @@ import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
 import { PageId } from './types';
 import { canRenderWebGL, isDesktopPointer } from './lib/device';
+import { useSettings } from './lib/content';
 
 // Tiap halaman dipecah jadi chunk sendiri. Tanpa ini seluruh three.js, ogl,
 // rapier, dan drei ikut terunduh & di-parse di kunjungan pertama walau user
@@ -18,22 +19,23 @@ const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ defaul
 const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
 const AdminGate = lazy(() => import('./pages/admin/AdminGate').then(m => ({ default: m.AdminGate })));
 
-const PAGE_TITLES: Record<PageId, string> = {
-  home: 'OxidiLily — Portfolio',
-  project: 'Projects — OxidiLily',
-  blog: 'Blog — OxidiLily',
-  contact: 'Contact — OxidiLily',
-  about: 'About — OxidiLily',
-  admin: 'Admin — OxidiLily',
+/** Kunci `settings` yang menjadi judul tab tiap halaman. */
+const PAGE_TITLE_KEYS: Record<PageId, string> = {
+  home: 'title_home',
+  project: 'title_project',
+  blog: 'title_blog',
+  contact: 'title_contact',
+  about: 'title_about',
+  admin: 'title_admin',
 };
 
 /** Penanda muat antar-halaman. Sebelumnya kotak kosong tanpa tanda apa pun,
  *  sehingga mengklik hasil pencarian terlihat seperti tidak terjadi apa-apa. */
-function PageLoading() {
+function PageLoading({ teks }: { teks: string }) {
   return (
     <div className="min-h-screen flex items-center justify-center" role="status" aria-live="polite">
       <span className="w-6 h-6 rounded-full border-2 border-white/20 border-t-white/80 animate-spin" />
-      <span className="sr-only">Memuat halaman…</span>
+      <span className="sr-only">{teks}</span>
     </div>
   );
 }
@@ -120,6 +122,7 @@ function parseRoute(pathname: string, hash: string): Route {
 const initialRoute = parseRoute(window.location.pathname, window.location.hash);
 
 export default function App() {
+  const t = useSettings();
   const [currentPage, setCurrentPage] = useState<PageId>(initialRoute.page);
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(initialRoute.blogId);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(initialRoute.projectId);
@@ -130,8 +133,22 @@ export default function App() {
   // dipulihkan di sini.
   useEffect(() => {
     if (selectedBlogId || selectedProjectId) return;
-    document.title = PAGE_TITLES[currentPage];
-  }, [currentPage, selectedBlogId, selectedProjectId]);
+    document.title = t[PAGE_TITLE_KEYS[currentPage]];
+  }, [currentPage, selectedBlogId, selectedProjectId, t]);
+
+  // Deskripsi situs untuk mesin pencari dan pratinjau tautan. index.html hanya
+  // memuat nilai awal yang ikut di-bundel; tanpa efek ini, mengubahnya di panel
+  // tidak berpengaruh apa pun pada apa yang dibaca perayap dan kartu tautan.
+  useEffect(() => {
+    const isi = t.site_description || t.title_home;
+    for (const sel of ['meta[name="description"]', 'meta[property="og:description"]', 'meta[name="twitter:description"]']) {
+      document.querySelector(sel)?.setAttribute('content', isi);
+    }
+    for (const sel of ['meta[property="og:title"]', 'meta[name="twitter:title"]']) {
+      document.querySelector(sel)?.setAttribute('content', t.title_home);
+    }
+    document.querySelector('meta[property="og:site_name"]')?.setAttribute('content', t.site_name);
+  }, [t]);
 
   // Muat ulang halaman saat LEBAR viewport berubah (mis. rotasi layar, jendela
   // desktop di-resize). Efek WebGL menghitung ukuran kanvas dan konstanta kelas
@@ -254,7 +271,7 @@ export default function App() {
             className="w-full h-full"
           >
             <PageBoundary>
-            <Suspense fallback={<PageLoading />}>
+            <Suspense fallback={<PageLoading teks={t.loading_text} />}>
             {currentPage === 'home' && <HomePage onNavigate={handleNavigate} />}
             {currentPage === 'project' && (
               <ProjectPage

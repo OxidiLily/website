@@ -4,24 +4,14 @@ import { supabase } from '../../lib/supabase';
 import { AI_KEYS, aiComplete, cspAllowsOrigin, loadAiConfig, type AiConfig } from '../../lib/ai';
 import { ImageInput } from './ResourceManager';
 import { SettingsForm } from './SettingsForm';
+import { SITE_KEYS } from './pageContent';
 
 const inputClass =
   'w-full px-3 py-2 rounded-lg bg-neutral-900 border border-neutral-700 text-sm text-neutral-100 ' +
   'placeholder-neutral-500 focus:outline-none focus:border-neutral-400 transition-colors';
 
 // Kunci mengikuti SettingsController::updateSite di repo acuan.
-const SITE_KEYS: { key: string; label: string; type?: string }[] = [
-  { key: 'site_tagline', label: 'Tagline' },
-  { key: 'site_description', label: 'Deskripsi' },
-  { key: 'site_email', label: 'Email kontak', type: 'email' },
-  { key: 'site_whatsapp', label: 'WhatsApp' },
-  { key: 'site_location', label: 'Lokasi' },
-  { key: 'social_github', label: 'GitHub', type: 'url' },
-  { key: 'social_linkedin', label: 'LinkedIn', type: 'url' },
-  { key: 'social_facebook', label: 'Facebook', type: 'url' },
-  { key: 'blog_heading', label: 'Judul halaman blog' },
-  { key: 'blog_subtitle', label: 'Subjudul halaman blog' },
-];
+
 
 const Card: React.FC<{ title: string; desc: string; children: React.ReactNode }> = ({ title, desc, children }) => (
   <section className="rounded-xl border border-neutral-800 p-5 flex flex-col gap-4">

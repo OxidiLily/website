@@ -128,7 +128,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('project')}
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-300 hover:text-white transition-colors cursor-pointer group self-start sm:self-auto py-1"
               >
-                <span>View all projects</span>
+                <span>{t.home_featured_cta}</span>
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -207,7 +207,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               <div className="w-28 h-28 sm:w-44 sm:h-44 rounded-2xl overflow-hidden border border-neutral-800 shrink-0 shadow-2xl">
                 <img
                   src={t.home_teaser_image || aboutMePortrait}
-                  alt="Designer portrait"
+                  alt=""
                   className="w-full h-full object-cover"
                   onError={(e) => { e.currentTarget.src = aboutMePortrait; }}
                   referrerPolicy="no-referrer"
@@ -228,7 +228,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 onClick={() => onNavigate('blog')}
                 className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-400 hover:text-white transition-colors cursor-pointer group self-start sm:self-auto py-1"
               >
-                <span>View all articles</span>
+                <span>{t.home_blog_cta}</span>
                 <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -255,7 +255,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     </p>
                   </div>
                   <div className="mt-5 pt-3.5 border-t border-neutral-900 flex items-center justify-between text-xs text-neutral-400 group-hover:text-white transition-colors">
-                    <span>Read Article</span>
+                    <span>{t.home_blog_card_cta}</span>
                     <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>

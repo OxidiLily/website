@@ -15,7 +15,126 @@ export interface PageEditor {
   cards: { title: string; desc: string; fields: SettingField[] }[];
 }
 
+// Hanya kunci yang dipakai LEBIH DARI SATU halaman. Teks khusus satu halaman
+// ada di menu Halaman, dan kunci lama yang tidak menggerakkan apa pun
+// (site_tagline, site_whatsapp, blog_subtitle) sengaja tidak ditampilkan lagi:
+// medan yang tidak mengubah apa-apa di situs lebih membingungkan daripada
+// tidak ada medannya sama sekali.
+export const SITE_KEYS: { key: string; label: string; type?: string }[] = [
+  { key: 'site_name', label: 'Nama situs' },
+  { key: 'site_description', label: 'Deskripsi situs (SEO & pratinjau tautan)' },
+  { key: 'site_location', label: 'Lokasi' },
+  { key: 'site_email', label: 'Email kontak', type: 'email' },
+  { key: 'site_phone', label: 'Telepon' },
+  { key: 'site_website', label: 'Situs (teks tampil)' },
+  { key: 'site_website_url', label: 'Situs (alamat tautan)', type: 'url' },
+];
+
 export const PAGE_EDITORS = {
+  page_nav: {
+    title: 'Navigasi & judul tab',
+    subtitle: 'Nama menu di navbar, footer, dan tab pencarian — semuanya dari kunci yang sama.',
+    cards: [
+      {
+        title: 'Menu',
+        desc: 'Dipakai bersamaan oleh navbar atas, dock mobile, tautan footer, dan tab penyaring pencarian.',
+        fields: [
+          { key: 'site_name', label: 'Nama situs (wordmark)' },
+          { key: 'nav_home', label: 'Menu Home' },
+          { key: 'nav_project', label: 'Menu Project' },
+          { key: 'nav_blog', label: 'Menu Blog' },
+          { key: 'nav_about', label: 'Menu About' },
+          { key: 'nav_contact', label: 'Menu Contact' },
+          { key: 'nav_search_label', label: 'Tombol pencarian' },
+          { key: 'nav_chat_label', label: 'Tombol Chat AI' },
+          { key: 'loading_text', label: 'Teks saat halaman dimuat' },
+        ],
+      },
+      {
+        title: 'Judul tab browser',
+        desc: 'Yang tertulis di tab dan jadi judul bookmark.',
+        fields: [
+          { key: 'title_home', label: 'Home' },
+          { key: 'title_project', label: 'Project' },
+          { key: 'title_blog', label: 'Blog' },
+          { key: 'title_about', label: 'About' },
+          { key: 'title_contact', label: 'Contact' },
+          { key: 'title_admin', label: 'Admin' },
+        ],
+      },
+    ],
+  },
+
+  page_search: {
+    title: 'Pencarian',
+    subtitle: 'Teks di dalam modal pencarian global.',
+    cards: [
+      {
+        title: 'Kotak & petunjuk',
+        desc: 'Yang tampil sebelum dan selama mengetik.',
+        fields: [
+          { key: 'search_placeholder', label: 'Contoh isian kotak cari' },
+          { key: 'search_filter_all', label: 'Tab "semua konten"' },
+          { key: 'search_filter_home', label: 'Tab Home' },
+          { key: 'search_filter_project', label: 'Tab Project' },
+          { key: 'search_filter_blog', label: 'Tab Blog' },
+          { key: 'search_filter_about', label: 'Tab About' },
+          { key: 'search_filter_contact', label: 'Tab Contact' },
+          { key: 'search_suggestions_label', label: 'Judul saran cepat' },
+          { key: 'search_found_label', label: 'Awalan jumlah hasil', hint: 'Angkanya ditambahkan otomatis.' },
+          { key: 'search_recommended_label', label: 'Judul hasil rekomendasi' },
+          { key: 'search_nav_hint', label: 'Petunjuk tombol panah' },
+          { key: 'search_hint_select', label: 'Label tombol Enter' },
+          { key: 'search_hint_navigate', label: 'Label tombol panah' },
+          { key: 'search_hint_close', label: 'Petunjuk menutup', hint: 'Tulis {esc} di tempat tombol ESC muncul.' },
+        ],
+      },
+      {
+        title: 'Saat tidak ada hasil',
+        desc: 'Ditampilkan kalau kata kunci tidak cocok dengan apa pun.',
+        fields: [
+          { key: 'search_empty_title', label: 'Judul' },
+          { key: 'search_empty_text', label: 'Keterangan', type: 'textarea', hint: 'Tulis {query} di tempat kata kunci pengunjung muncul.' },
+          { key: 'search_clear_label', label: 'Tombol bersihkan' },
+        ],
+      },
+    ],
+  },
+
+  page_assistant: {
+    title: 'Asisten AI (halaman publik)',
+    subtitle: 'Jendela Chat AI untuk pengunjung. Endpoint dan API key-nya ada di Pengaturan → AI Agent dan TIDAK pernah dibaca pengunjung.',
+    cards: [
+      {
+        title: 'Tampilan',
+        desc: 'Kepala jendela dan kotak ketik.',
+        fields: [
+          { key: 'assistant_title', label: 'Judul' },
+          { key: 'assistant_badge', label: 'Lencana status' },
+          { key: 'assistant_subtitle', label: 'Subjudul' },
+          { key: 'assistant_placeholder', label: 'Contoh isian kotak ketik' },
+          { key: 'assistant_greeting', label: 'Sapaan pembuka', type: 'textarea' },
+        ],
+      },
+      {
+        title: 'Jawaban bawaan',
+        desc: 'Dipakai saat pertanyaan pengunjung mengandung kata kuncinya. Tiap jawaban punya satu tombol arah.',
+        fields: [
+          { key: 'assistant_reply_project', label: 'Jawaban: proyek', type: 'textarea' },
+          { key: 'assistant_action_project', label: 'Tombol: proyek' },
+          { key: 'assistant_reply_stack', label: 'Jawaban: teknologi', type: 'textarea' },
+          { key: 'assistant_action_stack', label: 'Tombol: teknologi' },
+          { key: 'assistant_reply_blog', label: 'Jawaban: blog', type: 'textarea' },
+          { key: 'assistant_action_blog', label: 'Tombol: blog' },
+          { key: 'assistant_reply_contact', label: 'Jawaban: kontak', type: 'textarea' },
+          { key: 'assistant_action_contact', label: 'Tombol: kontak' },
+          { key: 'assistant_reply_default', label: 'Jawaban lain-lain', type: 'textarea', hint: 'Tulis {pertanyaan} di tempat pertanyaan pengunjung muncul.' },
+          { key: 'assistant_action_default', label: 'Tombol lain-lain' },
+        ],
+      },
+    ],
+  },
+
   page_home: {
     title: 'Halaman Home',
     subtitle: 'Teks hero, sorotan, dan ajakan di halaman depan.',
@@ -54,6 +173,15 @@ export const PAGE_EDITORS = {
         ],
       },
       {
+        title: 'Tautan & tombol',
+        desc: 'Teks tautan di sudut tiap bagian.',
+        fields: [
+          { key: 'home_featured_cta', label: 'Tautan "lihat semua proyek"' },
+          { key: 'home_blog_cta', label: 'Tautan "lihat semua artikel"' },
+          { key: 'home_blog_card_cta', label: 'Tautan di kartu artikel' },
+        ],
+      },
+      {
         title: 'Ajakan penutup',
         desc: 'Blok terakhir sebelum footer.',
         fields: [
@@ -77,6 +205,16 @@ export const PAGE_EDITORS = {
           { key: 'project_intro', label: 'Keterangan', type: 'textarea' },
         ],
       },
+      {
+        title: 'Penyaring & modal',
+        desc: 'Label penyaring kategori dan isi jendela detail proyek.',
+        fields: [
+          { key: 'project_filter_label', label: 'Label penyaring' },
+          { key: 'project_category_all', label: 'Nama kategori "semua"' },
+          { key: 'project_modal_stack_heading', label: 'Judul daftar teknologi' },
+          { key: 'project_modal_close', label: 'Tombol tutup' },
+        ],
+      },
     ],
   },
 
@@ -91,6 +229,24 @@ export const PAGE_EDITORS = {
           { key: 'blog_hero_title', label: 'Judul hero' },
           { key: 'blog_hero_subtitle', label: 'Keterangan hero', type: 'textarea' },
           { key: 'blog_heading', label: 'Judul daftar artikel' },
+          { key: 'blog_category_all', label: 'Nama kategori "semua"' },
+          { key: 'blog_load_more', label: 'Tombol muat lebih banyak' },
+          { key: 'blog_featured_cta', label: 'Tautan kartu utama', hint: 'Dipakai kalau artikelnya tidak punya label sendiri.' },
+          { key: 'blog_card_cta', label: 'Tautan kartu biasa', hint: 'Dipakai kalau artikelnya tidak punya label sendiri.' },
+        ],
+      },
+      {
+        title: 'Halaman detail artikel',
+        desc: 'Label di sekitar isi artikel yang sedang dibaca.',
+        fields: [
+          { key: 'post_toc_label', label: 'Judul daftar isi' },
+          { key: 'post_jump_label', label: 'Judul lompat bagian (mobile)' },
+          { key: 'post_overview', label: 'Nama bagian bawaan' },
+          { key: 'post_last_updated', label: 'Label terakhir diperbarui' },
+          { key: 'post_back', label: 'Tautan kembali' },
+          { key: 'post_share', label: 'Tombol bagikan' },
+          { key: 'post_copied', label: 'Tombol bagikan setelah disalin' },
+          { key: 'post_bookmark', label: 'Tombol simpan' },
         ],
       },
     ],
@@ -142,6 +298,27 @@ export const PAGE_EDITORS = {
         fields: [
           { key: 'contact_form_heading', label: 'Judul' },
           { key: 'contact_form_note', label: 'Catatan waktu balasan' },
+          { key: 'contact_field_first_name', label: 'Label nama depan' },
+          { key: 'contact_ph_first_name', label: 'Contoh nama depan' },
+          { key: 'contact_field_last_name', label: 'Label nama belakang' },
+          { key: 'contact_ph_last_name', label: 'Contoh nama belakang' },
+          { key: 'contact_field_email', label: 'Label email' },
+          { key: 'contact_ph_email', label: 'Contoh email' },
+          { key: 'contact_field_subject', label: 'Label subjek' },
+          { key: 'contact_ph_subject', label: 'Contoh subjek' },
+          { key: 'contact_field_message', label: 'Label pesan' },
+          { key: 'contact_ph_message', label: 'Contoh pesan' },
+          { key: 'contact_form_submit', label: 'Tombol kirim' },
+          { key: 'contact_form_sending', label: 'Tombol saat mengirim' },
+        ],
+      },
+      {
+        title: 'Setelah pesan terkirim',
+        desc: 'Yang menggantikan formulir begitu pesan masuk.',
+        fields: [
+          { key: 'contact_success_title', label: 'Judul' },
+          { key: 'contact_success_text', label: 'Keterangan', type: 'textarea', hint: 'Tulis {nama} di tempat nama pengirim muncul.' },
+          { key: 'contact_success_cta', label: 'Tombol kirim lagi' },
         ],
       },
       {
@@ -170,7 +347,8 @@ export const PAGE_EDITORS = {
           { key: 'contact_map_address', label: 'Alamat', type: 'textarea' },
           { key: 'contact_map_lat', label: 'Lintang (latitude)' },
           { key: 'contact_map_lng', label: 'Bujur (longitude)' },
-          { key: 'contact_map_link', label: 'Tautan "Open in Maps"', type: 'url' },
+          { key: 'contact_map_link', label: 'Alamat tautan peta', type: 'url' },
+          { key: 'contact_map_cta', label: 'Teks tombol peta' },
         ],
       },
     ],
@@ -185,6 +363,9 @@ export const PAGE_EDITORS = {
         desc: 'Email footer mengikuti Email di halaman Contact.',
         fields: [
           { key: 'footer_brand', label: 'Label kiri atas' },
+          { key: 'footer_label_inquiry', label: 'Judul kolom email' },
+          { key: 'footer_label_channels', label: 'Judul kolom kanal' },
+          { key: 'footer_label_base', label: 'Judul kolom lokasi' },
           { key: 'site_location', label: 'Lokasi (kanan atas)' },
           { key: 'footer_wordmark', label: 'Tulisan besar' },
           { key: 'footer_base', label: 'Basis & zona waktu' },
@@ -195,11 +376,16 @@ export const PAGE_EDITORS = {
         title: 'Kanal sosial',
         desc: 'Yang dikosongkan tidak ditampilkan di footer.',
         fields: [
-          { key: 'social_twitter', label: 'X / Twitter', type: 'url' },
-          { key: 'social_github', label: 'GitHub', type: 'url' },
-          { key: 'social_dribbble', label: 'Dribbble', type: 'url' },
-          { key: 'social_linkedin', label: 'LinkedIn', type: 'url' },
-          { key: 'social_facebook', label: 'Facebook', type: 'url' },
+          { key: 'social_twitter_label', label: 'Kanal 1 — nama' },
+          { key: 'social_twitter', label: 'Kanal 1 — alamat', type: 'url' },
+          { key: 'social_github_label', label: 'Kanal 2 — nama' },
+          { key: 'social_github', label: 'Kanal 2 — alamat', type: 'url' },
+          { key: 'social_dribbble_label', label: 'Kanal 3 — nama' },
+          { key: 'social_dribbble', label: 'Kanal 3 — alamat', type: 'url' },
+          { key: 'social_linkedin_label', label: 'Kanal 4 — nama' },
+          { key: 'social_linkedin', label: 'Kanal 4 — alamat', type: 'url' },
+          { key: 'social_facebook_label', label: 'Kanal 5 — nama' },
+          { key: 'social_facebook', label: 'Kanal 5 — alamat', type: 'url' },
         ],
       },
     ],

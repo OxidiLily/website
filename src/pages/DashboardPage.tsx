@@ -27,6 +27,7 @@ const NAV: {
   {
     id: 'pages', label: 'Halaman', icon: PanelsTopLeft,
     children: [
+      { view: 'page_nav', label: 'Navigasi & judul tab' },
       { view: 'page_home', label: 'Home' },
       { view: 'page_project', label: 'Project' },
       { view: 'page_blog', label: 'Blog' },
@@ -35,6 +36,8 @@ const NAV: {
       { view: 'experiences', label: 'About — Timeline' },
       { view: 'page_contact', label: 'Contact' },
       { view: 'page_footer', label: 'Footer & identitas' },
+      { view: 'page_search', label: 'Pencarian' },
+      { view: 'page_assistant', label: 'Asisten AI' },
     ],
   },
   {

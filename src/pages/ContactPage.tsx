@@ -180,9 +180,9 @@ export const ContactPage: React.FC = () => {
                 <div className="w-12 h-12 rounded-full bg-white text-black flex items-center justify-center mx-auto shadow-md">
                   <CheckCircle2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white">Message Received!</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white">{t.contact_success_title}</h3>
                 <p className="text-neutral-400 text-xs sm:text-sm max-w-sm mx-auto">
-                  Thank you for reaching out, {formData.firstName}. We will review your inquiry and get back to you shortly.
+                  {t.contact_success_text.replace('{nama}', formData.firstName)}
                 </p>
                 <button
                   type="button"
@@ -192,7 +192,7 @@ export const ContactPage: React.FC = () => {
                   }}
                   className="min-h-[44px] mt-3 px-6 py-2.5 rounded-xl bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white hover:bg-neutral-800 active:scale-95 transition-all cursor-pointer"
                 >
-                  Send another message
+                  {t.contact_success_cta}
                 </button>
               </motion.div>
             ) : (
@@ -201,12 +201,12 @@ export const ContactPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-medium text-neutral-300">
-                      First Name <span className="text-red-400">*</span>
+                      {t.contact_field_first_name} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="Jordan"
+                      placeholder={t.contact_ph_first_name}
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                       className="w-full px-3.5 py-3 sm:py-2.5 bg-neutral-900/90 border border-neutral-800 rounded-xl text-base sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500 transition-colors"
@@ -214,12 +214,12 @@ export const ContactPage: React.FC = () => {
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-medium text-neutral-300">
-                      Last Name <span className="text-red-400">*</span>
+                      {t.contact_field_last_name} <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="Kim"
+                      placeholder={t.contact_ph_last_name}
                       value={formData.lastName}
                       onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                       className="w-full px-3.5 py-3 sm:py-2.5 bg-neutral-900/90 border border-neutral-800 rounded-xl text-base sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500 transition-colors"
@@ -230,12 +230,12 @@ export const ContactPage: React.FC = () => {
                 {/* Email */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-neutral-300">
-                    Email <span className="text-red-400">*</span>
+                    {t.contact_field_email} <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="email"
                     required
-                    placeholder="you@company.com"
+                    placeholder={t.contact_ph_email}
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-3.5 py-3 sm:py-2.5 bg-neutral-900/90 border border-neutral-800 rounded-xl text-base sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500 transition-colors"
@@ -245,12 +245,12 @@ export const ContactPage: React.FC = () => {
                 {/* Subject */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-neutral-300">
-                    Subject <span className="text-red-400">*</span>
+                    {t.contact_field_subject} <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Question about blocks / project inquiry"
+                    placeholder={t.contact_ph_subject}
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full px-3.5 py-3 sm:py-2.5 bg-neutral-900/90 border border-neutral-800 rounded-xl text-base sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500 transition-colors"
@@ -260,12 +260,12 @@ export const ContactPage: React.FC = () => {
                 {/* Message */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-neutral-300">
-                    Message <span className="text-red-400">*</span>
+                    {t.contact_field_message} <span className="text-red-400">*</span>
                   </label>
                   <textarea
                     required
                     rows={4}
-                    placeholder="Tell us what you are building..."
+                    placeholder={t.contact_ph_message}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-3.5 py-3 sm:py-2.5 bg-neutral-900/90 border border-neutral-800 rounded-xl text-base sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-500 transition-colors resize-y"
@@ -283,7 +283,7 @@ export const ContactPage: React.FC = () => {
                   disabled={sending}
                   className="w-full min-h-[44px] py-3 rounded-xl bg-white text-black font-semibold text-sm hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer shadow-lg flex items-center justify-center disabled:opacity-60"
                 >
-                  {sending ? 'Mengirim…' : 'Send message'}
+                  {sending ? t.contact_form_sending : t.contact_form_submit}
                 </button>
               </form>
             )}
@@ -370,7 +370,7 @@ export const ContactPage: React.FC = () => {
           <div className="relative w-full h-[320px] sm:h-[420px] md:h-[480px] rounded-2xl sm:rounded-3xl overflow-hidden border border-neutral-800/90 bg-neutral-950 shadow-2xl group">
             {/* Real Google Map Embed (Alun-Alun Batang) */}
             <iframe
-              title="Google Maps Location - Alun-Alun Batang"
+              title={t.contact_map_title}
               src={`https://maps.google.com/maps?q=${t.contact_map_lat},${t.contact_map_lng}&hl=en&z=16&output=embed`}
               className="w-full h-full border-0 filter invert-[90%] hue-rotate-180 contrast-125 brightness-90 grayscale-[20%] group-hover:filter-none transition-all duration-500"
               loading="lazy"
@@ -400,7 +400,7 @@ export const ContactPage: React.FC = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-colors shadow-md cursor-pointer"
                 >
-                  <span>Open in Maps</span>
+                  <span>{t.contact_map_cta}</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </a>
 
@@ -433,7 +433,7 @@ export const ContactPage: React.FC = () => {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-black text-xs font-bold active:bg-neutral-200 transition-colors shadow-md cursor-pointer"
               >
-                <span>Open in Maps</span>
+                <span>{t.contact_map_cta}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
 

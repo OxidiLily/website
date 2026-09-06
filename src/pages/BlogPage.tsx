@@ -52,7 +52,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   // Judul tab untuk post yang sedang dibuka. App yang memulihkan judul halaman
   // saat post ditutup, jadi di sini cukup cabang "ada post".
   React.useEffect(() => {
-    if (selectedPost) document.title = `${selectedPost.title} — OxidiLily`;
+    if (selectedPost) document.title = `${selectedPost.title} — ${t.site_name}`;
   }, [selectedPost]);
 
   const categories = ['All', ...Array.from(new Set(posts.map((p) => p.category)))];
@@ -190,7 +190,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
                   <div className="pt-2">
                     <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white group-hover:gap-2.5 transition-all">
-                      <span>{featuredPost.actionLabel || 'Discover the Future'}</span>
+                      <span>{featuredPost.actionLabel || t.blog_featured_cta}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -238,7 +238,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                         : 'text-neutral-600 dark:text-neutral-200 group-hover:text-neutral-950 dark:group-hover:text-white'
                     }`}
                   >
-                    {cat}
+                    {cat === 'All' ? t.blog_category_all : cat}
                   </span>
                 </button>
               );
@@ -286,7 +286,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                 {/* Action Link at Bottom */}
                 <div className="px-6 pb-6 pt-0">
                   <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-950 dark:text-white group-hover:gap-2.5 transition-all">
-                    <span>{post.actionLabel || 'Read Guide'}</span>
+                    <span>{post.actionLabel || t.blog_card_cta}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
@@ -302,7 +302,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
               onClick={handleLoadMore}
               className="px-6 py-2.5 rounded-lg bg-neutral-100 dark:bg-neutral-900 hover:bg-neutral-200 dark:hover:bg-neutral-800 border border-neutral-200 dark:border-neutral-800 text-xs sm:text-sm font-semibold text-neutral-800 dark:text-neutral-200 hover:text-black dark:hover:text-white transition-all duration-200 shadow-sm cursor-pointer active:scale-98"
             >
-              Load More
+              {t.blog_load_more}
             </button>
           </div>
         )}

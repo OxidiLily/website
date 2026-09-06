@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, X, Send, Bot, Wand2, Lightbulb, Code2, ArrowRight } from 'lucide-react';
 import { PageId } from '../types';
+import { useSettings } from '../lib/content';
 
 interface AiAssistantModalProps {
   isOpen: boolean;
@@ -31,13 +32,19 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   onClose,
   onNavigate,
 }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 'welcome',
-      sender: 'ai',
-      text: 'Halo! Saya OxidiLily AI Assistant. Saya siap membantu kamu mengeksplorasi portfolio, proyek 3D physics, artikel engineering, atau mendiskusikan peluang kolaborasi.',
-    },
-  ]);
+  const t = useSettings();
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  // Sapaan pembuka datang dari panel. Hanya menimpa selama percakapan masih
+  // kosong, supaya jawaban settings yang telat tidak menghapus obrolan yang
+  // sudah berjalan.
+  useEffect(() => {
+    setMessages((prev) =>
+      prev.length === 0 || (prev.length === 1 && prev[0].id === 'welcome')
+        ? [{ id: 'welcome', sender: 'ai', text: t.assistant_greeting }]
+        : prev,
+    );
+  }, [t.assistant_greeting]);
   const [inputVal, setInputVal] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -69,20 +76,20 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
 
       const lower = text.toLowerCase();
       if (lower.includes('proyek') || lower.includes('project') || lower.includes('karya') || lower.includes('portfolio')) {
-        reply = 'OxidiLily memiliki beberapa proyek unggulan seperti 3D WebGL Ballpit, Design System Neomorphic, dan E-Commerce Platform berkecapatan tinggi.';
-        action = { label: 'Buka Halaman Projects', targetPage: 'project' };
+        reply = t.assistant_reply_project;
+        action = { label: t.assistant_action_project, targetPage: 'project' };
       } else if (lower.includes('tech') || lower.includes('skill') || lower.includes('stack') || lower.includes('bahasa')) {
-        reply = 'Stack utama mencakup React 19, TypeScript, Tailwind CSS, Three.js / OGL untuk visual 3D WebGL, Motion, serta Next.js dan Node.js di sisi arsitektur modern.';
-        action = { label: 'Pelajari di About', targetPage: 'about' };
+        reply = t.assistant_reply_stack;
+        action = { label: t.assistant_action_stack, targetPage: 'about' };
       } else if (lower.includes('blog') || lower.includes('artikel') || lower.includes('baca')) {
-        reply = 'Kamu dapat membaca artikel mendalam tentang WebGL Performance, Interactive Physics, dan Modern UI Architecture di halaman Blog.';
-        action = { label: 'Eksplor Blog', targetPage: 'blog' };
+        reply = t.assistant_reply_blog;
+        action = { label: t.assistant_action_blog, targetPage: 'blog' };
       } else if (lower.includes('kontak') || lower.includes('hubungi') || lower.includes('email') || lower.includes('hire') || lower.includes('kolaborasi')) {
-        reply = 'Kami terbuka untuk freelance, proyek studio, dan konsultasi arsitektur frontend. Silakan kirim pesan melalui halaman Contact.';
-        action = { label: 'Kirim Pesan', targetPage: 'contact' };
+        reply = t.assistant_reply_contact;
+        action = { label: t.assistant_action_contact, targetPage: 'contact' };
       } else {
-        reply = `Terima kasih atas pertanyaannya mengenai "${text}". Kamu dapat menjelajahi seluruh bagian website kami untuk melihat detail lebih lengkap.`;
-        action = { label: 'Kembali ke Home', targetPage: 'home' };
+        reply = t.assistant_reply_default.replace('{pertanyaan}', text);
+        action = { label: t.assistant_action_default, targetPage: 'home' };
       }
 
       const aiMsg: Message = {
@@ -128,12 +135,12 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 </div>
                 <div>
                   <div className="flex items-center gap-1.5">
-                    <h3 className="text-sm font-semibold text-white tracking-wide">AI Assistant</h3>
+                    <h3 className="text-sm font-semibold text-white tracking-wide">{t.assistant_title}</h3>
                     <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                      Live
+                      {t.assistant_badge}
                     </span>
                   </div>
-                  <p className="text-xs text-neutral-400">Interactive Creative Guide</p>
+                  <p className="text-xs text-neutral-400">{t.assistant_subtitle}</p>
                 </div>
               </div>
 
@@ -224,7 +231,7 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
-                placeholder="Tanyakan sesuatu pada OxidiLily AI..."
+                placeholder={t.assistant_placeholder}
                 className="flex-1 bg-neutral-900 border border-white/15 rounded-full px-4 py-2.5 text-xs sm:text-sm text-white placeholder-neutral-500 focus:outline-none focus:border-indigo-400 transition-colors"
               />
               <button

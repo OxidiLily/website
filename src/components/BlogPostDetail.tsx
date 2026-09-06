@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { BlogPost, PageId } from '../types';
 import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
+import { useSettings } from '../lib/content';
 
 interface BlogPostDetailProps {
   post: BlogPost;
@@ -14,6 +15,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
   onBack,
   onNavigateHome,
 }) => {
+  const t = useSettings();
   const [activeSection, setActiveSection] = useState<string>(
     post.sections?.[0]?.id || 'overview'
   );
@@ -97,10 +99,10 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             <button
               onClick={handleShare}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-neutral-800 bg-neutral-950 text-xs font-medium text-neutral-300 hover:bg-neutral-900 hover:text-white transition-colors cursor-pointer"
-              title="Share article link"
+              title={t.post_share}
             >
               {isCopied ? <Check className="w-3.5 h-3.5 text-white" /> : <Share2 className="w-3.5 h-3.5" />}
-              <span>{isCopied ? 'Copied' : 'Share'}</span>
+              <span>{isCopied ? t.post_copied : t.post_share}</span>
             </button>
             <button
               onClick={() => setIsSaved(!isSaved)}
@@ -109,7 +111,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                   ? 'bg-white text-black border-white'
                   : 'border-neutral-800 bg-neutral-950 text-neutral-300 hover:bg-neutral-900 hover:text-white'
               }`}
-              title="Bookmark article"
+              title={t.post_bookmark}
             >
               <Bookmark className="w-3.5 h-3.5" />
             </button>
@@ -152,7 +154,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
         {post.sections && post.sections.length > 0 && (
           <div className="md:hidden mt-6 pt-4 border-t border-neutral-900">
             <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-2">
-              JUMP TO SECTION:
+              {t.post_jump_label}
             </div>
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
               {post.sections.map((sec) => {
@@ -198,7 +200,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             {/* Last Updated */}
             <div>
               <h3 className="text-xs sm:text-sm font-bold text-white mb-1">
-                Last Updated
+                {t.post_last_updated}
               </h3>
               <p className="text-xs sm:text-sm text-neutral-400">
                 {post.lastUpdated || post.date}
@@ -212,7 +214,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-400 hover:text-white transition-colors cursor-pointer group"
               >
                 <ArrowLeft className="w-3.5 h-3.5 transform group-hover:-translate-x-1 transition-transform" />
-                <span>Back to all articles</span>
+                <span>{t.post_back}</span>
               </button>
             </div>
           </div>
@@ -322,10 +324,10 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             </div>
           </div>
 
-          {/* Right Column: Sticky Table of Contents "ON THIS PAGE" */}
+          {/* Right Column: daftar isi lengket, judulnya dari settings */}
           <div className="md:col-span-3 sticky top-28 space-y-3">
             <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 font-mono">
-              ON THIS PAGE
+              {t.post_toc_label}
             </div>
 
             <div className="space-y-1 text-xs sm:text-sm">
@@ -351,7 +353,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                   className="block w-full text-left py-1 pl-2.5 border-l-2 border-white font-bold text-white"
                 >
-                  Overview
+                  {t.post_overview}
                 </button>
               )}
             </div>

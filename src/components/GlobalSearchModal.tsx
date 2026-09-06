@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { fetchBlogPosts, fetchProjects, fetchSettings } from '../lib/content';
+import { fetchBlogPosts, fetchProjects, fetchSettings, useSettings } from '../lib/content';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
@@ -36,13 +36,17 @@ interface GlobalSearchModalProps {
   onSelectProject?: (projectId: string) => void;
 }
 
-const categoryFilters: { id: SearchCategoryFilter; label: string; icon: React.FC<{ className?: string }> }[] = [
-  { id: 'all', label: 'All Content', icon: Sparkles },
-  { id: 'home', label: 'Home', icon: Home },
-  { id: 'project', label: 'Projects', icon: Layers },
-  { id: 'blog', label: 'Blog', icon: BookOpen },
-  { id: 'about', label: 'About', icon: User },
-  { id: 'contact', label: 'Contact', icon: Mail },
+// Tab penyaring punya kunci sendiri, TIDAK berbagi dengan nama menu navbar.
+// Keduanya memang mirip tapi tidak sama — tab ini dulu tertulis "Projects"
+// sementara menunya "Project", dan menyatukannya diam-diam mengubah tampilan
+// yang sudah ada. Sekarang dua-duanya disunting dari panel, masing-masing.
+const categoryFilters: { id: SearchCategoryFilter; key: string; icon: React.FC<{ className?: string }> }[] = [
+  { id: 'all', key: 'search_filter_all', icon: Sparkles },
+  { id: 'home', key: 'search_filter_home', icon: Home },
+  { id: 'project', key: 'search_filter_project', icon: Layers },
+  { id: 'blog', key: 'search_filter_blog', icon: BookOpen },
+  { id: 'about', key: 'search_filter_about', icon: User },
+  { id: 'contact', key: 'search_filter_contact', icon: Mail },
 ];
 
 export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
@@ -55,6 +59,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
   // Indeks pencarian mengikuti isi database, bukan hanya siteData.ts statis.
   // Diambil sekali saat modal pertama dibuka supaya halaman publik tidak
   // membayar permintaan ini kalau pencarian tidak pernah dipakai.
+  const t = useSettings();
   const [index, setIndex] = useState(searchIndex);
   const sudahAmbil = useRef(false);
   useEffect(() => {
@@ -236,7 +241,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleInputKeyDown}
-                placeholder="Search across Home, Projects, Blog, About, Contact..."
+                placeholder={t.search_placeholder}
                 className="w-full bg-transparent text-white placeholder-neutral-500 text-sm sm:text-base font-normal focus:outline-none tracking-tight"
               />
 
@@ -278,7 +283,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                     }`}
                   >
                     <Icon className="w-3 h-3" />
-                    <span>{filter.label}</span>
+                    <span>{t[filter.key]}</span>
                   </button>
                 );
               })}
@@ -294,7 +299,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                 <div className="px-2 pt-1 pb-3">
                   <div className="flex items-center gap-1.5 text-xs text-neutral-400 font-mono uppercase tracking-wider mb-2.5">
                     <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Quick Suggestions</span>
+                    <span>{t.search_suggestions_label}</span>
                   </div>
                   <div className="flex flex-wrap gap-1.5">
                     {popularSearchQueries.map((tag) => (
@@ -320,10 +325,10 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                   <div className="px-2 py-1 flex items-center justify-between text-[11px] font-mono text-neutral-400">
                     <span>
                       {query.trim()
-                        ? `Found ${searchResults.length} result${searchResults.length > 1 ? 's' : ''}`
-                        : `Recommended (${searchResults.length})`}
+                        ? `${t.search_found_label} ${searchResults.length}`
+                        : `${t.search_recommended_label} (${searchResults.length})`}
                     </span>
-                    <span className="hidden sm:inline">Use ↑ ↓ keys to navigate</span>
+                    <span className="hidden sm:inline">{t.search_nav_hint}</span>
                   </div>
 
                   {searchResults.map((item, index) => {
@@ -420,9 +425,11 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                   <div className="w-12 h-12 rounded-2xl bg-neutral-900 border border-neutral-800 flex items-center justify-center mx-auto text-neutral-500">
                     <Search className="w-5 h-5" />
                   </div>
-                  <h4 className="text-base font-bold text-white">No results found</h4>
+                  <h4 className="text-base font-bold text-white">{t.search_empty_title}</h4>
                   <p className="text-xs sm:text-sm text-neutral-400 max-w-sm mx-auto">
-                    We couldn't find any content matching "<span className="text-white font-medium">{query}</span>". Try searching for topics like React, Three.js, Accessibility, or Location.
+                    {t.search_empty_text.split('{query}')[0]}
+                    <span className="text-white font-medium">{query}</span>
+                    {t.search_empty_text.split('{query}')[1] ?? ''}
                   </p>
                   <div className="pt-2 flex justify-center gap-2">
                     <button
@@ -432,7 +439,7 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
                       }}
                       className="px-3.5 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-xs font-semibold text-white hover:bg-neutral-800 transition-all cursor-pointer"
                     >
-                      Clear Search
+                      {t.search_clear_label}
                     </button>
                   </div>
                 </div>
@@ -443,15 +450,19 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({
             <div className="px-4 sm:px-6 py-2.5 bg-[#0a0a0c] border-t border-neutral-850 flex items-center justify-between text-[11px] text-neutral-400 font-mono">
               <div className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-1">
-                  <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">↵</kbd> Select
+                  <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">↵</kbd> {t.search_hint_select}
                 </span>
                 <span className="inline-flex items-center gap-1">
                   <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">↑</kbd>
-                  <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">↓</kbd> Navigate
+                  <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">↓</kbd> {t.search_hint_navigate}
                 </span>
               </div>
               <div>
-                <span>Press <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">ESC</kbd> to close</span>
+                <span>
+                  {t.search_hint_close.split('{esc}')[0]}
+                  <kbd className="px-1.5 py-0.5 rounded bg-neutral-900 border border-neutral-800 text-white">ESC</kbd>
+                  {t.search_hint_close.split('{esc}')[1] ?? ''}
+                </span>
               </div>
             </div>
           </motion.div>

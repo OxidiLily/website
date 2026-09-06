@@ -15,6 +15,7 @@ import {
   LayoutDashboard
 } from 'lucide-react';
 import { PageId } from '../types';
+import { useSettings } from '../lib/content';
 import { AiAssistantModal } from './AiAssistantModal';
 import { GlobalSearchModal } from './GlobalSearchModal';
 
@@ -31,12 +32,15 @@ interface MobileNavItem {
   icon: React.FC<{ className?: string }>;
 }
 
-const desktopNavLinks: { id: PageId; name: string; href: string; badge?: string }[] = [
-  { id: 'home', name: 'Home', href: '#home' },
-  { id: 'project', name: 'Project', href: '#project' },
-  { id: 'blog', name: 'Blog', href: '#blog' },
-  { id: 'about', name: 'About', href: '#about' },
-  { id: 'contact', name: 'Contact', href: '#contact' },
+// Nama tiap menu diambil dari `settings` lewat kunci di bawah, jadi mengganti
+// label navigasi cukup dari panel admin. Urutan dan ikonnya tetap di kode —
+// itu struktur, bukan teks.
+const desktopNavLinks: { id: PageId; key: string; href: string; badge?: string }[] = [
+  { id: 'home', key: 'nav_home', href: '#home' },
+  { id: 'project', key: 'nav_project', href: '#project' },
+  { id: 'blog', key: 'nav_blog', href: '#blog' },
+  { id: 'about', key: 'nav_about', href: '#about' },
+  { id: 'contact', key: 'nav_contact', href: '#contact' },
 ];
 
 /**
@@ -63,7 +67,7 @@ const SiteLogo: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
     <img
       src="/logo.png"
-      alt="OxidiLily"
+      alt=""
       className={`${className} object-contain`}
       onError={() => setGagal(true)}
       decoding="async"
@@ -77,6 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectBlog,
   onSelectProject
 }) => {
+  const t = useSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredNav, setHoveredNav] = useState<PageId | null>(null);
   const [isAiOpen, setIsAiOpen] = useState(false);
@@ -146,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="relative w-5 h-5 flex items-center justify-center">
             <SiteLogo className="w-full h-full" />
           </div>
-          <span className="font-semibold text-white tracking-tight text-sm">OxidiLily</span>
+          <span className="font-semibold text-white tracking-tight text-sm">{t.site_name}</span>
         </button>
 
         {/* Mobile Header Quick Actions - intentionally empty to keep mobile clean as requested */}
@@ -193,7 +198,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="relative w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
               <SiteLogo className="w-full h-full" />
             </div>
-            <span className="font-semibold text-black tracking-tight text-sm sm:text-base">OxidiLily</span>
+            <span className="font-semibold text-black tracking-tight text-sm sm:text-base">{t.site_name}</span>
           </button>
 
           {/* Desktop/Tablet Center Navigation Links */}
@@ -231,7 +236,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     />
                   )}
 
-                  <span>{link.name}</span>
+                  <span>{t[link.key]}</span>
 
                   {link.badge && (
                     <span className="text-[10px] px-1.5 py-0.2 bg-black text-white rounded-full font-semibold">
@@ -250,11 +255,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setIsSearchOpen(true)}
-              aria-label="Search all content"
+              aria-label={t.nav_search_label}
               className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-neutral-100/90 hover:bg-neutral-200/90 border border-neutral-200 text-neutral-700 hover:text-black text-xs font-medium transition-all cursor-pointer select-none shadow-sm"
             >
               <Search className="w-3.5 h-3.5 text-neutral-500" />
-              <span className="text-xs font-medium text-neutral-800">Search</span>
+              <span className="text-xs font-medium text-neutral-800">{t.nav_search_label}</span>
               <kbd className="hidden lg:inline-flex items-center gap-0.5 text-[10px] font-mono px-1.5 py-0.5 bg-white text-neutral-700 rounded border border-neutral-200 shadow-2xs ml-0.5">
                 <span>⌘</span>K
               </kbd>
@@ -331,7 +336,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={() => setIsAiOpen(true)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.92 }}
-              aria-label="Buka AI Assistant"
+              aria-label={t.nav_chat_label}
               className="relative w-[50px] h-[50px] rounded-full p-[2px] bg-gradient-to-tr from-cyan-400 via-indigo-500 to-fuchsia-500 shadow-[0_10px_25px_rgba(99,102,241,0.6),0_0_15px_rgba(34,211,238,0.5)] cursor-pointer focus:outline-none group"
             >
               {/* Inner Circular Disc */}
@@ -351,7 +356,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* 1. Home */}
               <button
                 onClick={() => handleNavClick('home')}
-                aria-label="Home"
+                aria-label={t.nav_home}
                 className="relative p-0 m-0 border-0 bg-transparent cursor-pointer focus:outline-none"
               >
                 <div
@@ -368,7 +373,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* 2. Projects */}
               <button
                 onClick={() => handleNavClick('project')}
-                aria-label="Projects"
+                aria-label={t.nav_project}
                 className="relative p-0 m-0 border-0 bg-transparent cursor-pointer focus:outline-none"
               >
                 <div
@@ -385,7 +390,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* 3. Blog */}
               <button
                 onClick={() => handleNavClick('blog')}
-                aria-label="Blog"
+                aria-label={t.nav_blog}
                 className="relative p-0 m-0 border-0 bg-transparent cursor-pointer focus:outline-none"
               >
                 <div
@@ -408,7 +413,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* 4. Contact */}
               <button
                 onClick={() => handleNavClick('contact')}
-                aria-label="Contact"
+                aria-label={t.nav_contact}
                 className="relative p-0 m-0 border-0 bg-transparent cursor-pointer focus:outline-none"
               >
                 <div
@@ -425,7 +430,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* 5. About */}
               <button
                 onClick={() => handleNavClick('about')}
-                aria-label="About"
+                aria-label={t.nav_about}
                 className="relative p-0 m-0 border-0 bg-transparent cursor-pointer focus:outline-none"
               >
                 <div
@@ -442,7 +447,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* 6. Search (Paling Kanan) */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                aria-label="Search All Content"
+                aria-label={t.nav_search_label}
                 className="relative p-0 m-0 border-0 bg-transparent cursor-pointer focus:outline-none"
               >
                 <div
@@ -480,7 +485,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="hidden md:flex pointer-events-none absolute right-full mr-3 items-center opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 ease-out">
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-neutral-900/95 text-white border border-neutral-700/80 shadow-xl backdrop-blur-md text-xs font-semibold whitespace-nowrap">
             <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
-            <span>Chat AI</span>
+            <span>{t.nav_chat_label}</span>
           </div>
         </div>
 
@@ -490,7 +495,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           onClick={() => setIsAiOpen(true)}
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.94 }}
-          aria-label="Buka Chat AI"
+          aria-label={t.nav_chat_label}
           className="relative w-15 h-15 md:w-16 md:h-16 rounded-full bg-neutral-900/95 text-white border border-neutral-700/80 shadow-2xl backdrop-blur-md hover:bg-neutral-800 hover:border-cyan-400/70 transition-all flex items-center justify-center cursor-pointer select-none"
         >
           {/* Subtle glowing animated gradient border hover effect */}

@@ -13,7 +13,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { PAGE_EDITORS } from '../pages/admin/pageContent';
+import { PAGE_EDITORS, SITE_KEYS } from '../pages/admin/pageContent';
 import { defaultSettings } from './siteData';
 import { searchIndex } from './searchIndex';
 
@@ -73,6 +73,58 @@ for (const { id, sectionId } of jangkarStatis) {
   );
 }
 
+// ── 3. Tidak ada setelan yang tak bisa disunting dari panel ──────────────
+// Kebalikan dari pemeriksaan pertama: kunci yang punya cadangan tapi tidak
+// muncul di panel mana pun adalah teks yang tampil di situs tanpa ada cara
+// mengubahnya — persis keluhan yang memulai perubahan ini.
+const bisaDisunting = new Set([...kunciPanel, ...SITE_KEYS.map((f) => f.key)]);
+const takTerjangkau = Object.keys(defaultSettings).filter((k) => !bisaDisunting.has(k));
+assert.deepEqual(
+  takTerjangkau,
+  [],
+  `kunci berikut menggerakkan situs tapi tidak ada medannya di panel: ${takTerjangkau.join(', ')}`,
+);
+
+// ── 4. Halaman publik tidak lagi memuat teks yang dipatri ────────────────
+// Menangkap teks yang lolos masuk lagi ke .tsx alih-alih ke `settings`.
+// Daftar kecuali berisi hal yang memang BUKAN teks: lambang tombol, satuan,
+// dan tanda baca yang jadi bagian tata letak.
+const HALAMAN_PUBLIK = [
+  'src/App.tsx',
+  'src/components/Navbar.tsx',
+  'src/components/Footer.tsx',
+  'src/components/AboutMe.tsx',
+  'src/components/ToolsAndStack.tsx',
+  'src/components/GlobalSearchModal.tsx',
+  'src/components/AiAssistantModal.tsx',
+  'src/components/BlogPostDetail.tsx',
+  'src/pages/HomePage.tsx',
+  'src/pages/AboutPage.tsx',
+  'src/pages/ContactPage.tsx',
+  'src/pages/BlogPage.tsx',
+  'src/pages/ProjectPage.tsx',
+];
+
+const DIKECUALIKAN = new Set(['ESC', 'K', 'Live', 'OxidiLily']);
+
+const membandel: string[] = [];
+for (const berkas of HALAMAN_PUBLIK) {
+  const isi = readFileSync(join(akar, berkas), 'utf8');
+  for (const [, teks] of isi.matchAll(/>\s*([A-Za-z][A-Za-z0-9 ,.'!?&:/-]{3,80}?)\s*</g)) {
+    const bersih = teks.trim();
+    if (DIKECUALIKAN.has(bersih)) continue;
+    // Satu kata tanpa spasi umumnya nama komponen/atribut yang terpotong regex.
+    if (!bersih.includes(' ')) continue;
+    membandel.push(`${berkas}: "${bersih}"`);
+  }
+}
+assert.deepEqual(
+  membandel,
+  [],
+  `teks berikut masih dipatri di halaman publik, seharusnya lewat settings:\n  ${membandel.join('\n  ')}`,
+);
+
 console.log(
-  `[ok] content.check.ts lulus — ${kunciPanel.length} kunci panel, ${jangkarStatis.length} jangkar pencarian`,
+  `[ok] content.check.ts lulus — ${kunciPanel.length} kunci panel, ` +
+    `${jangkarStatis.length} jangkar pencarian, ${HALAMAN_PUBLIK.length} berkas publik bersih`,
 );

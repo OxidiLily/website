@@ -52,7 +52,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
 
   // Judul tab untuk project yang sedang dibuka di modal.
   React.useEffect(() => {
-    if (activeModalProject) document.title = `${activeModalProject.title} — OxidiLily`;
+    if (activeModalProject) document.title = `${activeModalProject.title} — ${t.site_name}`;
   }, [activeModalProject]);
 
   const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category)))];
@@ -95,7 +95,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
           <div className="flex items-center gap-1 text-xs text-neutral-500 shrink-0 mr-1">
             <Filter className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Filter:</span>
+            <span className="hidden sm:inline">{t.project_filter_label}</span>
           </div>
           {categories.map((category) => {
             const isActive = selectedCategory === category;
@@ -109,7 +109,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                     : 'bg-neutral-900 text-neutral-400 hover:text-white hover:bg-neutral-800 border border-neutral-800'
                 }`}
               >
-                {category}
+                {category === 'All' ? t.project_category_all : category}
               </button>
             );
           })}
@@ -231,7 +231,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
 
                 <div>
                   <h4 className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2.5">
-                    Technology Stack & Deliverables
+                    {t.project_modal_stack_heading}
                   </h4>
                   <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {activeModalProject.tags.map((tag) => (
@@ -250,7 +250,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                     onClick={() => onCloseProject?.()}
                     className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-neutral-200 active:scale-95 transition-all cursor-pointer flex items-center justify-center"
                   >
-                    Close
+                    {t.project_modal_close}
                   </button>
                 </div>
               </div>
