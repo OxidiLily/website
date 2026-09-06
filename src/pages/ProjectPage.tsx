@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { projectsData } from '../data/siteData';
+import { fetchProjects } from '../lib/content';
 import { ProjectItem } from '../types';
 import { isLowPowerDevice } from '../lib/device';
 
@@ -20,9 +21,11 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
   onCloseProject,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [projects, setProjects] = useState(projectsData);
+  React.useEffect(() => { fetchProjects().then(setProjects).catch(() => {}); }, []);
   const [activeModalProject, setActiveModalProject] = useState<ProjectItem | null>(() => {
     if (initialProjectId) {
-      return projectsData.find((p) => p.id === initialProjectId) || null;
+      return projects.find((p) => p.id === initialProjectId) || null;
     }
     return null;
   });
@@ -34,22 +37,26 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
       setActiveModalProject(null);
       return;
     }
-    const found = projectsData.find((p) => p.id === initialProjectId);
+    const found = projects.find((p) => p.id === initialProjectId);
     if (found) {
       setActiveModalProject(found);
     }
-  }, [initialProjectId]);
+    // `projects` ikut jadi dependensi: daftar awalnya data statis lalu diganti
+    // hasil Supabase. Tanpa ini, membuka /project/<slug> untuk project yang
+    // HANYA ada di database (dibuat lewat panel admin) tidak pernah membuka
+    // modalnya, karena efeknya tidak dijalankan ulang saat data tiba.
+  }, [initialProjectId, projects]);
 
   // Judul tab untuk project yang sedang dibuka di modal.
   React.useEffect(() => {
     if (activeModalProject) document.title = `${activeModalProject.title} — OxidiLily`;
   }, [activeModalProject]);
 
-  const categories = ['All', 'UI System', '3D / Physics', 'Mobile', 'Web'];
+  const categories = ['All', ...Array.from(new Set(projects.map((p) => p.category)))];
 
   const filteredProjects = selectedCategory === 'All'
-    ? projectsData
-    : projectsData.filter((p) => p.category === selectedCategory);
+    ? projects
+    : projects.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="relative w-full min-h-screen bg-black">

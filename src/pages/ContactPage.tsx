@@ -31,11 +31,44 @@ export const ContactPage: React.FC = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Satu INSERT ke tabel messages. Sengaja lewat fetch, bukan supabase-js:
+  // menarik klien 267 KB ke chunk halaman publik demi satu POST tidak sepadan.
+  // Policy messages_public_insert yang mengizinkannya; anon tetap tidak bisa
+  // membaca pesan siapa pun.
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.email || !formData.message) return;
-    setSubmitted(true);
+
+    setSending(true);
+    setSendError('');
+    try {
+      const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/messages`, {
+        method: 'POST',
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({
+          name: [formData.firstName, formData.lastName].filter(Boolean).join(' '),
+          email: formData.email,
+          subject: formData.subject || null,
+          message: formData.message,
+          is_read: false,
+        }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      setSubmitted(true);
+    } catch {
+      setSendError('Pesan gagal terkirim. Coba lagi sebentar lagi.');
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -237,11 +270,17 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 {/* Submit Button */}
+                {sendError && (
+                  <p role="alert" className="text-xs text-red-300 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                    {sendError}
+                  </p>
+                )}
                 <button
                   type="submit"
-                  className="w-full min-h-[44px] py-3 rounded-xl bg-white text-black font-semibold text-sm hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer shadow-lg flex items-center justify-center"
+                  disabled={sending}
+                  className="w-full min-h-[44px] py-3 rounded-xl bg-white text-black font-semibold text-sm hover:bg-neutral-200 active:scale-[0.98] transition-all cursor-pointer shadow-lg flex items-center justify-center disabled:opacity-60"
                 >
-                  Send message
+                  {sending ? 'Mengirim…' : 'Send message'}
                 </button>
               </form>
             )}

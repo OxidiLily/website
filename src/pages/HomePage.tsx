@@ -1,7 +1,8 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ScrollVelocity } from '../components/ScrollVelocity';
 import { projectsData, blogPostsData } from '../data/siteData';
+import { fetchProjects, fetchBlogPosts } from '../lib/content';
 import { PageId } from '../types';
 import { ArrowRight, Sparkles, ExternalLink, Code2, Layers } from 'lucide-react';
 import aboutMePortrait from '../assets/images/about_me_portrait_1787881947027.jpg';
@@ -17,6 +18,12 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+  const [projects, setProjects] = useState(projectsData);
+  const [posts, setPosts] = useState(blogPostsData);
+  useEffect(() => {
+    fetchProjects().then(setProjects).catch(() => {});
+    fetchBlogPosts().then(setPosts).catch(() => {});
+  }, []);
   return (
     <div className="w-full">
       {/* Hero Section with Fullscreen Ballpit */}
@@ -123,7 +130,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-              {projectsData.slice(0, 3).map((project, idx) => (
+              {projects.slice(0, 3).map((project, idx) => (
                 <motion.div
                   key={project.id}
                   initial={{ opacity: 0, y: 20 }}
@@ -223,7 +230,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-              {blogPostsData.slice(0, 3).map((post) => (
+              {posts.slice(0, 3).map((post) => (
                 <div
                   key={post.id}
                   onClick={() => onNavigate('blog')}

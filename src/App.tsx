@@ -15,8 +15,7 @@ const ProjectPage = lazy(() => import('./pages/ProjectPage').then(m => ({ defaul
 const BlogPage = lazy(() => import('./pages/BlogPage').then(m => ({ default: m.BlogPage })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m.AboutPage })));
-const DashboardPage = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
-const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage').then(m => ({ default: m.AdminLoginPage })));
+const AdminGate = lazy(() => import('./pages/admin/AdminGate').then(m => ({ default: m.AdminGate })));
 
 const PAGE_TITLES: Record<PageId, string> = {
   home: 'OxidiLily — Portfolio',
@@ -31,8 +30,6 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<PageId>('home');
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
-  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
-  const [adminUser, setAdminUser] = useState<{ email: string; name: string } | null>(null);
 
   // Judul tab mengikuti halaman yang dibuka. Saat ada detail terbuka (post blog
   // atau modal project) judulnya diserahkan ke halaman itu, yang punya datanya —
@@ -68,21 +65,14 @@ export default function App() {
     };
   }, []);
 
-  // Sync state with URL hash and pathname on mount and when changed
+  // Routing berbasis PATH (History API): /home, /blog, /blog/<id>, /project/<id>,
+  // /contact, /about, /admin/login. Bukan hash — URL hash tidak pernah dikirim
+  // ke server, jadi tidak bisa dibedakan sebagai halaman nyata dan buruk untuk
+  // berbagi tautan maupun SEO. `vite preview` sudah punya SPA fallback, jadi
+  // memuat langsung /blog/<id> mengembalikan index.html.
   useEffect(() => {
-    const resolveRoute = () => {
-      let target = '';
-      
-      if (window.location.hash) {
-        // Strip leading # and optional slashes: e.g. '#/admin' -> 'admin', '#admin' -> 'admin'
-        target = window.location.hash.replace(/^#+[\/]?/, '').trim().toLowerCase();
-      } else if (window.location.pathname && window.location.pathname !== '/') {
-        // Fallback for direct pathname e.g. '/admin' -> 'admin'
-        target = window.location.pathname.replace(/^\/+/, '').trim().toLowerCase();
-      }
-
-      // Remove trailing slashes
-      target = target.replace(/\/+$/, '');
+    const applyTarget = (target: string) => {
+      target = target.replace(/^\/+/, '').replace(/\/+$/, '').trim().toLowerCase();
 
       if (!target || target === 'home') {
         setCurrentPage('home');
@@ -93,75 +83,78 @@ export default function App() {
 
       if (target.startsWith('blog')) {
         const parts = target.split('/');
-        const postId = parts.length > 1 ? parts.slice(1).join('/') : null;
         setCurrentPage('blog');
-        setSelectedBlogId(postId);
+        setSelectedBlogId(parts.length > 1 ? parts.slice(1).join('/') : null);
+        setSelectedProjectId(null);
         return;
       }
 
       if (target.startsWith('project')) {
         const parts = target.split('/');
-        const projId = parts.length > 1 ? parts.slice(1).join('/') : null;
         setCurrentPage('project');
-        setSelectedProjectId(projId);
+        setSelectedProjectId(parts.length > 1 ? parts.slice(1).join('/') : null);
+        setSelectedBlogId(null);
         return;
       }
 
-      if (
-        target === 'admin' ||
-        target.startsWith('admin') ||
-        target === 'dashboard' ||
-        target.startsWith('dashboard') ||
-        target === 'login' ||
-        target.startsWith('login')
-      ) {
+      if (target.startsWith('admin') || target.startsWith('dashboard') || target.startsWith('login')) {
         setCurrentPage('admin');
+        setSelectedBlogId(null);
+        setSelectedProjectId(null);
         return;
       }
 
-      if (['contact', 'about'].includes(target)) {
+      if (target === 'contact' || target === 'about') {
         setCurrentPage(target as PageId);
+        setSelectedBlogId(null);
+        setSelectedProjectId(null);
         return;
       }
 
-      // Rute tak dikenal: jatuh ke home. Sebelumnya fungsi ini selesai tanpa
-      // melakukan apa pun, jadi URL berubah tapi halaman tidak.
+      // Rute tak dikenal → home.
       setCurrentPage('home');
       setSelectedBlogId(null);
       setSelectedProjectId(null);
     };
 
-    resolveRoute();
-    window.addEventListener('hashchange', resolveRoute);
-    window.addEventListener('popstate', resolveRoute);
-    return () => {
-      window.removeEventListener('hashchange', resolveRoute);
-      window.removeEventListener('popstate', resolveRoute);
+    const resolveRoute = () => {
+      // Tautan lama berbentuk #blog/<id> masih beredar (bookmark, riwayat).
+      // Diterjemahkan sekali ke path yang setara, lalu hash dibuang supaya
+      // tidak ada dua bentuk URL untuk halaman yang sama.
+      //
+      // HANYA hash yang memang rute. ContactPage punya jangkar dalam-halaman
+      // `#form`; kalau semua hash diterjemahkan, menekan Back setelah mengklik
+      // jangkar itu akan melempar pengguna ke home.
+      const hash = window.location.hash.replace(/^#+\/?/, '').trim().toLowerCase();
+      const isRoute = /^(home|blog|project|contact|about|admin|dashboard|login)(\/|$)/.test(hash);
+      if (hash && isRoute) {
+        window.history.replaceState(null, '', `/${hash}`);
+        applyTarget(hash);
+        return;
+      }
+      applyTarget(window.location.pathname);
     };
+
+    resolveRoute();
+    window.addEventListener('popstate', resolveRoute);
+    return () => window.removeEventListener('popstate', resolveRoute);
   }, []);
+
+  /** Satu-satunya penulis URL. Path, tanpa hash. */
+  const pushPath = (path: string) => window.history.pushState(null, '', path);
 
   const handleNavigate = (page: PageId) => {
     setCurrentPage(page);
     setSelectedBlogId(null);
     setSelectedProjectId(null);
-
-    if (page === 'admin') {
-      // Admin punya URL kanonik berbasis path, bukan hash.
-      window.history.pushState(null, '', '/admin/login');
-    } else {
-      // Keluar dari /admin/login: bersihkan path dulu, kalau tidak URL-nya
-      // jadi '/admin/login#home'.
-      if (window.location.pathname !== '/') window.history.replaceState(null, '', '/');
-      window.location.hash = page;
-    }
-
+    pushPath(page === 'admin' ? '/admin/login' : `/${page}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSelectBlog = (postId: string) => {
     setCurrentPage('blog');
     setSelectedBlogId(postId);
-    window.location.hash = `blog/${postId}`;
+    pushPath(`/blog/${postId}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -172,7 +165,7 @@ export default function App() {
     const changingPage = currentPage !== 'project';
     setCurrentPage('project');
     setSelectedProjectId(projectId);
-    window.location.hash = `project/${projectId}`;
+    pushPath(`/project/${projectId}`);
     if (changingPage) window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -181,19 +174,7 @@ export default function App() {
   const handleCloseDetail = (page: PageId) => {
     setSelectedBlogId(null);
     setSelectedProjectId(null);
-    window.location.hash = page;
-  };
-
-  const handleAdminLoginSuccess = (user?: { email: string; name: string }) => {
-    setIsAdminAuthenticated(true);
-    if (user) {
-      setAdminUser(user);
-    }
-  };
-
-  const handleAdminLogout = () => {
-    setIsAdminAuthenticated(false);
-    setAdminUser(null);
+    pushPath(`/${page}`);
   };
 
   const isAdminPage = currentPage === 'admin';
@@ -221,7 +202,7 @@ export default function App() {
       <main className={`flex-1 w-full ${isAdminPage ? 'p-0 pb-0' : ''}`}>
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentPage + (isAdminPage ? (isAdminAuthenticated ? '-dash' : '-login') : '')}
+            key={currentPage}
             initial={{ opacity: 0, y: isAdminPage ? 0 : 15 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: isAdminPage ? 0 : -15 }}
@@ -245,20 +226,7 @@ export default function App() {
                 onClosePost={() => handleCloseDetail('blog')}
               />
             )}
-            {currentPage === 'admin' && (
-              isAdminAuthenticated ? (
-                <DashboardPage
-                  onNavigate={handleNavigate}
-                  onLogout={handleAdminLogout}
-                  user={adminUser}
-                />
-              ) : (
-                <AdminLoginPage
-                  onLoginSuccess={handleAdminLoginSuccess}
-                  onNavigate={handleNavigate}
-                />
-              )
-            )}
+            {currentPage === 'admin' && <AdminGate onNavigate={handleNavigate} />}
             {currentPage === 'contact' && <ContactPage />}
             {currentPage === 'about' && <AboutPage />}
             </Suspense>

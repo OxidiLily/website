@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { blogPostsData } from '../data/siteData';
+import { fetchBlogPosts } from '../lib/content';
 import { BlogPost, PageId } from '../types';
 import { BlogPostDetail } from '../components/BlogPostDetail';
 import { BlogGeometricGraphic } from '../components/BlogGeometricGraphic';
@@ -25,6 +26,8 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [visibleCount, setVisibleCount] = useState<number>(3);
+  const [posts, setPosts] = useState(blogPostsData);
+  React.useEffect(() => { fetchBlogPosts().then(setPosts).catch(() => {}); }, []);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(() => {
     if (initialPostId) {
       return blogPostsData.find((p) => p.id === initialPostId) || null;
@@ -38,11 +41,11 @@ export const BlogPage: React.FC<BlogPageProps> = ({
       setSelectedPost(null);
       return;
     }
-    const found = blogPostsData.find((p) => p.id === initialPostId);
+    const found = posts.find((p) => p.id === initialPostId);
     if (found) {
       setSelectedPost(found);
     }
-  }, [initialPostId]);
+  }, [initialPostId, posts]);
 
   // Judul tab untuk post yang sedang dibuka. App yang memulihkan judul halaman
   // saat post ditutup, jadi di sini cukup cabang "ada post".
@@ -50,15 +53,15 @@ export const BlogPage: React.FC<BlogPageProps> = ({
     if (selectedPost) document.title = `${selectedPost.title} — OxidiLily`;
   }, [selectedPost]);
 
-  const categories = ['All', 'Productivity', 'Accessibility', 'Performance'];
+  const categories = ['All', ...Array.from(new Set(posts.map((p) => p.category)))];
 
   // Identify featured hero post
   const featuredPost =
-    blogPostsData.find((p) => p.id === 'how-ai-is-transforming-frontend-development') ||
-    blogPostsData[0];
+    posts.find((p) => p.id === 'how-ai-is-transforming-frontend-development') ||
+    posts[0];
 
   // Grid posts: excluding featured hero post for the main grid, or include based on filter
-  const gridPosts = blogPostsData.filter(
+  const gridPosts = posts.filter(
     (post) => post.id !== 'how-ai-is-transforming-frontend-development'
   );
 
