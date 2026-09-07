@@ -64,14 +64,20 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             atas Ballpit sebagai saudara yang lebih belakang, dan tetap di bawah
             teks hero yang z-10.
 
-            Tingginya sengaja pendek: bola-bolanya menumpuk di DASAR hero karena
-            gravitasi, jadi gradasi setinggi 192px tidak melembutkan tepi — ia
-            menelan seluruh simulasinya. Cukup selebar setengah bola supaya
-            barisan terbawah larut, bukan hilang. */}
+            Bola-bolanya menumpuk di DASAR hero karena gravitasi, jadi gradasi
+            yang tinggi tidak melembutkan tepi — ia menelan simulasinya. Karena
+            itu warnanya ditahan bening sampai 70% ke bawah, baru menghitam di
+            sisa jaraknya: yang meredup hanya beberapa piksel terakhir tepat di
+            garis potong, sementara tumpukan bolanya tetap utuh terlihat. Stop
+            eksplisit dipakai karena `from-*`/`to-*` Tailwind selalu meratakan
+            peralihannya di sepanjang kotak. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-12 sm:h-16
-                     bg-gradient-to-b from-transparent to-black"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-16 sm:h-24"
+          style={{
+            backgroundImage:
+              'linear-gradient(to bottom, transparent 0%, transparent 70%, #000 100%)',
+          }}
         />
 
         {/* Hero Overlay Text */}
