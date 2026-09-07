@@ -120,10 +120,10 @@ export const BlogPage: React.FC<BlogPageProps> = ({
             <LightPillar
               topColor="#5227FF"
               bottomColor="#FF9FFC"
-              intensity={1.0}
+              intensity={1.25}
               rotationSpeed={0.25}
               glowAmount={0.005}
-              pillarWidth={3.0}
+              pillarWidth={3.6}
               pillarHeight={0.4}
               noiseIntensity={0.35}
               pillarRotation={32}
@@ -135,7 +135,9 @@ export const BlogPage: React.FC<BlogPageProps> = ({
       </div>
 
       {/* Top Hero Section with Dot Matrix Background */}
-      <section className="relative z-10 w-full overflow-hidden pt-16 sm:pt-20 md:pt-24">
+      {/* Ruang bawah sengaja lega: batas hero inilah yang menentukan seberapa
+          jauh LightPillar terlihat, karena blok daftar di bawahnya opak. */}
+      <section className="relative z-10 w-full overflow-hidden pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-24 lg:pb-32">
         {/* Dot pattern background */}
         <div
           className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20"
@@ -192,6 +194,17 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
       {/* Main Blog Grid Section */}
       <div className="relative z-10 w-full bg-[#fafafa] dark:bg-black pb-24">
+        {/* Pita gradasi yang menumpang di atas hero. Sebelumnya blok opak ini
+            langsung menempel di bawah hero, jadi LightPillar terpotong satu
+            garis lurus mendatar. Sekarang warnanya meredup ke latar, dan
+            pillar-nya ikut terlihat lebih jauh ke bawah. `-top-*` sengaja
+            sama besar dengan tingginya supaya pita berakhir persis di batas
+            blok, bukan menyisakan celah. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 -top-24 sm:-top-40 h-24 sm:h-40
+                     bg-gradient-to-b from-transparent to-[#fafafa] dark:to-black"
+        />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16">
         {/* Section Header & Radio Filters */}
         <div className="space-y-6 mb-10">
