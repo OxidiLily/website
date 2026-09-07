@@ -52,7 +52,7 @@ export const AboutPage: React.FC = () => {
               {t.about_experience_heading}
             </h3>
 
-            <div className="divide-y divide-neutral-900">
+            <div>
               {milestones.map((item) => (
                 <div key={item.id} className="py-6 flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
                   <div className="sm:w-1/4">

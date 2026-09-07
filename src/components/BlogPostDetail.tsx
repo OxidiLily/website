@@ -152,7 +152,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
 
         {/* Mobile-Only Quick Jump Table of Contents Pill Bar */}
         {post.sections && post.sections.length > 0 && (
-          <div className="md:hidden mt-6 pt-4 border-t border-neutral-900">
+          <div className="md:hidden mt-6 pt-4">
             <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-2">
               {t.post_jump_label}
             </div>
@@ -208,7 +208,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             </div>
 
             {/* Back Link */}
-            <div className="pt-4 border-t border-neutral-800">
+            <div className="pt-4">
               <button
                 onClick={onBack}
                 className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-400 hover:text-white transition-colors cursor-pointer group"

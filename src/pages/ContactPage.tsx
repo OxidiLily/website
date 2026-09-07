@@ -297,6 +297,14 @@ export const ContactPage: React.FC = () => {
     {/* Mulai "Get in touch with us" ke bawah: blok hitam opak selebar layar yang
         menutupi GhostFibers, sama seperti pola "All Blogs" di halaman blog. */}
     <div className="relative z-10 w-full bg-black">
+      {/* Pita gradasi yang menumpang di atas bagian formulir. Tanpa ini blok
+          hitam ini memotong GhostFibers dengan satu garis lurus mendatar,
+          persis masalah yang sama seperti di halaman blog. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -top-40 sm:-top-64 h-40 sm:h-64
+                   bg-gradient-to-b from-transparent to-black"
+      />
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-20 md:pt-24 pb-20">
       {/* SECTION 2: Get In Touch Cards + Worldwide Map */}
       <div id="contact-cards" className="space-y-8 sm:space-y-12 scroll-mt-28">

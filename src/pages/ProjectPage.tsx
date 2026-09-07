@@ -158,7 +158,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 mt-5 pt-3.5 border-t border-neutral-900">
+              <div className="flex flex-wrap gap-1.5 mt-5 pt-3.5">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
@@ -245,7 +245,7 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-neutral-900 flex items-center justify-end gap-3">
+                <div className="pt-4 flex items-center justify-end gap-3">
                   <button
                     onClick={() => onCloseProject?.()}
                     className="w-full sm:w-auto min-h-[44px] px-6 py-2.5 rounded-full bg-white text-black text-xs sm:text-sm font-semibold hover:bg-neutral-200 active:scale-95 transition-all cursor-pointer flex items-center justify-center"

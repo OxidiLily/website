@@ -60,7 +60,7 @@ export const AboutMe: React.FC = () => {
             </p>
 
             {/* Bottom Row: Philosophy Statement */}
-            <div className="pt-4 border-t border-neutral-800/80 items-center pointer-events-auto">
+            <div className="pt-4 items-center pointer-events-auto">
               <p className="text-neutral-400 text-sm sm:text-base leading-relaxed select-text whitespace-pre-line">
                 {t.about_philosophy}
               </p>

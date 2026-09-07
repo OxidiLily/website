@@ -85,7 +85,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       </section>
 
       {/* ScrollVelocity Marquee Section right after Hero */}
-      <div id="marquee-section" className="py-4 sm:py-6 md:py-8 bg-neutral-950/90 border-y border-neutral-900 overflow-hidden backdrop-blur-sm scroll-mt-24">
+      <div id="marquee-section" className="py-4 sm:py-6 md:py-8 bg-neutral-950/90 overflow-hidden backdrop-blur-sm scroll-mt-24">
         <ScrollVelocity
           texts={t.home_marquee_text.split('|').map((x) => x.trim()).filter(Boolean)}
           velocity={60}
@@ -168,7 +168,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         {project.description}
                       </p>
                     </div>
-                    <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-neutral-900">
+                    <div className="flex flex-wrap gap-1.5 mt-4 pt-3">
                       {project.tags.slice(0, 3).map((tag) => (
                         <span key={tag} className="text-[10px] px-2 py-0.5 rounded bg-neutral-900/90 text-neutral-300 font-mono">
                           {tag}
@@ -254,7 +254,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       {post.excerpt}
                     </p>
                   </div>
-                  <div className="mt-5 pt-3.5 border-t border-neutral-900 flex items-center justify-between text-xs text-neutral-400 group-hover:text-white transition-colors">
+                  <div className="mt-5 pt-3.5 flex items-center justify-between text-xs text-neutral-400 group-hover:text-white transition-colors">
                     <span>{t.home_blog_card_cta}</span>
                     <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" />
                   </div>

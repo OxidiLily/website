@@ -138,12 +138,18 @@ export const BlogPage: React.FC<BlogPageProps> = ({
       {/* Ruang bawah sengaja lega: batas hero inilah yang menentukan seberapa
           jauh LightPillar terlihat, karena blok daftar di bawahnya opak. */}
       <section className="relative z-10 w-full overflow-hidden pt-16 sm:pt-20 md:pt-24 pb-16 sm:pb-24 lg:pb-32">
-        {/* Dot pattern background */}
+        {/* Pola titik. `inset-0` membuatnya berhenti PERSIS di batas hero, dan
+            tepi lurus itu terbaca sebagai garis mendatar di atas latar WebGL —
+            terutama saat halaman digulir, karena latarnya diam sementara pola
+            ini ikut bergerak. Maskernya menghabiskan pola sebelum sampai tepi,
+            jadi tidak ada tepi yang bisa terlihat. */}
         <div
           className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-20"
           style={{
             backgroundImage: 'radial-gradient(#71717a 1px, transparent 1px)',
             backgroundSize: '24px 24px',
+            maskImage: 'linear-gradient(to bottom, #000 45%, transparent 92%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, #000 45%, transparent 92%)',
           }}
         />
 
@@ -202,7 +208,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
             blok, bukan menyisakan celah. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 -top-24 sm:-top-40 h-24 sm:h-40
+          className="pointer-events-none absolute inset-x-0 -top-40 sm:-top-64 h-40 sm:h-64
                      bg-gradient-to-b from-transparent to-[#fafafa] dark:to-black"
         />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 sm:pt-16">
