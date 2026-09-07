@@ -199,8 +199,11 @@ export const BlogPage: React.FC<BlogPageProps> = ({
       </section>
 
       {/* Main Blog Grid Section */}
-      <div className="relative z-10 w-full bg-[#fafafa] dark:bg-black pb-24">
-        {/* Pita gradasi yang menumpang di atas hero. Sebelumnya blok opak ini
+      {/* `z-0`, BUKAN z-10 — alasannya sama seperti di halaman Contact: pita
+          gradasi di dalamnya memanjang ke atas lewat `-top-*`, dan sederajat
+          dengan hero ia akan menutupi kartu artikel unggulan di sana. */}
+      <div className="relative z-0 w-full bg-[#fafafa] dark:bg-black pb-24">
+        {/* Pita gradasi yang lewat di belakang hero. Sebelumnya blok opak ini
             langsung menempel di bawah hero, jadi LightPillar terpotong satu
             garis lurus mendatar. Sekarang warnanya meredup ke latar, dan
             pillar-nya ikut terlihat lebih jauh ke bawah. `-top-*` sengaja

@@ -296,8 +296,14 @@ export const ContactPage: React.FC = () => {
 
     {/* Mulai "Get in touch with us" ke bawah: blok hitam opak selebar layar yang
         menutupi GhostFibers, sama seperti pola "All Blogs" di halaman blog. */}
-    <div className="relative z-10 w-full bg-black">
-      {/* Pita gradasi yang menumpang di atas bagian formulir. Tanpa ini blok
+    {/* `z-0`, BUKAN z-10. Blok ini memanjangkan pita gradasinya ke atas lewat
+        `-top-*`, dan kalau ia sederajat dengan bagian formulir di atasnya, ia
+        menang cat sebagai saudara yang lebih belakang — pitanya lalu menutupi
+        kartu formulir dan meredupkan seluruh isinya. Di z-0 ia tetap berada di
+        atas GhostFibers (yang juga z-0 tapi lebih dulu di DOM) sekaligus di
+        bawah bagian formulir. */}
+    <div className="relative z-0 w-full bg-black">
+      {/* Pita gradasi yang lewat di belakang bagian formulir. Tanpa ini blok
           hitam ini memotong GhostFibers dengan satu garis lurus mendatar,
           persis masalah yang sama seperti di halaman blog. */}
       <div
