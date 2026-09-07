@@ -8,7 +8,18 @@ const URL = process.env.VITE_SUPABASE_URL || 'http://192.168.2.99:8000';
 const SR = process.env.SR;
 if (!SR) { console.error('[x] env SR (service_role) wajib'); process.exit(1); }
 
-const H = { apikey: SR, Authorization: `Bearer ${SR}`, 'Content-Type': 'application/json' };
+// Tabel aplikasi tinggal di schema `web`, bukan `public` (lihat
+// supabase/migrate-public-to-web.sql). PostgREST memilih schema lewat
+// `Accept-Profile` untuk baca dan `Content-Profile` untuk tulis; tanpa
+// keduanya skrip ini menyasar `public` yang sekarang kosong, dan
+// upsert-nya gagal 404 alih-alih mengisi apa pun.
+const H = {
+  apikey: SR,
+  Authorization: `Bearer ${SR}`,
+  'Content-Type': 'application/json',
+  'Accept-Profile': 'web',
+  'Content-Profile': 'web',
+};
 
 async function upsert(table: string, rows: any[], onConflict = 'slug') {
   const res = await fetch(`${URL}/rest/v1/${table}?on_conflict=${onConflict}`, {

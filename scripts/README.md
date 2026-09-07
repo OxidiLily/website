@@ -1,6 +1,8 @@
 # scripts/
 
 - `seed.ts` — isi Supabase dari `src/data/siteData.ts` (idempoten, upsert by slug).
+  Menyasar schema `web` lewat header `Accept-Profile`/`Content-Profile`, bukan
+  `public` — lihat `supabase/migrate-public-to-web.sql`.
   `SR=<service_role> npx tsx scripts/seed.ts`
 - `admin.mjs` — uji panel admin di browser (login, Pengaturan/AI, form upload gambar).
   `ADMIN_EMAIL=… ADMIN_PASS=… node scripts/admin.mjs`
