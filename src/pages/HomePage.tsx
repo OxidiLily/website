@@ -76,7 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-16 sm:h-24"
           style={{
             backgroundImage:
-              'linear-gradient(to bottom, transparent 0%, transparent 70%, #000 100%)',
+              'linear-gradient(to bottom, transparent 0%, transparent 88%, #000 100%)',
           }}
         />
 
