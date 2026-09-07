@@ -56,6 +56,24 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           )}
         </div>
 
+        {/* Ballpit berhenti tepat di batas hero, jadi bolanya terpotong rata
+            satu garis mendatar begitu pita marquee dimulai. Dulu tepi itu
+            terbingkai `border-y` milik marquee; setelah border-nya dibuang,
+            potongannya jadi telanjang. Pita gradasi ini meredupkan simulasinya
+            ke warna latar. Sengaja di z-0 seperti kanvasnya — cukup menang cat
+            atas Ballpit sebagai saudara yang lebih belakang, dan tetap di bawah
+            teks hero yang z-10.
+
+            Tingginya sengaja pendek: bola-bolanya menumpuk di DASAR hero karena
+            gravitasi, jadi gradasi setinggi 192px tidak melembutkan tepi — ia
+            menelan seluruh simulasinya. Cukup selebar setengah bola supaya
+            barisan terbawah larut, bukan hilang. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-12 sm:h-16
+                     bg-gradient-to-b from-transparent to-black"
+        />
+
         {/* Hero Overlay Text */}
         <div className="relative z-10 text-center max-w-3xl mx-auto px-4 sm:px-6 -mt-6 md:mt-0 pointer-events-none select-none">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white drop-shadow-md leading-[1.15]">
