@@ -12,6 +12,12 @@ if (!url || !key) {
 }
 
 export const supabase = createClient(url, key, {
+  // Tabel situs tinggal di schema `web`, bukan `public`. Instance Supabase ini
+  // dipakai beberapa layanan, dan `public` adalah tempat semua yang tidak
+  // menyebut schema akan menumpuk. Satu baris ini mengarahkan SELURUH
+  // supabase.from(...) di panel admin; storage dan auth punya API sendiri dan
+  // tidak terpengaruh.
+  db: { schema: 'web' },
   auth: {
     persistSession: true,
     autoRefreshToken: true,

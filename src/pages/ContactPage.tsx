@@ -55,6 +55,8 @@ export const ContactPage: React.FC = () => {
           apikey: key,
           Authorization: `Bearer ${key}`,
           'Content-Type': 'application/json',
+          // Pasangan tulis dari `Accept-Profile`: memilih schema untuk INSERT.
+          'Content-Profile': 'web',
           Prefer: 'return=minimal',
         },
         body: JSON.stringify({

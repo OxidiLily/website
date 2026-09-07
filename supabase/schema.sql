@@ -1,14 +1,30 @@
 -- Skema admin OxidiLily untuk Supabase self-hosted.
 -- Jalankan sekali: psql "$DATABASE_URL" -f supabase/schema.sql
 -- Idempoten: aman dijalankan ulang.
+--
+-- Semuanya tinggal di schema `web`, bukan `public`. Instance ini dipakai
+-- beberapa layanan, dan `public` adalah tempat semua yang tidak menyebut
+-- schema akan mendarat — termasuk objek bawaan ekstensi. Memisahkan sejak awal
+-- jauh lebih murah daripada memindahkan belakangan; instance yang terlanjur
+-- memakai `public` dipindahkan dengan supabase/migrate-public-to-web.sql.
 
 create extension if not exists pgcrypto with schema extensions;
+
+create schema if not exists web;
+grant usage on schema web to anon, authenticated, service_role;
+
+-- PostgREST hanya melayani schema yang disebut di sini. Tanpa baris ini setiap
+-- permintaan dijawab 406 PGRST106 "Invalid schema: web". Disetel lewat peran
+-- `authenticator` di dalam database, bukan lewat PGRST_DB_SCHEMAS di .env
+-- container, supaya ikut volume database dan selamat saat container dibuat
+-- ulang. `notify` di akhir berkas yang membuatnya berlaku tanpa restart.
+alter role authenticator set pgrst.db_schemas = 'public, graphql_public, web';
 
 -- ── Peran ────────────────────────────────────────────────────────────────
 -- Instance ini membuka pendaftaran (auth/v1/settings → disable_signup:false),
 -- jadi "sudah login" TIDAK boleh berarti "boleh menulis". Peran default
 -- 'viewer'; hanya baris yang dinaikkan manual ke 'admin' yang punya tulis.
-create table if not exists public.profiles (
+create table if not exists web.profiles (
   id         uuid primary key references auth.users (id) on delete cascade,
   name       text,
   role       text not null default 'viewer' check (role in ('admin', 'viewer')),
@@ -16,10 +32,10 @@ create table if not exists public.profiles (
   updated_at timestamptz not null default now()
 );
 
-create or replace function public.handle_new_user()
-returns trigger language plpgsql security definer set search_path = public as $$
+create or replace function web.handle_new_user()
+returns trigger language plpgsql security definer set search_path = web as $$
 begin
-  insert into public.profiles (id, name)
+  insert into web.profiles (id, name)
   values (new.id, coalesce(new.raw_user_meta_data ->> 'name', split_part(new.email, '@', 1)))
   on conflict (id) do nothing;
   return new;
@@ -28,28 +44,28 @@ end $$;
 drop trigger if exists on_auth_user_created on auth.users;
 create trigger on_auth_user_created
   after insert on auth.users
-  for each row execute function public.handle_new_user();
+  for each row execute function web.handle_new_user();
 
 -- security definer: dipanggil dari dalam policy tabel profiles sendiri, jadi
 -- tanpa ini rekursif tak berujung.
-create or replace function public.is_admin()
-returns boolean language sql stable security definer set search_path = public as $$
+create or replace function web.is_admin()
+returns boolean language sql stable security definer set search_path = web as $$
   select exists (
-    select 1 from public.profiles
+    select 1 from web.profiles
     where id = auth.uid() and role = 'admin'
   )
 $$;
 
-revoke execute on function public.is_admin() from public;
-grant execute on function public.is_admin() to authenticated;
+revoke execute on function web.is_admin() from public;
+grant execute on function web.is_admin() to authenticated;
 
 -- ── Sentuh updated_at ────────────────────────────────────────────────────
-create or replace function public.touch_updated_at()
+create or replace function web.touch_updated_at()
 returns trigger language plpgsql as $$
 begin new.updated_at = now(); return new; end $$;
 
 -- ── Tabel konten ─────────────────────────────────────────────────────────
-create table if not exists public.blog_categories (
+create table if not exists web.blog_categories (
   id          bigint generated always as identity primary key,
   name        text not null,
   slug        text not null unique,
@@ -59,9 +75,9 @@ create table if not exists public.blog_categories (
   updated_at  timestamptz not null default now()
 );
 
-create table if not exists public.blogs (
+create table if not exists web.blogs (
   id               bigint generated always as identity primary key,
-  blog_category_id bigint not null references public.blog_categories (id) on delete cascade,
+  blog_category_id bigint not null references web.blog_categories (id) on delete cascade,
   title            text not null,
   slug             text not null unique,
   content          text,
@@ -72,9 +88,9 @@ create table if not exists public.blogs (
   created_at       timestamptz not null default now(),
   updated_at       timestamptz not null default now()
 );
-create index if not exists blogs_status_created_idx on public.blogs (status, created_at desc);
+create index if not exists blogs_status_created_idx on web.blogs (status, created_at desc);
 
-create table if not exists public.project_categories (
+create table if not exists web.project_categories (
   id         bigint generated always as identity primary key,
   name       text not null,
   slug       text not null unique,
@@ -83,9 +99,9 @@ create table if not exists public.project_categories (
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.projects (
+create table if not exists web.projects (
   id                  bigint generated always as identity primary key,
-  project_category_id bigint not null references public.project_categories (id) on delete cascade,
+  project_category_id bigint not null references web.project_categories (id) on delete cascade,
   name                text not null,
   slug                text not null unique,
   description         text,
@@ -99,7 +115,7 @@ create table if not exists public.projects (
   updated_at          timestamptz not null default now()
 );
 
-create table if not exists public.shop_categories (
+create table if not exists web.shop_categories (
   id         bigint generated always as identity primary key,
   name       text not null,
   slug       text not null unique,
@@ -109,9 +125,9 @@ create table if not exists public.shop_categories (
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.products (
+create table if not exists web.products (
   id                 bigint generated always as identity primary key,
-  shop_category_id   bigint not null references public.shop_categories (id) on delete cascade,
+  shop_category_id   bigint not null references web.shop_categories (id) on delete cascade,
   name               text not null,
   slug               text not null unique,
   description        text,
@@ -126,7 +142,7 @@ create table if not exists public.products (
   updated_at         timestamptz not null default now()
 );
 
-create table if not exists public.messages (
+create table if not exists web.messages (
   id         bigint generated always as identity primary key,
   name       text not null check (length(name) between 1 and 255),
   email      text not null check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$'),
@@ -137,7 +153,7 @@ create table if not exists public.messages (
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.ai_chat_sessions (
+create table if not exists web.ai_chat_sessions (
   id              bigint generated always as identity primary key,
   visitor_name    text not null check (length(visitor_name) between 1 and 255),
   visitor_contact text check (length(visitor_contact) <= 255),
@@ -146,9 +162,9 @@ create table if not exists public.ai_chat_sessions (
   created_at      timestamptz not null default now(),
   updated_at      timestamptz not null default now()
 );
-create index if not exists ai_chat_sessions_topic_idx on public.ai_chat_sessions (topic);
+create index if not exists ai_chat_sessions_topic_idx on web.ai_chat_sessions (topic);
 
-create table if not exists public.settings (
+create table if not exists web.settings (
   id         bigint generated always as identity primary key,
   key        text not null unique,
   value      text,
@@ -162,10 +178,10 @@ begin
   foreach t in array array['profiles','blog_categories','blogs','project_categories','projects',
                            'shop_categories','products','messages','ai_chat_sessions','settings']
   loop
-    execute format('drop trigger if exists touch_%1$s on public.%1$I', t);
-    execute format('create trigger touch_%1$s before update on public.%1$I
-                    for each row execute function public.touch_updated_at()', t);
-    execute format('alter table public.%I enable row level security', t);
+    execute format('drop trigger if exists touch_%1$s on web.%1$I', t);
+    execute format('create trigger touch_%1$s before update on web.%1$I
+                    for each row execute function web.touch_updated_at()', t);
+    execute format('alter table web.%I enable row level security', t);
   end loop;
 end $$;
 
@@ -178,72 +194,72 @@ begin
   foreach t in array array['profiles','blog_categories','blogs','project_categories','projects',
                            'shop_categories','products','messages','ai_chat_sessions','settings']
   loop
-    execute format('drop policy if exists admin_all on public.%I', t);
-    execute format('create policy admin_all on public.%I for all to authenticated
-                    using (public.is_admin()) with check (public.is_admin())', t);
+    execute format('drop policy if exists admin_all on web.%I', t);
+    execute format('create policy admin_all on web.%I for all to authenticated
+                    using (web.is_admin()) with check (web.is_admin())', t);
   end loop;
 end $$;
 
 -- Setiap orang boleh membaca profilnya sendiri (dipakai untuk cek peran
 -- setelah login). Peran TIDAK bisa dinaikkan sendiri: tidak ada policy update
 -- selain admin_all.
-drop policy if exists profiles_self_read on public.profiles;
-create policy profiles_self_read on public.profiles
+drop policy if exists profiles_self_read on web.profiles;
+create policy profiles_self_read on web.profiles
   for select to authenticated using (id = auth.uid());
 
-drop policy if exists blogs_public_read on public.blogs;
-create policy blogs_public_read on public.blogs
+drop policy if exists blogs_public_read on web.blogs;
+create policy blogs_public_read on web.blogs
   for select to anon, authenticated using (status = 'published');
 
-drop policy if exists blog_categories_public_read on public.blog_categories;
-create policy blog_categories_public_read on public.blog_categories
+drop policy if exists blog_categories_public_read on web.blog_categories;
+create policy blog_categories_public_read on web.blog_categories
   for select to anon, authenticated using (true);
 
-drop policy if exists projects_public_read on public.projects;
-create policy projects_public_read on public.projects
+drop policy if exists projects_public_read on web.projects;
+create policy projects_public_read on web.projects
   for select to anon, authenticated using (true);
 
-drop policy if exists project_categories_public_read on public.project_categories;
-create policy project_categories_public_read on public.project_categories
+drop policy if exists project_categories_public_read on web.project_categories;
+create policy project_categories_public_read on web.project_categories
   for select to anon, authenticated using (true);
 
-drop policy if exists products_public_read on public.products;
-create policy products_public_read on public.products
+drop policy if exists products_public_read on web.products;
+create policy products_public_read on web.products
   for select to anon, authenticated using (is_active);
 
-drop policy if exists shop_categories_public_read on public.shop_categories;
-create policy shop_categories_public_read on public.shop_categories
+drop policy if exists shop_categories_public_read on web.shop_categories;
+create policy shop_categories_public_read on web.shop_categories
   for select to anon, authenticated using (is_active);
 
 -- Form kontak & log chat AI: publik hanya boleh MENULIS, tidak membaca.
 -- Tanpa policy select untuk anon, pengunjung tidak bisa memanen pesan orang lain.
-drop policy if exists messages_public_insert on public.messages;
-create policy messages_public_insert on public.messages
+drop policy if exists messages_public_insert on web.messages;
+create policy messages_public_insert on web.messages
   for insert to anon, authenticated with check (is_read = false);
 
-drop policy if exists ai_chat_public_insert on public.ai_chat_sessions;
-create policy ai_chat_public_insert on public.ai_chat_sessions
+drop policy if exists ai_chat_public_insert on web.ai_chat_sessions;
+create policy ai_chat_public_insert on web.ai_chat_sessions
   for insert to anon, authenticated with check (true);
 
 -- settings memuat kunci AI (lihat SettingsController::updateAi di repo acuan),
 -- jadi TIDAK ada policy baca untuk anon. Hanya admin.
 
 -- ── Seed kategori minimum supaya form CRUD tidak buntu ───────────────────
-insert into public.blog_categories (name, slug, color) values
+insert into web.blog_categories (name, slug, color) values
   ('Engineering', 'engineering', 'primary'),
   ('Design',      'design',      'secondary')
 on conflict (slug) do nothing;
 
-insert into public.project_categories (name, slug, color) values
+insert into web.project_categories (name, slug, color) values
   ('Web', 'web', 'primary'),
   ('3D',  '3d',  'secondary')
 on conflict (slug) do nothing;
 
-insert into public.shop_categories (name, slug) values
+insert into web.shop_categories (name, slug) values
   ('Template', 'template')
 on conflict (slug) do nothing;
 
-insert into public.settings (key, value) values
+insert into web.settings (key, value) values
   ('site_tagline',      'OxidiLily — Portfolio'),
   ('site_description',  ''),
   ('site_email',        ''),
@@ -261,7 +277,7 @@ on conflict (key) do nothing;
 -- dijalankan sebelum maupun sesudah user dibuat di Studio → Authentication.
 -- Urutan yang praktis: jalankan berkas ini, buat user (centang Auto Confirm),
 -- lalu jalankan berkas ini sekali lagi.
-insert into public.profiles (id, name, role)
+insert into web.profiles (id, name, role)
 select id, coalesce(raw_user_meta_data ->> 'name', 'OxidiLily'), 'admin'
 from auth.users
 where email = 'oxidilily@oxidilily.com'
@@ -279,24 +295,24 @@ on conflict (id) do update set role = 'admin';
 -- Tabel ini menyimpan kunci API AI, jadi TIDAK boleh dibuka seluruhnya ke
 -- anon. Penandanya per-baris dan default-nya tertutup: baris baru (termasuk
 -- rahasia yang belum terpikirkan hari ini) aman tanpa harus diingat.
-alter table public.settings add column if not exists is_public boolean not null default false;
+alter table web.settings add column if not exists is_public boolean not null default false;
 
-drop policy if exists settings_public_read on public.settings;
-create policy settings_public_read on public.settings
+drop policy if exists settings_public_read on web.settings;
+create policy settings_public_read on web.settings
   for select to anon, authenticated using (is_public);
 
 -- ── Foto profil admin ────────────────────────────────────────────────────
-alter table public.profiles add column if not exists avatar_url text;
+alter table web.profiles add column if not exists avatar_url text;
 
 -- Admin mengubah namanya/fotonya sendiri lewat panel. admin_all sudah
 -- mengizinkannya, tapi policy ini membuatnya tetap jalan kalau suatu saat
 -- ada admin yang diturunkan perannya di tengah sesi.
-drop policy if exists profiles_self_update on public.profiles;
-create policy profiles_self_update on public.profiles
+drop policy if exists profiles_self_update on web.profiles;
+create policy profiles_self_update on web.profiles
   for update to authenticated using (id = auth.uid()) with check (id = auth.uid());
 
 -- ── Tools & Stack (halaman About) ────────────────────────────────────────
-create table if not exists public.tools (
+create table if not exists web.tools (
   id         bigint generated always as identity primary key,
   name       text not null unique,
   category   text not null default '',
@@ -309,7 +325,7 @@ create table if not exists public.tools (
 );
 
 -- ── Timeline pengalaman (halaman About) ──────────────────────────────────
-create table if not exists public.experiences (
+create table if not exists web.experiences (
   id          bigint generated always as identity primary key,
   year        text not null,
   title       text not null,
@@ -325,15 +341,15 @@ declare t text;
 begin
   foreach t in array array['tools','experiences']
   loop
-    execute format('drop trigger if exists touch_%1$s on public.%1$I', t);
-    execute format('create trigger touch_%1$s before update on public.%1$I
-                    for each row execute function public.touch_updated_at()', t);
-    execute format('alter table public.%I enable row level security', t);
-    execute format('drop policy if exists admin_all on public.%I', t);
-    execute format('create policy admin_all on public.%I for all to authenticated
-                    using (public.is_admin()) with check (public.is_admin())', t);
-    execute format('drop policy if exists %1$s_public_read on public.%1$I', t);
-    execute format('create policy %1$s_public_read on public.%1$I
+    execute format('drop trigger if exists touch_%1$s on web.%1$I', t);
+    execute format('create trigger touch_%1$s before update on web.%1$I
+                    for each row execute function web.touch_updated_at()', t);
+    execute format('alter table web.%I enable row level security', t);
+    execute format('drop policy if exists admin_all on web.%I', t);
+    execute format('create policy admin_all on web.%I for all to authenticated
+                    using (web.is_admin()) with check (web.is_admin())', t);
+    execute format('drop policy if exists %1$s_public_read on web.%1$I', t);
+    execute format('create policy %1$s_public_read on web.%1$I
                     for select to anon, authenticated using (is_active)', t);
   end loop;
 end $$;
@@ -352,15 +368,15 @@ create policy media_public_read on storage.objects
 drop policy if exists media_admin_write on storage.objects;
 create policy media_admin_write on storage.objects
   for all to authenticated
-  using (bucket_id = 'media' and public.is_admin())
-  with check (bucket_id = 'media' and public.is_admin());
+  using (bucket_id = 'media' and web.is_admin())
+  with check (bucket_id = 'media' and web.is_admin());
 
 -- ── Seed teks halaman ────────────────────────────────────────────────────
 -- Nilainya PERSIS seperti yang dulu dipatri di .tsx, jadi menjalankan berkas
 -- ini tidak mengubah tampilan situs sedikit pun — hanya memindahkan sumbernya
 -- ke tempat yang bisa disunting panel. `on conflict do nothing` menjaga teks
 -- yang sudah diedit admin tidak tertimpa saat berkas ini dijalankan ulang.
-insert into public.settings (key, value, is_public) values
+insert into web.settings (key, value, is_public) values
   ('home_hero_title',       'Crafting Digital Products with Physics & Precision', true),
   ('home_hero_subtitle',    'Building clear, useful products with refined aesthetics, smooth 60fps WebGL simulations, and robust systems.', true),
   ('home_hero_cta_primary', 'Explore Projects', true),
@@ -424,20 +440,20 @@ on conflict (key) do nothing;
 
 -- Kunci yang sudah ada sejak seed awal ikut dibuka ke publik. Kunci ai_* tidak
 -- disebut di sini, jadi tetap tertutup seperti default kolomnya.
-update public.settings set is_public = true
+update web.settings set is_public = true
 where key in ('site_tagline', 'site_description', 'site_email', 'site_whatsapp', 'site_location',
               'social_github', 'social_linkedin', 'social_facebook', 'blog_heading', 'blog_subtitle');
 
 -- Nilai bawaan untuk kunci lama yang diseed kosong.
-update public.settings set value = 'hello@independent-designer.com'
+update web.settings set value = 'hello@independent-designer.com'
 where key = 'site_email' and coalesce(value, '') = '';
-update public.settings set value = 'Batang, Jawa Tengah, Indonesia 🇮🇩'
+update web.settings set value = 'Batang, Jawa Tengah, Indonesia 🇮🇩'
 where key = 'site_location' and coalesce(value, '') = '';
-update public.settings set value = 'https://github.com'
+update web.settings set value = 'https://github.com'
 where key = 'social_github' and coalesce(value, '') = '';
-update public.settings set value = 'https://linkedin.com'
+update web.settings set value = 'https://linkedin.com'
 where key = 'social_linkedin' and coalesce(value, '') = '';
-update public.settings set value = 'Portfolio & digital store modern dengan interactive 3D physics ballpit, scroll velocity banner, serta halaman home, project, blog, shop, contact, dan about.'
+update web.settings set value = 'Portfolio & digital store modern dengan interactive 3D physics ballpit, scroll velocity banner, serta halaman home, project, blog, shop, contact, dan about.'
 where key = 'site_description' and coalesce(value, '') = '';
 
 -- Teks antarmuka (navigasi, pencarian, formulir, label tombol). Dipisah dari
@@ -445,7 +461,7 @@ where key = 'site_description' and coalesce(value, '') = '';
 -- dari panel. Awalan `assistant_` sengaja dipakai untuk asisten di halaman
 -- publik: kunci berawalan `ai_` adalah endpoint dan API key yang TIDAK boleh
 -- ikut terbuka, dan memisahkan awalannya membuat batas itu terbaca sekilas.
-insert into public.settings (key, value, is_public) values
+insert into web.settings (key, value, is_public) values
   ('site_name', 'OxidiLily', true),
   ('nav_home', 'Home', true),
   ('nav_project', 'Project', true),
@@ -550,7 +566,7 @@ on conflict (key) do nothing;
 -- ── Seed Tools & Stack + timeline ────────────────────────────────────────
 -- `where not exists` (bukan on conflict): sekali terisi, daftar milik admin.
 -- Menghapus satu tool lewat panel tidak boleh dihidupkan lagi oleh migrasi.
-insert into public.tools (name, category, sort_order)
+insert into web.tools (name, category, sort_order)
 select * from (values
   ('Figma',        'DESIGN TOOL',           10),
   ('Next.js',      'FULL STACK FRAMEWORK',  20),
@@ -567,13 +583,26 @@ select * from (values
   ('Cursor',       'AI CODE EDITOR',       130),
   ('Shadcn/ui',    'COMPONENT LIBRARY',    140)
 ) as seed(name, category, sort_order)
-where not exists (select 1 from public.tools);
+where not exists (select 1 from web.tools);
 
-insert into public.experiences (year, title, description, sort_order)
+insert into web.experiences (year, title, description, sort_order)
 select * from (values
   ('2026',        'Independent Creative Director & Developer',        'Crafting bespoke web systems and 3D physics engines for high-impact teams.', 10),
   ('2024 - 2025', 'Staff Design Engineer @ HyperScale',               'Led the multi-platform design token architecture and core component libraries.', 20),
   ('2022 - 2024', 'Senior Frontend Developer @ Sphere Interactive',   'Engineered WebGL interactive canvases, 3D product visualizers, and shader pipelines.', 30),
   ('2020 - 2022', 'Product Designer @ Atelier Studio',                'Designed high-growth SaaS dashboards and brand design systems.', 40)
 ) as seed(year, title, description, sort_order)
-where not exists (select 1 from public.experiences);
+where not exists (select 1 from web.experiences);
+
+-- ── Hak akses schema web ─────────────────────────────────────────────────
+-- `public` sudah punya default privileges bawaan Supabase untuk anon dan
+-- authenticated; schema baru tidak mewarisinya. Tanpa blok ini PostgREST
+-- menjawab "permission denied" untuk setiap tabel. Yang menjaga data tetap
+-- RLS di atas — grant ini hanya membuka pintunya.
+grant all on all tables in schema web to anon, authenticated, service_role;
+grant all on all sequences in schema web to anon, authenticated, service_role;
+alter default privileges in schema web grant all on tables to anon, authenticated, service_role;
+alter default privileges in schema web grant all on sequences to anon, authenticated, service_role;
+
+notify pgrst, 'reload config';
+notify pgrst, 'reload schema';

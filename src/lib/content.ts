@@ -23,7 +23,10 @@ const KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 async function rest(path: string): Promise<any[] | null> {
   try {
     const res = await fetch(`${URL}/rest/v1/${path}`, {
-      headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+      // `Accept-Profile` memilih schema untuk permintaan BACA. Tanpa header
+      // ini PostgREST memakai schema pertama di daftarnya (`public`) dan
+      // menjawab 404 — tabelnya ada, hanya tidak di sana.
+      headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Accept-Profile': 'web' },
     });
     if (!res.ok) return null;
     const rows = await res.json();
