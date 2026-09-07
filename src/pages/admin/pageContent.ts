@@ -23,6 +23,7 @@ export interface PageEditor {
 export const SITE_KEYS: { key: string; label: string; type?: string }[] = [
   { key: 'site_name', label: 'Nama situs' },
   { key: 'site_description', label: 'Deskripsi situs (SEO & pratinjau tautan)' },
+  { key: 'site_favicon', label: 'Ikon tab browser', type: 'image' },
   { key: 'site_location', label: 'Lokasi' },
   { key: 'site_email', label: 'Email kontak', type: 'email' },
   { key: 'site_phone', label: 'Telepon' },

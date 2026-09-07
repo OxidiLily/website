@@ -148,6 +148,18 @@ export default function App() {
       document.querySelector(sel)?.setAttribute('content', t.title_home);
     }
     document.querySelector('meta[property="og:site_name"]')?.setAttribute('content', t.site_name);
+
+    // Ikon tab. index.html sudah menunjuk /logo.png sejak muat pertama, jadi
+    // baris ini hanya berlaku kalau admin mengunggah ikon lain — dan sengaja
+    // tidak menulis apa pun saat kunci kosong, supaya nilai di index.html yang
+    // bertahan alih-alih ditimpa href kosong.
+    const ikon = (t.site_favicon || '').trim();
+    if (ikon) {
+      for (const sel of ['link[rel="icon"]', 'link[rel="apple-touch-icon"]']) {
+        const el = document.querySelector<HTMLLinkElement>(sel);
+        if (el) el.setAttribute('href', ikon);
+      }
+    }
   }, [t]);
 
   // Muat ulang halaman saat LEBAR viewport berubah (mis. rotasi layar, jendela

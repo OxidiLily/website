@@ -265,6 +265,7 @@ insert into web.settings (key, value) values
   ('site_email',        ''),
   ('site_whatsapp',     ''),
   ('site_location',     'Batang, Jawa Tengah, Indonesia'),
+  ('site_favicon',      ''),
   ('social_github',     ''),
   ('social_linkedin',   ''),
   ('social_facebook',   ''),
@@ -441,7 +442,7 @@ on conflict (key) do nothing;
 -- Kunci yang sudah ada sejak seed awal ikut dibuka ke publik. Kunci ai_* tidak
 -- disebut di sini, jadi tetap tertutup seperti default kolomnya.
 update web.settings set is_public = true
-where key in ('site_tagline', 'site_description', 'site_email', 'site_whatsapp', 'site_location',
+where key in ('site_tagline', 'site_description', 'site_email', 'site_whatsapp', 'site_location', 'site_favicon',
               'social_github', 'social_linkedin', 'social_facebook', 'blog_heading', 'blog_subtitle');
 
 -- Nilai bawaan untuk kunci lama yang diseed kosong.

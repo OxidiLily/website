@@ -770,6 +770,7 @@ export const defaultSettings: SiteSettings = {
   footer_wordmark: 'OxidiLily',
   footer_base: 'Batang, Jawa Tengah (WIB UTC+7)',
   footer_copyright: '© 2026 OxidiLily. All rights reserved.',
+  site_favicon: '',
   site_location: 'Batang, Jawa Tengah, Indonesia 🇮🇩',
   site_description:
     'Portfolio & digital store modern dengan interactive 3D physics ballpit, scroll velocity banner, serta halaman home, project, blog, shop, contact, dan about.',
