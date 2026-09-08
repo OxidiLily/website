@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Loader2, Bot } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
-import { AI_KEYS, aiComplete, cspAllowsOrigin, loadAiConfig, type AiConfig } from '../../lib/ai';
+import { AI_KEYS, aiComplete, aiUrl, cspAllowsOrigin, loadAiConfig, type AiConfig, type AiFormat } from '../../lib/ai';
 import { ImageInput } from './ResourceManager';
 import { SettingsForm } from './SettingsForm';
 import { SITE_KEYS } from './pageContent';
@@ -113,6 +113,7 @@ export const SettingsView: React.FC<{
     const rows = [
       { key: 'ai_enabled', value: ai.enabled ? '1' : '0' },
       { key: 'ai_endpoint', value: ai.endpoint },
+      { key: 'ai_format', value: ai.format },
       { key: 'ai_api_key', value: ai.apiKey },
       { key: 'ai_model', value: ai.model },
       { key: 'ai_system_prompt', value: ai.systemPrompt },
@@ -132,7 +133,11 @@ export const SettingsView: React.FC<{
     setAiTesting(true);
     setAiMsg(null);
     try {
-      const reply = await aiComplete(ai, [{ role: 'user', content: 'Balas satu kata: OK' }], { maxTokens: 16 });
+      // Anggaran token SENGAJA dibiarkan default, sama dengan pemakaian
+      // sungguhan. Batas kecil (dulu 16) membuat model reasoning menghabiskan
+      // seluruhnya untuk berpikir dan mengembalikan jawaban kosong, jadi uji
+      // koneksi yang sebenarnya BERHASIL selalu dilaporkan gagal.
+      const reply = await aiComplete(ai, [{ role: 'user', content: 'Balas satu kata: OK' }]);
       setAiMsg({ kind: 'ok', text: `Terhubung. Balasan model: ${reply.trim().slice(0, 80)}` });
     } catch (err: any) {
       setAiMsg({ kind: 'err', text: err?.message ?? 'Gagal.' });
@@ -246,18 +251,33 @@ export const SettingsView: React.FC<{
             </label>
 
             <label className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-semibold text-neutral-300">Endpoint</span>
+              <span className="text-[11px] font-semibold text-neutral-300">Base URL</span>
               <input
                 value={ai.endpoint}
                 onChange={(e) => setAi({ ...ai, endpoint: e.target.value })}
-                placeholder="/ai/v1/chat/completions"
+                placeholder="/ai/v1"
                 className={inputClass}
               />
               <span className="text-[11px] text-neutral-500">
-                Pakai jalur proxy <code>/ai/v1/chat/completions</code> — situs meneruskannya ke
-                origin di <code>VITE_AI_ORIGIN</code>. URL langsung ke gateway hanya bekerja
-                kalau gateway itu menjawab preflight CORS; 9router tidak.
+                Isi base_url seperti yang tertulis di dokumentasi penyedianya — jalur endpointnya
+                dilengkapi otomatis sesuai format. Contoh: <code>/ai/v1</code> (9router lewat proxy
+                situs ini), <code>https://openrouter.ai/api/v1</code>,{' '}
+                <code>https://api.openai.com/v1</code>, <code>https://api.deepseek.com</code>,{' '}
+                <code>http://localhost:11434/v1</code> (Ollama), <code>https://api.anthropic.com</code>.
+                Endpoint lengkap yang sudah terlanjur diisi tetap dipakai apa adanya.
               </span>
+            </label>
+
+            <label className="flex flex-col gap-1.5">
+              <span className="text-[11px] font-semibold text-neutral-300">Format API</span>
+              <select
+                value={ai.format}
+                onChange={(e) => setAi({ ...ai, format: e.target.value as AiFormat })}
+                className={inputClass}
+              >
+                <option value="openai">OpenAI-compatible — 9router, OpenRouter, DeepSeek, Ollama, vLLM, Groq</option>
+                <option value="anthropic">Anthropic — api.anthropic.com, atau gateway lewat jalur /v1/messages</option>
+              </select>
             </label>
 
             <div className="grid sm:grid-cols-2 gap-3">
@@ -302,11 +322,13 @@ export const SettingsView: React.FC<{
               />
             </label>
 
-            {ai.endpoint && !cspAllowsOrigin(ai.endpoint) && (
+            {ai.endpoint && !cspAllowsOrigin(aiUrl(ai.endpoint, ai.format)) && (
               <p className="text-[11px] px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200">
                 Origin endpoint ini belum diizinkan Content-Security-Policy. Pakai jalur proxy
-                <code className="mx-1">/ai/v1/chat/completions</code>, atau tambahkan origin-nya ke
+                <code className="mx-1">/ai/v1</code>, atau tambahkan origin-nya ke
                 <code className="mx-1">VITE_AI_ORIGIN</code> di <code>.env</code> lalu build ulang.
+                Penyedia cloud (OpenAI, OpenRouter, DeepSeek, Anthropic) mengirim header CORS, jadi
+                cukup didaftarkan; gateway lokal seperti 9router dan Ollama tidak, jadi harus lewat proxy.
               </p>
             )}
 
