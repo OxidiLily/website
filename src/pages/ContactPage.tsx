@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { canRenderWebGL } from '../lib/device';
 import { useSettings } from '../lib/content';
+import { SUPABASE_KEY, SUPABASE_URL } from '../lib/apiBase';
 
 // GhostFibers (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const GhostFibers = lazy(() => import('../components/GhostFibers'));
@@ -48,8 +49,8 @@ export const ContactPage: React.FC = () => {
     setSending(true);
     setSendError('');
     try {
-      const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/messages`, {
+      const key = SUPABASE_KEY;
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
         method: 'POST',
         headers: {
           apikey: key,

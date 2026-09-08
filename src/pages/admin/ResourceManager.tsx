@@ -392,7 +392,13 @@ export const ImageInput: React.FC<{ value: string; onChange: (url: string) => vo
     });
     setBusy(false);
     if (error) return setErr(error.message.includes('row-level security') ? 'Ditolak: akun ini bukan admin.' : error.message);
-    onChange(supabase.storage.from('media').getPublicUrl(path).data.publicUrl);
+    // Yang DISIMPAN adalah jalur relatif-akar, bukan URL lengkap. `getPublicUrl`
+    // mengembalikan alamat berisi origin yang kebetulan dipakai admin saat
+    // mengunggah; kalau itu yang masuk database, gambarnya rusak bagi siapa pun
+    // yang membuka situs lewat origin lain — persis cacat yang baru diperbaiki
+    // pada pemanggilan API. Jalur relatif ikut origin pembacanya sendiri.
+    const publik = supabase.storage.from('media').getPublicUrl(path).data.publicUrl;
+    onChange(new window.URL(publik).pathname);
   };
 
   return (

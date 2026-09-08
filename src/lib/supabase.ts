@@ -1,14 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
+import { SUPABASE_KEY, SUPABASE_URL } from './apiBase';
 
 // Vite hanya mengekspos variabel berawalan VITE_ ke bundel browser. Nama
 // NEXT_PUBLIC_* dari dokumentasi Next.js tidak pernah terbaca di sini.
-const url = import.meta.env.VITE_SUPABASE_URL;
-const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+//
+// Alamatnya se-origin dengan situs dan diproksikan vite.config.ts; alasannya
+// ada di src/lib/apiBase.ts.
+const url = SUPABASE_URL;
+const key = SUPABASE_KEY;
 
-if (!url || !key) {
-  throw new Error(
-    'VITE_SUPABASE_URL / VITE_SUPABASE_PUBLISHABLE_KEY belum diisi. Salin .env.example ke .env.',
-  );
+if (!key) {
+  throw new Error('VITE_SUPABASE_PUBLISHABLE_KEY belum diisi. Salin .env.example ke .env.');
 }
 
 export const supabase = createClient(url, key, {

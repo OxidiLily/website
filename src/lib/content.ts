@@ -5,6 +5,7 @@
 // featured, dst) disimpan di kolom `meta jsonb` dan disebar kembali di sini —
 // jadi tidak ada yang hilang saat bolak-balik DB.
 import { useEffect, useState } from 'react';
+import { SUPABASE_KEY, SUPABASE_URL } from './apiBase';
 import type { BlogPost, ExperienceItem, ProjectItem, SiteSettings, ToolItem } from '../types';
 import {
   blogPostsData,
@@ -17,8 +18,8 @@ import {
 /** Gambar pengganti untuk konten yang belum punya gambar sendiri. */
 export const LOGO = '/logo.png';
 
-const URL = import.meta.env.VITE_SUPABASE_URL;
-const KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const URL = SUPABASE_URL;
+const KEY = SUPABASE_KEY;
 
 async function rest(path: string): Promise<any[] | null> {
   try {

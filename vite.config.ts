@@ -63,6 +63,21 @@ export default defineConfig(({mode}) => {
     ].join('; '),
   };
 
+  // Browser TIDAK memanggil Supabase langsung; ia memanggil origin situs ini,
+  // dan permintaannya diteruskan dari sini. Alamat di `VITE_SUPABASE_URL` cuma
+  // terjangkau dari LAN, sementara situsnya juga dibuka lewat Tailscale —
+  // memanggangnya ke dalam bundel membuat pengunjung dari luar LAN kehilangan
+  // seluruh data tanpa pesan error apa pun. Lihat src/lib/apiBase.ts.
+  const supabaseProxy = env.VITE_SUPABASE_URL
+    ? {
+        '/supabase': {
+          target: env.VITE_SUPABASE_URL,
+          changeOrigin: true,
+          rewrite: (jalur: string) => jalur.replace(/^\/supabase/, ''),
+        },
+      }
+    : undefined;
+
   return {
     assetsInclude: ['**/*.glb'],
     plugins: [react(), tailwindcss()],
@@ -77,11 +92,13 @@ export default defineConfig(({mode}) => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      proxy: supabaseProxy,
     },
     // Sengaja hanya di preview: server dev Vite menyuntikkan preamble
     // react-refresh sebagai <script> inline, yang ditolak CSP di atas.
     preview: {
       headers: securityHeaders,
+      proxy: supabaseProxy,
     },
   };
 });
