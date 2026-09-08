@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, X, Send, Bot, Wand2, Lightbulb, Code2, ArrowRight } from 'lucide-react';
 import { PageId } from '../types';
-import { useSettings } from '../lib/content';
+import { insert, konteksSitus, useSettings } from '../lib/content';
+import { aiComplete, bolehDipakaiPublik, type AiFormat } from '../lib/ai';
 
 interface AiAssistantModalProps {
   isOpen: boolean;
@@ -55,53 +56,141 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
     }
   }, [messages, isOpen]);
 
-  const handleSend = (textToSend?: string) => {
+  // ── Log percakapan ke ai_chat_sessions ────────────────────────────────
+  // Ditulis SEKALI per percakapan, saat modalnya ditutup atau tabnya
+  // ditinggalkan — bukan per pesan. Anon hanya punya izin INSERT (policy
+  // ai_chat_public_insert), tidak UPDATE, jadi baris yang sudah terkirim tidak
+  // bisa disusul; menulis per pesan berarti satu percakapan terpecah jadi
+  // banyak baris yang tidak bisa disatukan lagi di panel.
+  const percakapanRef = useRef<Message[]>([]);
+  percakapanRef.current = messages;
+  const sudahDisimpan = useRef(false);
+
+  const simpanPercakapan = () => {
+    if (sudahDisimpan.current) return;
+    const isi = percakapanRef.current;
+    const pertama = isi.find((m) => m.sender === 'user');
+    // Modal yang cuma dibuka lalu ditutup bukan percakapan.
+    if (!pertama) return;
+    sudahDisimpan.current = true;
+    insert(
+      'ai_chat_sessions',
+      {
+        visitor_name: 'Pengunjung',
+        topic: pertama.text.slice(0, 255),
+        messages: isi.map((m) => ({ role: m.sender === 'user' ? 'user' : 'assistant', content: m.text })),
+      },
+      { keepalive: true },
+    ).catch(() => {});
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      // Percakapan berikutnya berhak disimpan lagi.
+      sudahDisimpan.current = false;
+      return;
+    }
+    simpanPercakapan();
+  }, [isOpen]);
+
+  useEffect(() => {
+    // Tab ditutup di tengah percakapan: `isOpen` tidak pernah berubah, jadi
+    // efek di atas tidak pernah jalan dan barisnya hilang tanpa jejak.
+    const onHide = () => document.visibilityState === 'hidden' && simpanPercakapan();
+    window.addEventListener('pagehide', simpanPercakapan);
+    document.addEventListener('visibilitychange', onHide);
+    return () => {
+      window.removeEventListener('pagehide', simpanPercakapan);
+      document.removeEventListener('visibilitychange', onHide);
+    };
+  }, []);
+
+  // ── Jawaban ───────────────────────────────────────────────────────────
+  // Tombol navigasi tetap ditentukan kata kunci: itu bagian tampilan yang
+  // memang sudah ada, dan model tidak punya cara memilih halaman tujuan.
+  const aksiUntuk = (text: string): { label: string; targetPage: PageId } => {
+    const lower = text.toLowerCase();
+    if (lower.includes('proyek') || lower.includes('project') || lower.includes('karya') || lower.includes('portfolio'))
+      return { label: t.assistant_action_project, targetPage: 'project' };
+    if (lower.includes('tech') || lower.includes('skill') || lower.includes('stack') || lower.includes('bahasa'))
+      return { label: t.assistant_action_stack, targetPage: 'about' };
+    if (lower.includes('blog') || lower.includes('artikel') || lower.includes('baca'))
+      return { label: t.assistant_action_blog, targetPage: 'blog' };
+    if (lower.includes('kontak') || lower.includes('hubungi') || lower.includes('email') || lower.includes('hire') || lower.includes('kolaborasi'))
+      return { label: t.assistant_action_contact, targetPage: 'contact' };
+    return { label: t.assistant_action_default, targetPage: 'home' };
+  };
+
+  /** Jawaban cadangan dari panel — dipakai kalau AI mati atau gagal. */
+  const jawabanCadangan = (text: string): string => {
+    const lower = text.toLowerCase();
+    if (lower.includes('proyek') || lower.includes('project') || lower.includes('karya') || lower.includes('portfolio'))
+      return t.assistant_reply_project;
+    if (lower.includes('tech') || lower.includes('skill') || lower.includes('stack') || lower.includes('bahasa'))
+      return t.assistant_reply_stack;
+    if (lower.includes('blog') || lower.includes('artikel') || lower.includes('baca'))
+      return t.assistant_reply_blog;
+    if (lower.includes('kontak') || lower.includes('hubungi') || lower.includes('email') || lower.includes('hire') || lower.includes('kolaborasi'))
+      return t.assistant_reply_contact;
+    return t.assistant_reply_default.replace('{pertanyaan}', text);
+  };
+
+  // Konfigurasi AI datang dari kartu AI Agent di panel. Yang terbaca pengunjung
+  // hanya baris `is_public` — `ai_api_key` TIDAK termasuk dan tetap tertutup
+  // RLS; kuncinya disuntikkan server penyaji di jalur `/ai/*`. Karena itu
+  // endpoint lintas-origin sengaja tidak dipakai di sini.
+  const aiSiap = t.ai_enabled === '1' && !!t.ai_endpoint && bolehDipakaiPublik(t.ai_endpoint);
+
+  const handleSend = async (textToSend?: string) => {
     const text = (textToSend || inputVal).trim();
     if (!text) return;
 
-    const userMsg: Message = {
-      id: Date.now().toString(),
-      sender: 'user',
-      text,
-    };
-
+    const userMsg: Message = { id: Date.now().toString(), sender: 'user', text };
+    const sebelumnya = percakapanRef.current;
     setMessages((prev) => [...prev, userMsg]);
     setInputVal('');
     setIsTyping(true);
 
-    // Contextual smart AI responses
-    setTimeout(() => {
-      let reply = '';
-      let action: { label: string; targetPage: PageId } | undefined;
+    const action = aksiUntuk(text);
+    let reply = '';
+    try {
+      if (!aiSiap) throw new Error('nonaktif');
+      // Isi situs dikirim sebagai pesan sistem tersendiri, sebelum instruksi
+      // admin: instruksi menentukan GAYA menjawab, konteks menentukan APA yang
+      // diketahui. Tanpa yang kedua, model menjawab dari pengetahuan umum dan
+      // mengaku tidak mengenal situs ini.
+      const konteks = await konteksSitus();
+      reply = await aiComplete(
+        {
+          enabled: true,
+          endpoint: t.ai_endpoint,
+          format: (t.ai_format === 'anthropic' ? 'anthropic' : 'openai') as AiFormat,
+          apiKey: '',
+          model: t.ai_model ?? '',
+          systemPrompt: t.ai_system_prompt ?? '',
+          greeting: '',
+        },
+        [
+          { role: 'system' as const, content: konteks },
+          ...(t.ai_system_prompt ? [{ role: 'system' as const, content: t.ai_system_prompt }] : []),
+          // Sapaan pembuka tidak ikut: itu teks panel, bukan giliran percakapan.
+          ...sebelumnya
+            .filter((m) => m.id !== 'welcome')
+            .map((m) => ({ role: (m.sender === 'user' ? 'user' : 'assistant') as 'user' | 'assistant', content: m.text })),
+          { role: 'user' as const, content: text },
+        ],
+      );
+    } catch {
+      // Model mati, salah setelan, atau jaringan putus tidak boleh membuat
+      // asisten bisu: jawaban panel yang lama tetap dipakai.
+      reply = jawabanCadangan(text);
+      // Jeda yang sama dengan versi lama, supaya indikator mengetik tidak
+      // berkedip sekejap saat jawabannya datang seketika.
+      await new Promise((r) => setTimeout(r, 600));
+    }
 
-      const lower = text.toLowerCase();
-      if (lower.includes('proyek') || lower.includes('project') || lower.includes('karya') || lower.includes('portfolio')) {
-        reply = t.assistant_reply_project;
-        action = { label: t.assistant_action_project, targetPage: 'project' };
-      } else if (lower.includes('tech') || lower.includes('skill') || lower.includes('stack') || lower.includes('bahasa')) {
-        reply = t.assistant_reply_stack;
-        action = { label: t.assistant_action_stack, targetPage: 'about' };
-      } else if (lower.includes('blog') || lower.includes('artikel') || lower.includes('baca')) {
-        reply = t.assistant_reply_blog;
-        action = { label: t.assistant_action_blog, targetPage: 'blog' };
-      } else if (lower.includes('kontak') || lower.includes('hubungi') || lower.includes('email') || lower.includes('hire') || lower.includes('kolaborasi')) {
-        reply = t.assistant_reply_contact;
-        action = { label: t.assistant_action_contact, targetPage: 'contact' };
-      } else {
-        reply = t.assistant_reply_default.replace('{pertanyaan}', text);
-        action = { label: t.assistant_action_default, targetPage: 'home' };
-      }
-
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        sender: 'ai',
-        text: reply,
-        action,
-      };
-
-      setMessages((prev) => [...prev, aiMsg]);
-      setIsTyping(false);
-    }, 600);
+    setMessages((prev) => [...prev, { id: (Date.now() + 1).toString(), sender: 'ai', text: reply, action }]);
+    setIsTyping(false);
   };
 
   return (

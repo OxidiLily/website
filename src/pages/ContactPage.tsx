@@ -10,8 +10,7 @@ import {
   MapPin 
 } from 'lucide-react';
 import { canRenderWebGL } from '../lib/device';
-import { useSettings } from '../lib/content';
-import { SUPABASE_KEY, SUPABASE_URL } from '../lib/apiBase';
+import { insert, useSettings } from '../lib/content';
 
 // GhostFibers (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const GhostFibers = lazy(() => import('../components/GhostFibers'));
@@ -38,10 +37,7 @@ export const ContactPage: React.FC = () => {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState('');
 
-  // Satu INSERT ke tabel messages. Sengaja lewat fetch, bukan supabase-js:
-  // menarik klien 267 KB ke chunk halaman publik demi satu POST tidak sepadan.
-  // Policy messages_public_insert yang mengizinkannya; anon tetap tidak bisa
-  // membaca pesan siapa pun.
+  // Satu INSERT ke tabel messages lewat helper bersama di lib/content.
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.firstName || !formData.email || !formData.message) return;
@@ -49,26 +45,13 @@ export const ContactPage: React.FC = () => {
     setSending(true);
     setSendError('');
     try {
-      const key = SUPABASE_KEY;
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
-        method: 'POST',
-        headers: {
-          apikey: key,
-          Authorization: `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          // Pasangan tulis dari `Accept-Profile`: memilih schema untuk INSERT.
-          'Content-Profile': 'web',
-          Prefer: 'return=minimal',
-        },
-        body: JSON.stringify({
-          name: [formData.firstName, formData.lastName].filter(Boolean).join(' '),
-          email: formData.email,
-          subject: formData.subject || null,
-          message: formData.message,
-          is_read: false,
-        }),
+      await insert('messages', {
+        name: [formData.firstName, formData.lastName].filter(Boolean).join(' '),
+        email: formData.email,
+        subject: formData.subject || null,
+        message: formData.message,
+        is_read: false,
       });
-      if (!res.ok) throw new Error(String(res.status));
       setSubmitted(true);
     } catch {
       setSendError('Pesan gagal terkirim. Coba lagi sebentar lagi.');

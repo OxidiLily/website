@@ -91,6 +91,25 @@ export default defineConfig(({mode}) => {
             target: aiOrigins[0],
             changeOrigin: true,
             rewrite: (jalur: string) => jalur.replace(/^\/ai/, ''),
+            // Kunci untuk asisten AI di halaman PUBLIK. Namanya sengaja tanpa
+            // awalan `VITE_`: hanya variabel berawalan itu yang ikut ke dalam
+            // bundel, jadi kunci ini tidak pernah sampai ke browser pengunjung.
+            //
+            // Disuntikkan HANYA kalau permintaannya belum membawa auth sendiri.
+            // Itu yang memisahkan kedua pemakai jalur ini tanpa rute kedua:
+            // panel admin mengirim kunci dari tabel `settings` dan lewat apa
+            // adanya, pengunjung tidak mengirim apa pun dan dilengkapi di sini.
+            configure: (proxy: any) => {
+              proxy.on('proxyReq', (proxyReq: any) => {
+                if (!env.AI_API_KEY) return;
+                if (proxyReq.getHeader('authorization') || proxyReq.getHeader('x-api-key')) return;
+                // Kedua bentuk dikirim sekaligus: jalur /v1/chat/completions
+                // membaca Authorization, /v1/messages membaca x-api-key, dan
+                // masing-masing mengabaikan yang bukan miliknya.
+                proxyReq.setHeader('authorization', `Bearer ${env.AI_API_KEY}`);
+                proxyReq.setHeader('x-api-key', env.AI_API_KEY);
+              });
+            },
           },
         }
       : {}),

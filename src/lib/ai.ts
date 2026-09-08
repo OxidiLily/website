@@ -87,6 +87,18 @@ export function aiUrl(endpoint: string, format: AiFormat): string {
 }
 
 /**
+ * Boleh dipanggil dari halaman PUBLIK?
+ *
+ * Hanya jalur se-origin (`/ai/v1`), tidak pernah URL absolut. Alasannya kunci:
+ * di jalur se-origin kuncinya disuntikkan server penyaji (lihat blok `/ai` di
+ * vite.config.ts) dan tidak pernah ikut ke browser pengunjung. URL absolut
+ * berarti browser pengunjung sendiri yang harus membawa kunci — dan kunci itu
+ * hanya terbaca admin (RLS menutup `ai_api_key` untuk anon), jadi permintaannya
+ * pasti 401 sekaligus membocorkan kunci kalau sampai dibuka.
+ */
+export const bolehDipakaiPublik = (endpoint: string): boolean => endpoint.trim().startsWith('/');
+
+/**
  * Origin yang diizinkan CSP untuk dihubungi (connect-src).
  *
  * `window.location.origin` sebagai basis membuat jalur relatif — `/ai/v1/...`,
@@ -125,9 +137,14 @@ export async function aiComplete(
   opts: { maxTokens?: number; temperature?: number } = {},
 ): Promise<string> {
   if (!cfg.endpoint) throw new AiError('Endpoint AI belum diisi.');
-  if (!cfg.apiKey) throw new AiError('API key AI belum diisi.');
 
   const url = aiUrl(cfg.endpoint, cfg.format);
+  // Kunci kosong sah HANYA di jalur se-origin: di situ server penyaji yang
+  // menyuntikkannya. Untuk endpoint lintas-origin, kunci kosong berarti 401
+  // yang membingungkan, jadi dihentikan di sini dengan sebabnya.
+  if (!cfg.apiKey && !bolehDipakaiPublik(cfg.endpoint)) {
+    throw new AiError('API key AI belum diisi.');
+  }
   if (!cspAllowsOrigin(url)) {
     throw new AiError(
       `Origin ${new URL(url, window.location.origin).origin} tidak ada di Content-Security-Policy. ` +
@@ -151,7 +168,10 @@ export async function aiComplete(
       method: 'POST',
       headers: anthropic
         ? {
-            'x-api-key': cfg.apiKey,
+            // Kunci kosong → header auth SENGAJA tidak dikirim sama sekali,
+            // bukan dikirim kosong: proxy hanya menyuntikkan kuncinya kalau
+            // permintaannya belum membawa satu pun.
+            ...(cfg.apiKey ? { 'x-api-key': cfg.apiKey } : {}),
             'anthropic-version': '2023-06-01',
             // Tanpa header ini api.anthropic.com menolak SETIAP permintaan yang
             // datang dari browser, apa pun kuncinya. Namanya memang peringatan:
@@ -160,7 +180,10 @@ export async function aiComplete(
             'anthropic-dangerous-direct-browser-access': 'true',
             'Content-Type': 'application/json',
           }
-        : { Authorization: `Bearer ${cfg.apiKey}`, 'Content-Type': 'application/json' },
+        : {
+            ...(cfg.apiKey ? { Authorization: `Bearer ${cfg.apiKey}` } : {}),
+            'Content-Type': 'application/json',
+          },
       body: JSON.stringify(
         anthropic
           ? {

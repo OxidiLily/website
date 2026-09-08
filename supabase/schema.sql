@@ -243,6 +243,15 @@ create policy ai_chat_public_insert on web.ai_chat_sessions
 
 -- settings memuat kunci AI (lihat SettingsController::updateAi di repo acuan),
 -- jadi TIDAK ada policy baca untuk anon. Hanya admin.
+--
+-- Pengecualiannya HANYA setelan yang menerangkan CARA memanggil model, bukan
+-- izinnya: asisten di halaman publik perlu tahu apakah AI aktif, ke mana
+-- mengarah, format kabelnya, model, dan instruksi sistemnya. `ai_api_key`
+-- sengaja TIDAK ada di daftar ini dan tetap tertutup seperti default kolomnya —
+-- kuncinya disuntikkan server penyaji di jalur `/ai/*` (lihat vite.config.ts),
+-- jadi tidak pernah ada alasan mengirimkannya ke browser pengunjung.
+update web.settings set is_public = true
+where key in ('ai_enabled', 'ai_endpoint', 'ai_format', 'ai_model', 'ai_system_prompt');
 
 -- ── Seed kategori minimum supaya form CRUD tidak buntu ───────────────────
 insert into web.blog_categories (name, slug, color) values

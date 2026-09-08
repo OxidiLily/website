@@ -31,3 +31,14 @@ assert.equal(aiUrl('https://api.anthropic.com/v1/messages', 'anthropic'), 'https
 assert.equal(aiUrl('  https://api.openai.com/v1//  ', 'openai'), 'https://api.openai.com/v1/chat/completions');
 
 console.log('[ok] ai.check.ts lulus');
+
+// Endpoint yang boleh dipakai halaman publik: hanya jalur se-origin, karena di
+// situ kuncinya disuntikkan server dan tidak pernah sampai ke pengunjung.
+import { bolehDipakaiPublik } from './ai';
+assert.equal(bolehDipakaiPublik('/ai/v1'), true);
+assert.equal(bolehDipakaiPublik('  /ai/v1  '), true);
+assert.equal(bolehDipakaiPublik('http://192.168.2.11:20128/v1'), false);
+assert.equal(bolehDipakaiPublik('https://api.openai.com/v1'), false);
+assert.equal(bolehDipakaiPublik('https://api.anthropic.com'), false);
+assert.equal(bolehDipakaiPublik(''), false);
+console.log('[ok] ai.check.ts — bolehDipakaiPublik lulus');

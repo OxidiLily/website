@@ -37,6 +37,34 @@ async function rest(path: string): Promise<any[] | null> {
   }
 }
 
+/**
+ * Satu INSERT anon ke tabel publik-tulis (`messages`, `ai_chat_sessions`).
+ *
+ * Sengaja lewat fetch, bukan supabase-js: menarik klien 267 KB ke chunk halaman
+ * publik demi satu POST tidak sepadan. Yang mengizinkannya policy
+ * `*_public_insert`; anon tetap tidak bisa MEMBACA baris siapa pun.
+ *
+ * `keepalive` dipakai saat kiriman berangkat tepat ketika komponennya ditutup
+ * atau tabnya ditinggalkan — tanpa itu browser membatalkan permintaan yang
+ * masih terbang dan barisnya tidak pernah sampai.
+ */
+export async function insert(table: string, row: object, opts: { keepalive?: boolean } = {}): Promise<void> {
+  const res = await fetch(`${URL}/rest/v1/${table}`, {
+    method: 'POST',
+    keepalive: opts.keepalive,
+    headers: {
+      apikey: KEY,
+      Authorization: `Bearer ${KEY}`,
+      'Content-Type': 'application/json',
+      // Pasangan tulis dari `Accept-Profile`: memilih schema untuk INSERT.
+      'Content-Profile': 'web',
+      Prefer: 'return=minimal',
+    },
+    body: JSON.stringify(row),
+  });
+  if (!res.ok) throw new Error(String(res.status));
+}
+
 const strip = (html: string) => (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 
 function toProject(r: any): ProjectItem {
@@ -131,6 +159,51 @@ export async function fetchExperiences(): Promise<ExperienceItem[]> {
         description: r.description ?? '',
       }))
     : defaultExperiences;
+}
+
+/**
+ * Ringkasan isi situs untuk asisten AI di halaman publik.
+ *
+ * Tanpa ini asisten menjawab dari pengetahuan umum dan mengaku tidak tahu
+ * apa-apa soal situsnya — terukur: dengan system prompt "jawab sesuai yang ada
+ * di website" model tetap membalas "saya tidak memiliki akses ke website
+ * tertentu yang Anda maksud". Prompt tidak membawa data; data harus dikirim.
+ *
+ * Sumbernya PERSIS sama dengan yang dibaca halaman publik, jadi apa pun yang
+ * diubah admin di panel ikut terbawa tanpa disalin ke tempat kedua.
+ *
+ * Sengaja ringkas, bukan salinan penuh: isi artikel utuh menghabiskan anggaran
+ * token sebelum pertanyaannya sempat dibaca. Judul, kategori, dan ringkasan
+ * sudah cukup untuk mengarahkan, dan tombol navigasi di modal yang membawa
+ * pengunjung ke halaman lengkapnya.
+ */
+let konteksOnce: Promise<string> | null = null;
+
+export function konteksSitus(): Promise<string> {
+  konteksOnce ??= Promise.all([
+    fetchSettings(),
+    fetchProjects(),
+    fetchBlogPosts(),
+    fetchTools(),
+    fetchExperiences(),
+  ]).then(([t, proyek, blog, tools, pengalaman]) => {
+    const potong = (v: string, n: number) => strip(v ?? '').slice(0, n);
+    const bagian = [
+      `Situs: ${t.site_name} — ${potong(t.site_description, 300)}`,
+      `Kontak: email ${t.site_email}, WhatsApp ${t.site_whatsapp}, lokasi ${t.site_location}`,
+      `Halaman: ${['home', 'project', 'blog', 'about', 'contact'].join(', ')}`,
+      `Proyek (${proyek.length}):`,
+      ...proyek.slice(0, 20).map(
+        (p) => `- ${p.title} [${p.category}, ${p.year}, klien ${p.client}] ${potong(p.description, 200)} (teknologi: ${p.tags.join(', ')})`,
+      ),
+      `Artikel blog (${blog.length}):`,
+      ...blog.slice(0, 20).map((b) => `- ${b.title} [${b.category}, ${b.date}, ${b.readTime}] ${potong(b.excerpt, 200)}`),
+      `Tools & stack: ${tools.map((x) => `${x.name} (${x.category})`).join(', ')}`,
+      `Pengalaman: ${pengalaman.map((x) => `${x.year} ${x.title}`).join('; ')}`,
+    ];
+    return bagian.join('\n');
+  });
+  return konteksOnce;
 }
 
 /**
