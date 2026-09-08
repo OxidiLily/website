@@ -19,6 +19,23 @@ function humanError(e: { code?: string; message?: string } | null): string {
   return e.message || 'Gagal.';
 }
 
+/**
+ * Transkrip percakapan (`[{role, content}]`) → daftarnya; bentuk lain → null.
+ *
+ * Dikenali dari BENTUK datanya, bukan dari nama kolom atau flag baru di
+ * resources.ts: bentuk itu memang kontraknya — AiAssistantModal yang menulis
+ * barisnya, dan satu-satunya kolom yang berisi bentuk ini adalah
+ * ai_chat_sessions.messages. Kolom larik lain di panel (tech_stack, tags)
+ * berisi string, jadi tidak pernah lolos pemeriksaan ini.
+ */
+function transkrip(v: any): { role: string; content: string }[] | null {
+  return Array.isArray(v) &&
+    v.length > 0 &&
+    v.every((m) => m && typeof m.role === 'string' && typeof m.content === 'string')
+    ? v
+    : null;
+}
+
 /** Nilai apa pun → teks yang bisa dibaca di panel detail. */
 function detail(v: any): string {
   if (v === null || v === undefined || v === '') return '—';
@@ -301,14 +318,48 @@ export const ResourceManager: React.FC<{ resource: Resource }> = ({ resource }) 
                       <tr className="bg-neutral-900/40">
                         <td colSpan={listFields.length + 1} className="px-3 py-3">
                           <dl className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-[11px]">
-                            {resource.fields.map((f) => (
-                              <div key={f.name} className="flex gap-2">
-                                <dt className="text-neutral-500 shrink-0">{f.label}:</dt>
-                                <dd className="text-neutral-200 break-words whitespace-pre-wrap">
-                                  {f.ref ? row[f.ref.table]?.[f.ref.label] ?? '—' : detail(row[f.name])}
-                                </dd>
-                              </div>
-                            ))}
+                            {resource.fields.map((f) => {
+                              // Percakapan dibaca sebagai percakapan, bukan
+                              // sebagai JSON mentah: siapa bicara apa, urut,
+                              // dengan sisi yang membedakan pengunjung dari
+                              // asisten. Gaya gelembungnya sama dengan modal di
+                              // halaman publik supaya keduanya terbaca satu
+                              // bahasa.
+                              const chat = f.ref ? null : transkrip(row[f.name]);
+                              if (chat) {
+                                return (
+                                  <div key={f.name} className="sm:col-span-2 flex flex-col gap-2">
+                                    <dt className="text-neutral-500">{f.label}:</dt>
+                                    <dd className="flex flex-col gap-2">
+                                      {chat.map((m, i) => (
+                                        <div
+                                          key={i}
+                                          className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                                        >
+                                          <p
+                                            className={`max-w-[82%] rounded-2xl px-3 py-2 leading-relaxed break-words whitespace-pre-wrap ${
+                                              m.role === 'user'
+                                                ? 'bg-neutral-100 text-neutral-900 font-medium rounded-tr-sm'
+                                                : 'bg-neutral-800 text-neutral-200 border border-neutral-700 rounded-tl-sm'
+                                            }`}
+                                          >
+                                            {m.content}
+                                          </p>
+                                        </div>
+                                      ))}
+                                    </dd>
+                                  </div>
+                                );
+                              }
+                              return (
+                                <div key={f.name} className="flex gap-2">
+                                  <dt className="text-neutral-500 shrink-0">{f.label}:</dt>
+                                  <dd className="text-neutral-200 break-words whitespace-pre-wrap">
+                                    {f.ref ? row[f.ref.table]?.[f.ref.label] ?? '—' : detail(row[f.name])}
+                                  </dd>
+                                </div>
+                              );
+                            })}
                             <div className="flex gap-2">
                               <dt className="text-neutral-500 shrink-0">Dibuat:</dt>
                               <dd className="text-neutral-200">
