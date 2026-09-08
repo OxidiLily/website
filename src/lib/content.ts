@@ -189,6 +189,29 @@ export function konteksSitus(): Promise<string> {
   ]).then(([t, proyek, blog, tools, pengalaman]) => {
     const potong = (v: string, n: number) => strip(v ?? '').slice(0, n);
     const bagian = [
+      // Aturan bentuk jawaban hidup di kode, bukan di medan panel: gelembung
+      // chat merender teks POLOS (satu <p> di AiAssistantModal), jadi markdown
+      // apa pun tampil mentah — tabel jadi deretan `|---|`, penekanan jadi
+      // bintang yang kelihatan. Medan "System prompt" di panel tetap milik
+      // admin untuk mengatur nada dan isi; yang di sini menjamin bentuknya
+      // masih bisa dibaca di antarmuka yang ada.
+      'Kamu asisten di situs ini, berbicara langsung dengan pengunjung.',
+      'Cara menjawab:',
+      '- Tulis sebagai percakapan biasa. JANGAN memakai markdown sama sekali:',
+      '  tanpa judul (#), tanpa tabel, tanpa daftar berpoin atau bernomor,',
+      '  tanpa garis pemisah (---), tanpa **tebal**, tanpa blok kode.',
+      '- Pendek: dua sampai empat kalimat. Kalau perlu menyebut beberapa hal,',
+      '  rangkai dalam satu kalimat yang mengalir, bukan daftar ke bawah.',
+      '- Jawab HANYA yang ditanyakan. Jangan menumpahkan seluruh isi situs',
+      '  kalau pengunjung cuma bertanya satu hal.',
+      '- Ikuti bahasa yang dipakai pengunjung.',
+      '- Emoji secukupnya saja, jangan di setiap kalimat.',
+      '- Di bawah jawabanmu sudah ada tombol yang membawa pengunjung ke halaman',
+      '  terkait, jadi tidak perlu menuliskan daftar lengkap atau tautan.',
+      '',
+      'Data di bawah ini bahan referensi untuk menjawab — jangan disalin mentah,',
+      'dan jangan ditampilkan sebagai daftar.',
+      '',
       `Situs: ${t.site_name} — ${potong(t.site_description, 300)}`,
       `Kontak: email ${t.site_email}, WhatsApp ${t.site_whatsapp}, lokasi ${t.site_location}`,
       `Halaman: ${['home', 'project', 'blog', 'about', 'contact'].join(', ')}`,
