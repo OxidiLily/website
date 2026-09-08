@@ -251,7 +251,8 @@ create policy ai_chat_public_insert on web.ai_chat_sessions
 -- kuncinya disuntikkan server penyaji di jalur `/ai/*` (lihat vite.config.ts),
 -- jadi tidak pernah ada alasan mengirimkannya ke browser pengunjung.
 update web.settings set is_public = true
-where key in ('ai_enabled', 'ai_endpoint', 'ai_format', 'ai_model', 'ai_system_prompt');
+where key in ('ai_enabled', 'ai_endpoint', 'ai_format', 'ai_model', 'ai_system_prompt',
+              'ai_greeting');
 
 -- ── Seed kategori minimum supaya form CRUD tidak buntu ───────────────────
 insert into web.blog_categories (name, slug, color) values

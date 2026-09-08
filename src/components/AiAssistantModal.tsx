@@ -40,12 +40,17 @@ export const AiAssistantModal: React.FC<AiAssistantModalProps> = ({
   // kosong, supaya jawaban settings yang telat tidak menghapus obrolan yang
   // sudah berjalan.
   useEffect(() => {
+    // "Sapaan pembuka" di kartu AI Agent (Pengaturan) yang dipakai. Kalau
+    // medan itu dikosongkan, sapaan dari halaman Asisten AI jadi cadangannya —
+    // tanpa cadangan, mengosongkan medan berarti modal terbuka dengan gelembung
+    // kosong.
+    const sapaan = t.ai_greeting || t.assistant_greeting;
     setMessages((prev) =>
       prev.length === 0 || (prev.length === 1 && prev[0].id === 'welcome')
-        ? [{ id: 'welcome', sender: 'ai', text: t.assistant_greeting }]
+        ? [{ id: 'welcome', sender: 'ai', text: sapaan }]
         : prev,
     );
-  }, [t.assistant_greeting]);
+  }, [t.ai_greeting, t.assistant_greeting]);
   const [inputVal, setInputVal] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
