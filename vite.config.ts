@@ -68,15 +68,33 @@ export default defineConfig(({mode}) => {
   // terjangkau dari LAN, sementara situsnya juga dibuka lewat Tailscale —
   // memanggangnya ke dalam bundel membuat pengunjung dari luar LAN kehilangan
   // seluruh data tanpa pesan error apa pun. Lihat src/lib/apiBase.ts.
-  const supabaseProxy = env.VITE_SUPABASE_URL
-    ? {
-        '/supabase': {
-          target: env.VITE_SUPABASE_URL,
-          changeOrigin: true,
-          rewrite: (jalur: string) => jalur.replace(/^\/supabase/, ''),
-        },
-      }
-    : undefined;
+  //
+  // `/ai/*` diproksikan ke origin PERTAMA di VITE_AI_ORIGIN dengan alasan kedua
+  // yang sama pentingnya: 9router TIDAK menjawab preflight CORS di jalur /v1
+  // (`OPTIONS /v1/chat/completions` → 401 tanpa access-control-allow-origin),
+  // jadi fetch lintas-origin dari browser SELALU diblokir, berapa pun benarnya
+  // kunci dan endpointnya. Lewat proxy, panggilannya jadi se-origin: preflight
+  // tidak pernah terjadi dan CSP lolos lewat `'self'`.
+  const proxy = {
+    ...(env.VITE_SUPABASE_URL
+      ? {
+          '/supabase': {
+            target: env.VITE_SUPABASE_URL,
+            changeOrigin: true,
+            rewrite: (jalur: string) => jalur.replace(/^\/supabase/, ''),
+          },
+        }
+      : {}),
+    ...(aiOrigins[0]
+      ? {
+          '/ai': {
+            target: aiOrigins[0],
+            changeOrigin: true,
+            rewrite: (jalur: string) => jalur.replace(/^\/ai/, ''),
+          },
+        }
+      : {}),
+  };
 
   return {
     assetsInclude: ['**/*.glb'],
@@ -92,13 +110,13 @@ export default defineConfig(({mode}) => {
       hmr: process.env.DISABLE_HMR !== 'true',
       // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
-      proxy: supabaseProxy,
+      proxy,
     },
     // Sengaja hanya di preview: server dev Vite menyuntikkan preamble
     // react-refresh sebagai <script> inline, yang ditolak CSP di atas.
     preview: {
       headers: securityHeaders,
-      proxy: supabaseProxy,
+      proxy,
     },
   };
 });

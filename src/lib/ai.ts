@@ -39,10 +39,17 @@ export async function loadAiConfig(): Promise<AiConfig> {
   };
 }
 
-/** Origin yang diizinkan CSP untuk dihubungi (connect-src). */
+/**
+ * Origin yang diizinkan CSP untuk dihubungi (connect-src).
+ *
+ * `window.location.origin` sebagai basis membuat jalur relatif — `/ai/v1/...`,
+ * yang diproksikan vite.config.ts — dinilai se-origin, jadi lolos lewat
+ * `'self'`. Tanpa basis itu `new URL()` melempar untuk setiap jalur relatif dan
+ * endpoint proxy yang benar justru dilaporkan sebagai diblokir CSP.
+ */
 export function cspAllowsOrigin(endpoint: string): boolean {
   try {
-    const origin = new URL(endpoint).origin;
+    const origin = new URL(endpoint, window.location.origin).origin;
     const allowed = (import.meta.env.VITE_AI_ORIGIN || '')
       .split(',')
       .map((s: string) => s.trim())
@@ -68,8 +75,8 @@ export async function aiComplete(
   if (!cfg.apiKey) throw new AiError('API key AI belum diisi.');
   if (!cspAllowsOrigin(cfg.endpoint)) {
     throw new AiError(
-      `Origin ${new URL(cfg.endpoint).origin} tidak ada di Content-Security-Policy. ` +
-        'Tambahkan ke VITE_AI_ORIGIN di .env lalu build ulang — tanpa itu browser memblokir permintaannya.',
+      `Origin ${new URL(cfg.endpoint, window.location.origin).origin} tidak ada di Content-Security-Policy. ` +
+        'Pakai jalur proxy /ai/v1/chat/completions, atau tambahkan origin-nya ke VITE_AI_ORIGIN di .env lalu build ulang.',
     );
   }
 

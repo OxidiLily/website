@@ -246,13 +246,18 @@ export const SettingsView: React.FC<{
             </label>
 
             <label className="flex flex-col gap-1.5">
-              <span className="text-[11px] font-semibold text-neutral-300">Endpoint (URL lengkap)</span>
+              <span className="text-[11px] font-semibold text-neutral-300">Endpoint</span>
               <input
                 value={ai.endpoint}
                 onChange={(e) => setAi({ ...ai, endpoint: e.target.value })}
-                placeholder="http://ai.home:20128/v1/chat/completions"
+                placeholder="/ai/v1/chat/completions"
                 className={inputClass}
               />
+              <span className="text-[11px] text-neutral-500">
+                Pakai jalur proxy <code>/ai/v1/chat/completions</code> — situs meneruskannya ke
+                origin di <code>VITE_AI_ORIGIN</code>. URL langsung ke gateway hanya bekerja
+                kalau gateway itu menjawab preflight CORS; 9router tidak.
+              </span>
             </label>
 
             <div className="grid sm:grid-cols-2 gap-3">
@@ -299,9 +304,9 @@ export const SettingsView: React.FC<{
 
             {ai.endpoint && !cspAllowsOrigin(ai.endpoint) && (
               <p className="text-[11px] px-3 py-2 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200">
-                Origin endpoint ini belum diizinkan Content-Security-Policy. Tambahkan ke
-                <code className="mx-1">VITE_AI_ORIGIN</code> di <code>.env</code> lalu build ulang,
-                kalau tidak browser akan memblokir permintaannya.
+                Origin endpoint ini belum diizinkan Content-Security-Policy. Pakai jalur proxy
+                <code className="mx-1">/ai/v1/chat/completions</code>, atau tambahkan origin-nya ke
+                <code className="mx-1">VITE_AI_ORIGIN</code> di <code>.env</code> lalu build ulang.
               </p>
             )}
 
@@ -327,7 +332,8 @@ export const SettingsView: React.FC<{
             </div>
 
             <p className="text-[11px] text-neutral-500 leading-relaxed">
-              Panggilan AI terjadi dari browser admin — SPA ini tidak punya sisi server untuk mem-proxy.
+              Panggilan AI berangkat dari browser admin; server penyaji hanya meneruskan jalur
+              <code className="mx-1">/ai/*</code> tanpa menyentuh kuncinya.
               Kunci tidak pernah terbaca pengunjung (RLS menutup tabel <code>settings</code> untuk anon),
               tapi tetap sampai ke browser admin. Asisten AI di halaman publik sengaja TIDAK memakai kunci ini.
             </p>
