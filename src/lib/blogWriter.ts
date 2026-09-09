@@ -20,6 +20,16 @@ export const PROMPT_PENULIS_BLOG = [
   '- Tag yang boleh: <h2> <h3> <p> <ul> <ol> <li> <strong> <em> <blockquote> <pre> <code> <a>.',
   '- DILARANG memakai markdown. `**tebal**` dan `## judul` salah; pakai <strong> dan <h2>.',
   '- Jangan mengulang judul artikel sebagai <h1>; halaman sudah menampilkannya.',
+  '',
+  'SEO — tulis untuk pembaca dulu, mesin pencari mengikuti:',
+  '- Kalimat pertama harus sudah menjawab "ini apa", memuat kata kunci utama',
+  '  secara wajar, dan berdiri sendiri kalau dikutip sebagai cuplikan hasil pencarian.',
+  '- Judul <h2> ditulis sebagai pertanyaan atau frasa yang benar-benar diketik orang',
+  '  ("Apa itu X", "Cara memasang X", "X vs Y"), bukan label satu kata seperti "Fitur".',
+  '- Sebar kata kunci utama dan variasinya secara alami. Mengulang-ulang kata kunci',
+  '  merusak tulisan sekaligus peringkatnya — jangan.',
+  '- Jawab pertanyaan turunan yang wajar muncul (syarat, harga/lisensi, alternatif),',
+  '  karena itu yang dicari orang setelah pertanyaan pertama.',
 ].join('\n');
 
 /** Perintah satu artikel penuh. Panjang dan struktur disebut eksplisit karena "artikel lengkap" saja menghasilkan 3 paragraf. */
@@ -37,6 +47,8 @@ export function tugasArtikel(topik: string): string {
     'Panjang sasaran 900-1500 kata. Tulis mengalir seperti penulis manusia:',
     'hindari kalimat template, hindari mengulang kata kunci, dan jangan menutup',
     'setiap bagian dengan ringkasan yang sama.',
+    '',
+    `Kata kunci utama artikel ini adalah "${topik}".`,
   ].join('\n');
 }
 

@@ -36,4 +36,10 @@ assert.match(PROMPT_PENULIS_BLOG, /DILARANG memakai markdown/);
 assert.match(tugasArtikel('CasaOS'), /Kesimpulan/);
 assert.match(tugasArtikel('CasaOS'), /"CasaOS"/);
 
+// Instruksi SEO harus ikut terkirim — inilah yang membedakan artikel yang
+// bisa ditemukan orang dari artikel yang cuma panjang.
+assert.match(PROMPT_PENULIS_BLOG, /SEO/);
+assert.match(PROMPT_PENULIS_BLOG, /cuplikan hasil pencarian/);
+assert.match(tugasArtikel('CasaOS'), /Kata kunci utama artikel ini adalah "CasaOS"/);
+
 console.log('[✓] blogWriter: semua pemeriksaan lolos');
