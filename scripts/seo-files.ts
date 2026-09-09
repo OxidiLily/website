@@ -8,11 +8,12 @@
 // ini memberi peringatan lalu keluar dengan status 0. Build yang jatuh hanya
 // karena sitemap tidak bisa dibuat jauh lebih merugikan daripada situs tayang
 // tanpa sitemap.
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { config } from 'dotenv';
+import { ringkasUntukMeta, jsonLdArtikel } from '../src/lib/seo';
 
 config();
 
@@ -67,18 +68,95 @@ export function bangunSitemap(asal: string, slug: string[], tanggal: Record<stri
   ].join('\n');
 }
 
-async function ambilSlug(): Promise<{ slug: string[]; tanggal: Record<string, string> }> {
-  if (!URL_SUPABASE || !KUNCI) return { slug: [], tanggal: {} };
+export interface Artikel {
+  slug: string;
+  title: string;
+  content?: string;
+  author?: string;
+  created_at?: string;
+  updated_at?: string;
+  meta?: { excerpt?: string } | null;
+}
+
+async function ambilArtikel(): Promise<Artikel[]> {
+  if (!URL_SUPABASE || !KUNCI) return [];
   // RLS sudah membatasi anon ke artikel berstatus published, jadi tidak perlu
   // filter status di sini — dan tidak boleh, supaya draf tak pernah bocor.
-  const res = await fetch(`${URL_SUPABASE}/rest/v1/blogs?select=slug,updated_at&order=created_at.desc`, {
-    headers: { apikey: KUNCI, Authorization: `Bearer ${KUNCI}`, 'Accept-Profile': 'web' },
-  });
+  const res = await fetch(
+    `${URL_SUPABASE}/rest/v1/blogs?select=slug,title,content,author,created_at,updated_at,meta&order=created_at.desc`,
+    { headers: { apikey: KUNCI, Authorization: `Bearer ${KUNCI}`, 'Accept-Profile': 'web' } },
+  );
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const rows = (await res.json()) as { slug: string; updated_at?: string }[];
-  const tanggal: Record<string, string> = {};
-  for (const r of rows) if (r.updated_at) tanggal[r.slug] = new Date(r.updated_at).toISOString().slice(0, 10);
-  return { slug: rows.map((r) => r.slug).filter(Boolean), tanggal };
+  return ((await res.json()) as Artikel[]).filter((r) => r.slug);
+}
+
+
+/** Teks apa pun → aman ditaruh di dalam atribut HTML. */
+export function escAttr(nilai: string): string {
+  return (nilai || '')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/**
+ * Ganti isi satu meta di HTML mentah; sisipkan sebelum </head> kalau belum ada.
+ *
+ * Bekerja pada TEKS, bukan DOM: skrip ini berjalan di Node setelah `vite build`,
+ * dan menarik pengurai HTML utuh hanya untuk menukar beberapa atribut adalah
+ * ongkos yang tidak perlu.
+ */
+function tukarMeta(html: string, atribut: 'name' | 'property', kunci: string, isi: string): string {
+  const pola = new RegExp(`(<meta\\s+${atribut}=["']${kunci}["'][^>]*content=["'])[^"']*(["'])`, 'i');
+  if (pola.test(html)) return html.replace(pola, `$1${escAttr(isi)}$2`);
+  return html.replace('</head>', `  <meta ${atribut}="${kunci}" content="${escAttr(isi)}" />\n</head>`);
+}
+
+/**
+ * Kerangka index.html + data artikel → HTML statis dengan head yang benar.
+ *
+ * Ini BUKAN SSR: badan halaman tetap kosong dan diisi React di browser. Yang
+ * ditutup di sini adalah celah yang tidak bisa ditutup JavaScript — perayap
+ * kartu tautan (WhatsApp, Twitter, Slack) dan sebagian mesin pencari membaca
+ * HTML MENTAH, jadi meta yang hanya dipasang saat runtime tidak pernah mereka
+ * lihat. Dengan berkas ini tiap artikel punya judul, deskripsi, canonical, dan
+ * data terstrukturnya sendiri sejak byte pertama.
+ */
+export function htmlArtikel(kerangka: string, asal: string, a: Artikel, namaSitus: string): string {
+  const url = `${asal}/blog/${encodeURIComponent(a.slug)}`;
+  const gambar = `${asal}/logo.png`;
+  const judul = `${a.title} — ${namaSitus}`;
+  const deskripsi = ringkasUntukMeta(a.meta?.excerpt || a.content || '');
+
+  let html = kerangka;
+  html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escAttr(judul)}</title>`);
+  html = tukarMeta(html, 'name', 'description', deskripsi);
+  html = tukarMeta(html, 'property', 'og:title', a.title);
+  html = tukarMeta(html, 'property', 'og:description', deskripsi);
+  html = tukarMeta(html, 'property', 'og:type', 'article');
+  html = tukarMeta(html, 'property', 'og:url', url);
+  html = tukarMeta(html, 'property', 'og:image', gambar);
+  html = tukarMeta(html, 'name', 'twitter:title', a.title);
+  html = tukarMeta(html, 'name', 'twitter:description', deskripsi);
+  html = tukarMeta(html, 'name', 'twitter:image', gambar);
+
+  const kanonik = /<link\s+rel=["']canonical["'][^>]*>/i;
+  const tautan = `<link rel="canonical" href="${escAttr(url)}" />`;
+  html = kanonik.test(html) ? html.replace(kanonik, tautan) : html.replace('</head>', `  ${tautan}\n</head>`);
+
+  const ld = jsonLdArtikel({
+    judul: a.title, deskripsi, url,
+    penulis: a.author || namaSitus, namaSitus,
+    terbit: a.created_at, diperbarui: a.updated_at, gambar,
+  });
+  // `</` di dalam JSON dipecah supaya tidak pernah menutup <script> lebih awal.
+  const json = JSON.stringify(ld).replace(/</g, '\\u003c');
+  // id-nya sama dengan yang dipakai terapkanJsonLd(): begitu React jalan, blok
+  // statis ini DIGANTI, bukan ditemani blok kedua. Tanpa id yang sama halaman
+  // artikel membawa dua Article sekaligus, dan yang statis masih menyebut URL
+  // artikel lama setelah pengunjung pindah artikel.
+  return html.replace('</head>', `  <script id="jsonld-halaman" type="application/ld+json">${json}</script>\n</head>`);
 }
 
 async function ambilDomain(): Promise<string | null> {
@@ -92,6 +170,19 @@ async function ambilDomain(): Promise<string | null> {
   return normalkanDomain(rows[0]?.value ?? '');
 }
 
+async function ambilNamaSitus(): Promise<string> {
+  if (!URL_SUPABASE || !KUNCI) return 'OxidiLily';
+  try {
+    const res = await fetch(`${URL_SUPABASE}/rest/v1/settings?select=value&key=eq.site_name`, {
+      headers: { apikey: KUNCI, Authorization: `Bearer ${KUNCI}`, 'Accept-Profile': 'web' },
+    });
+    const rows = (await res.json()) as { value?: string }[];
+    return rows[0]?.value?.trim() || 'OxidiLily';
+  } catch {
+    return 'OxidiLily';
+  }
+}
+
 async function utama(): Promise<void> {
   if (!existsSync(DIST)) {
     console.warn('[seo-files] dist/ belum ada — dilewati.');
@@ -102,8 +193,34 @@ async function utama(): Promise<void> {
     console.warn('[seo-files] domain situs belum diketahui (SITE_URL atau setting site_website) — sitemap dilewati.');
     return;
   }
-  const { slug, tanggal } = await ambilSlug();
+  const artikel = await ambilArtikel();
+  const slug = artikel.map((a) => a.slug);
+  const tanggal: Record<string, string> = {};
+  for (const a of artikel) {
+    if (a.updated_at) tanggal[a.slug] = new Date(a.updated_at).toISOString().slice(0, 10);
+  }
   await writeFile(path.join(DIST, 'sitemap.xml'), bangunSitemap(asal, slug, tanggal), 'utf8');
+
+  // HTML statis per artikel: dist/blog/<slug>.html. Perayap yang tidak
+  // menjalankan JavaScript mendapat head yang benar dari byte pertama.
+  //
+  // Berkas DATAR, bukan <slug>/index.html: penyaji dist/ adalah `vite preview`,
+  // dan fallback SPA-nya menang atas pengalihan indeks-direktori. `/blog/casaos`
+  // (bentuk yang dipakai canonical dan yang diambil perayap) terbukti menjawab
+  // kerangka situs, bukan artikelnya — hanya `/blog/casaos/` dengan garis miring
+  // penutup yang mengenai berkasnya. Bentuk datar terlayani di kedua-duanya.
+  const namaSitus = await ambilNamaSitus();
+  const kerangka = await readFile(path.join(DIST, 'index.html'), 'utf8');
+  await mkdir(path.join(DIST, 'blog'), { recursive: true });
+  for (const a of artikel) {
+    // Slug dikarang di panel admin lalu dipakai sebagai NAMA BERKAS; yang
+    // membawa pemisah jalur akan menulis di luar dist/blog.
+    if (a.slug !== path.basename(a.slug) || a.slug.startsWith('.')) {
+      console.warn(`[seo-files] slug tidak aman sebagai nama berkas, dilewati: ${a.slug}`);
+      continue;
+    }
+    await writeFile(path.join(DIST, 'blog', `${a.slug}.html`), htmlArtikel(kerangka, asal, a, namaSitus), 'utf8');
+  }
 
   const robots = path.join(DIST, 'robots.txt');
   if (existsSync(robots)) {
@@ -112,7 +229,7 @@ async function utama(): Promise<void> {
       await writeFile(robots, `${isi.trimEnd()}\n\nSitemap: ${asal}/sitemap.xml\n`, 'utf8');
     }
   }
-  console.log(`[seo-files] sitemap.xml: ${HALAMAN.length} halaman + ${slug.length} artikel — ${asal}`);
+  console.log(`[seo-files] sitemap.xml: ${HALAMAN.length} halaman + ${slug.length} artikel; HTML statis: ${artikel.length} — ${asal}`);
 }
 
 // Hanya jalan saat dieksekusi langsung. Tanpa penjaga ini, sekadar MENGIMPOR

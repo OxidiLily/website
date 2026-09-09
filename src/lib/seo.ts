@@ -98,6 +98,14 @@ export function terapkanJsonLd(data: unknown | null): void {
 export function ringkasUntukMeta(teks: string, maks = 160): string {
   const bersih = (teks || '')
     .replace(/<[^>]*>/g, ' ')
+    // Penanda markdown ikut dibuang. Artikel lama tersimpan sebagai markdown
+    // (sebelum generator AI diperbaiki), dan `**Judul**` yang bocor ke meta
+    // description tampil apa adanya di hasil pencarian. Hanya penanda yang
+    // benar-benar berpasangan/di awal baris yang disentuh, supaya tanda bintang
+    // biasa di dalam kalimat tidak ikut hilang.
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/`([^`]*)`/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();
   if (bersih.length <= maks) return bersih;

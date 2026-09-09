@@ -10,6 +10,14 @@ import { ringkasUntukMeta, jsonLdArtikel, tanggalIso } from './seo';
 assert.equal(ringkasUntukMeta('<p>Halo   <strong>dunia</strong></p>'), 'Halo dunia');
 assert.equal(ringkasUntukMeta('  banyak\n\nspasi  '), 'banyak spasi');
 
+// Penanda markdown dibuang — artikel lama tersimpan sebagai markdown.
+assert.equal(ringkasUntukMeta('**CasaOS: Server Ringan** **Apa:** Sistem operasi.'), 'CasaOS: Server Ringan Apa: Sistem operasi.');
+assert.equal(ringkasUntukMeta('## Judul\nIsi'), 'Judul Isi');
+assert.equal(ringkasUntukMeta('pakai `npm run build` dulu'), 'pakai npm run build dulu');
+assert.equal(ringkasUntukMeta('__tebal__ juga'), 'tebal juga');
+// Bintang tunggal di tengah kalimat TIDAK ikut hilang (bukan penanda berpasangan).
+assert.equal(ringkasUntukMeta('nilai 3 * 4 hasilnya'), 'nilai 3 * 4 hasilnya');
+
 // Pendek dari batas -> apa adanya, tanpa elipsis.
 assert.equal(ringkasUntukMeta('Pendek saja'), 'Pendek saja');
 
