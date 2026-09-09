@@ -201,8 +201,8 @@ begin
 end $$;
 
 -- Setiap orang boleh membaca profilnya sendiri (dipakai untuk cek peran
--- setelah login). Peran TIDAK bisa dinaikkan sendiri: tidak ada policy update
--- selain admin_all.
+-- setelah login). Peran TIDAK bisa dinaikkan sendiri: dijaga trigger
+-- profiles_protect_role (lihat di bawah profiles_self_update).
 drop policy if exists profiles_self_read on web.profiles;
 create policy profiles_self_read on web.profiles
   for select to authenticated using (id = auth.uid());
@@ -321,6 +321,29 @@ alter table web.profiles add column if not exists avatar_url text;
 drop policy if exists profiles_self_update on web.profiles;
 create policy profiles_self_update on web.profiles
   for update to authenticated using (id = auth.uid()) with check (id = auth.uid());
+
+-- Policy di atas mengizinkan pengguna mengubah baris miliknya (nama/foto), tapi
+-- tanpa batasan kolom ia juga membuka kolom `role` — sehingga viewer bisa
+-- menaikkan dirinya jadi admin lewat satu PATCH. RLS WITH CHECK tidak bisa
+-- membandingkan nilai lama vs baru, jadi penjagaannya lewat trigger. Sesi JWT
+-- non-admin yang mencoba mengubah `role` ditolak; sesi migrasi/service_role
+-- (auth.uid() null) dibiarkan agar seed admin di bawah tetap jalan, dan admin
+-- (web.is_admin() true) tetap boleh mengelola peran.
+create or replace function web.protect_role()
+returns trigger language plpgsql set search_path = web as $$
+begin
+  if auth.uid() is not null
+     and not web.is_admin()
+     and new.role is distinct from old.role then
+    raise exception 'role change is not permitted';
+  end if;
+  return new;
+end $$;
+
+drop trigger if exists profiles_protect_role on web.profiles;
+create trigger profiles_protect_role
+  before update on web.profiles
+  for each row execute function web.protect_role();
 
 -- ── Tools & Stack (halaman About) ────────────────────────────────────────
 create table if not exists web.tools (
