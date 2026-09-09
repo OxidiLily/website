@@ -60,7 +60,6 @@ export const AdminGate: React.FC<{ onNavigate: (page: PageId) => void }> = ({ on
 
   return admin ? (
     <DashboardPage
-      onNavigate={onNavigate}
       onLogout={() => supabase.auth.signOut().then(() => setAdmin(null))}
       user={admin}
     />

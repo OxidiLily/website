@@ -3,7 +3,6 @@ import {
   Bot, ChevronDown, FileText, FolderKanban, Globe, LayoutDashboard,
   LogOut, Mail, Menu, Settings, ShoppingBag, PanelsTopLeft,
 } from 'lucide-react';
-import { PageId } from '../types';
 import { supabase } from '../lib/supabase';
 import { RESOURCES, type ResourceKey } from './admin/resources';
 import { ResourceManager } from './admin/ResourceManager';
@@ -84,12 +83,11 @@ const labelOf = (view: AdminView): string => {
 };
 
 interface DashboardPageProps {
-  onNavigate: (page: PageId) => void;
   onLogout: () => void;
   user: { email: string; name: string; avatarUrl: string } | null;
 }
 
-export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogout, user }) => {
+export const DashboardPage: React.FC<DashboardPageProps> = ({ onLogout, user }) => {
   const [view, setView] = useState<AdminView>('dashboard');
   const [openGroup, setOpenGroup] = useState<string>('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -207,12 +205,18 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate, onLogo
         </nav>
 
         <div className="px-3 py-4 border-t border-neutral-800 flex flex-col gap-1">
-          <button
-            onClick={() => onNavigate('home')}
+          {/* Tautan, bukan tombol: situs publik dibuka di tab baru supaya panel
+              yang sedang dikerjakan tidak ikut ditinggalkan. `rel` wajib
+              menyertai target="_blank" — tanpa noopener, tab baru dapat akses
+              window.opener ke panel admin. */}
+          <a
+            href="/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-neutral-400 hover:bg-neutral-900 hover:text-neutral-200 transition-colors"
           >
             <Globe className="w-4 h-4" /> Lihat situs
-          </button>
+          </a>
           <button
             onClick={onLogout}
             className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-red-400 hover:bg-red-500/10 transition-colors"
