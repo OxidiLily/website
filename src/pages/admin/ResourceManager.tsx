@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Loader2, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { aiComplete, loadAiConfig } from '../../lib/ai';
+import { PROMPT_PENULIS_BLOG, tugasArtikel, bersihkanHtmlArtikel } from '../../lib/blogWriter';
 import type { Field, Resource } from './resources';
 import { slugify } from './resources';
 
@@ -512,9 +513,13 @@ const RowForm: React.FC<{
   const [aiBusy, setAiBusy] = useState(false);
   const [aiErr, setAiErr] = useState('');
 
-  // Meniru BlogController::generate di repo acuan, tanpa pipeline risetnya
-  // (GitHub + Wikipedia) — itu berjalan di sisi server Laravel dan tidak punya
-  // padanan di SPA tanpa backend.
+  // `cfg.systemPrompt` SENGAJA tidak dipakai di sini. Isinya persona asisten
+  // chat publik (mis. "jawab dengan sesuai yang ada di website"); dulu ia
+  // dipasang sebagai `cfg.systemPrompt || <instruksi penulis>`, sehingga begitu
+  // admin mengisi persona itu instruksi penulisnya HILANG sama sekali. Yang
+  // keluar lalu markdown pendek bergaya jawaban chat (`**Judul**`), bukan HTML
+  // artikel — persis keluhan "tulisannya cuma sedikit". Penulis blog dan
+  // asisten chat adalah dua peran berbeda, jadi promptnya juga dipisah.
   const generate = async () => {
     if (!aiGenerate) return;
     const topic = String(form[aiGenerate.from] || '').trim();
@@ -525,15 +530,10 @@ const RowForm: React.FC<{
       const cfg = await loadAiConfig();
       if (!cfg.enabled) throw new Error('AI agent belum diaktifkan di Pengaturan.');
       const out = await aiComplete(cfg, [
-        {
-          role: 'system',
-          content:
-            cfg.systemPrompt ||
-            'Kamu penulis blog profesional berbahasa Indonesia. Keluarkan HANYA HTML isi artikel (h2, h3, p, ul, li, strong, em) tanpa wrapper html/body.',
-        },
-        { role: 'user', content: `Tulis artikel blog lengkap tentang "${topic}".` },
-      ], { maxTokens: 4096 });
-      set(aiGenerate.to, out);
+        { role: 'system', content: PROMPT_PENULIS_BLOG },
+        { role: 'user', content: tugasArtikel(topic) },
+      ], { maxTokens: 8192 });
+      set(aiGenerate.to, bersihkanHtmlArtikel(out));
     } catch (e: any) {
       setAiErr(e?.message ?? 'Gagal memanggil AI.');
     } finally {

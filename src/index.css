@@ -53,3 +53,59 @@
   }
 }
 
+
+/* Isi artikel blog yang disuntikkan sebagai HTML (BlogPostDetail).
+   Plugin @tailwindcss/typography tidak terpasang, dan HTML dari database tidak
+   bisa diberi class utility per-tag — jadi jaraknya diatur di sini. Warna
+   sengaja diwarisi dari pembungkusnya supaya tema gelap halaman tetap berlaku. */
+.isi-artikel > * + * {
+  margin-top: 1rem;
+}
+.isi-artikel h2 {
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.isi-artikel h3 {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f5f5f5;
+}
+.isi-artikel ul,
+.isi-artikel ol {
+  padding-left: 1.25rem;
+  list-style-position: outside;
+}
+.isi-artikel ul { list-style-type: disc; }
+.isi-artikel ol { list-style-type: decimal; }
+.isi-artikel li + li { margin-top: 0.375rem; }
+.isi-artikel strong { color: #fff; font-weight: 600; }
+.isi-artikel a { color: #93c5fd; text-decoration: underline; }
+.isi-artikel blockquote {
+  border-left: 2px solid #404040;
+  padding-left: 0.875rem;
+  font-style: italic;
+  color: #a3a3a3;
+}
+/* Blok perintah panjang tidak boleh melebarkan halaman — ia bergulir sendiri. */
+.isi-artikel pre {
+  overflow-x: auto;
+  padding: 0.875rem;
+  border-radius: 0.5rem;
+  background: #0a0a0a;
+  border: 1px solid #262626;
+  font-size: 0.8125rem;
+}
+.isi-artikel code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.875em;
+}
+.isi-artikel :not(pre) > code {
+  background: #171717;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  color: #e5e5e5;
+}

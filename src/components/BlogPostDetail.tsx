@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { BlogPost, PageId } from '../types';
 import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
 import { useSettings } from '../lib/content';
+import { tampakHtml } from '../lib/blogWriter';
 
 interface BlogPostDetailProps {
   post: BlogPost;
@@ -242,9 +243,21 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                     </p>
                   </section>
                 ))
+              ) : tampakHtml(post.content) ? (
+                /* Isi artikel disimpan sebagai HTML (field "Isi (HTML)" di panel).
+                   Sebelumnya seluruhnya dibuang ke satu <p> sebagai teks, jadi
+                   tag dan markdown tampil mentah dan artikel sepanjang apa pun
+                   terlihat seperti satu paragraf. Penulisnya hanya admin —
+                   RLS menutup tulis tabel `blogs` untuk selain admin — jadi
+                   sumber HTML ini setingkat kepercayaan dengan CMS mana pun. */
+                <div className="isi-artikel" dangerouslySetInnerHTML={{ __html: post.content }} />
               ) : (
+                /* Baris warisan yang terlanjur tersimpan sebagai markdown/teks.
+                   Tidak boleh disuntikkan sebagai HTML — yang terjadi bukan
+                   tampil jelek tapi hilang. `whitespace-pre-line` setidaknya
+                   mempertahankan pergantian barisnya. */
                 <div className="space-y-4">
-                  <p>{post.content}</p>
+                  <p className="whitespace-pre-line">{post.content}</p>
                 </div>
               )}
             </div>
