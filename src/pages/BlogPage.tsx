@@ -3,6 +3,7 @@ import { Decor } from '../components/Decor';
 import { motion, AnimatePresence } from 'motion/react';
 import { blogPostsData } from '../data/siteData';
 import { fetchBlogPosts, useSettings } from '../lib/content';
+import { terapkanMeta, terapkanJsonLd, jsonLdArtikel } from '../lib/seo';
 import { BlogPost, PageId } from '../types';
 import { BlogPostDetail } from '../components/BlogPostDetail';
 import { ArrowRight, ChevronRight } from 'lucide-react';
@@ -48,11 +49,35 @@ export const BlogPage: React.FC<BlogPageProps> = ({
     }
   }, [initialPostId, posts]);
 
-  // Judul tab untuk post yang sedang dibuka. App yang memulihkan judul halaman
-  // saat post ditutup, jadi di sini cukup cabang "ada post".
+  // Judul tab, meta, dan data terstruktur untuk post yang sedang dibuka.
+  //
+  // Halaman inilah yang memegang datanya, jadi di sinilah meta artikel dipasang;
+  // App sengaja mundur selama ada post terpilih dan memulihkan meta situs saat
+  // post ditutup. Deskripsi diambil dari excerpt, dan jatuh ke isi artikel kalau
+  // excerpt kosong — artikel hasil AI belum tentu punya excerpt, dan meta
+  // deskripsi kosong lebih buruk daripada potongan paragraf pertama.
   React.useEffect(() => {
-    if (selectedPost) document.title = `${selectedPost.title} — ${t.site_name}`;
-  }, [selectedPost]);
+    if (!selectedPost) return;
+    document.title = `${selectedPost.title} — ${t.site_name}`;
+
+    const url = `${window.location.origin}/blog/${selectedPost.id}`;
+    const gambar = `${window.location.origin}/logo.png`;
+    const deskripsi = selectedPost.excerpt || selectedPost.content;
+
+    terapkanMeta({ judul: selectedPost.title, deskripsi, url, gambar, tipe: 'article' });
+    terapkanJsonLd(
+      jsonLdArtikel({
+        judul: selectedPost.title,
+        deskripsi,
+        url,
+        penulis: t.site_name,
+        namaSitus: t.site_name,
+        terbit: selectedPost.date,
+        diperbarui: selectedPost.lastUpdated,
+        gambar,
+      }),
+    );
+  }, [selectedPost, t.site_name]);
 
   const categories = ['All', ...Array.from(new Set(posts.map((p) => p.category)))];
 

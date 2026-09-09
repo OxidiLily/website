@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react';
 import { SUPABASE_KEY, SUPABASE_URL } from './apiBase';
 import type { BlogPost, ExperienceItem, ProjectItem, SiteSettings, ToolItem } from '../types';
+import { ringkasUntukMeta } from './seo';
 import {
   blogPostsData,
   defaultExperiences,
@@ -93,7 +94,10 @@ function toBlog(r: any): BlogPost {
     category,
     date: meta.date ?? new Date(r.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
     readTime: r.reading_time ? `${r.reading_time} min read` : (meta.readTime ?? '5 min read'),
-    excerpt: meta.excerpt ?? strip(r.content).slice(0, 160),
+    // Potong di batas kata, bukan di karakter ke-160: excerpt ini dipakai
+    // kartu blog SEKALIGUS meta description, dan potongan di tengah kata
+    // terbaca rusak di hasil pencarian.
+    excerpt: meta.excerpt ?? ringkasUntukMeta(r.content ?? ''),
     content: r.content ?? '',
     tags: meta.tags ?? [category],
   };

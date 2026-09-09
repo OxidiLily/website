@@ -7,6 +7,7 @@ import { BackToTop } from './components/BackToTop';
 import { PageId } from './types';
 import { canRenderWebGL, isDesktopPointer } from './lib/device';
 import { useSettings } from './lib/content';
+import { terapkanMeta, terapkanJsonLd } from './lib/seo';
 
 // Tiap halaman dipecah jadi chunk sendiri. Tanpa ini seluruh three.js, ogl,
 // rapier, dan drei ikut terunduh & di-parse di kunjungan pertama walau user
@@ -139,15 +140,26 @@ export default function App() {
   // Deskripsi situs untuk mesin pencari dan pratinjau tautan. index.html hanya
   // memuat nilai awal yang ikut di-bundel; tanpa efek ini, mengubahnya di panel
   // tidak berpengaruh apa pun pada apa yang dibaca perayap dan kartu tautan.
+  //
+  // Saat ada detail terbuka, efek ini MUNDUR — sama seperti judul tab di atas.
+  // Halaman detail yang memegang datanya memasang meta miliknya sendiri; kalau
+  // efek ini tetap jalan, ia menimpanya kembali dengan deskripsi situs dan
+  // setiap artikel jadi terlihat identik di hasil pencarian. `selectedBlogId`
+  // ikut jadi dependensi supaya meta situs dipulihkan begitu artikel ditutup.
   useEffect(() => {
-    const isi = t.site_description || t.title_home;
-    for (const sel of ['meta[name="description"]', 'meta[property="og:description"]', 'meta[name="twitter:description"]']) {
-      document.querySelector(sel)?.setAttribute('content', isi);
+    if (!(selectedBlogId || selectedProjectId)) {
+      terapkanMeta({
+        judul: t.title_home,
+        deskripsi: t.site_description || t.title_home,
+        url: `${window.location.origin}${window.location.pathname}`,
+        gambar: `${window.location.origin}/logo.png`,
+        tipe: 'website',
+      });
+      document.querySelector('meta[property="og:site_name"]')?.setAttribute('content', t.site_name);
+      // Data terstruktur artikel milik halaman sebelumnya dilepas di sini,
+      // supaya halaman biasa tidak mewarisi Article yang tidak ada isinya.
+      terapkanJsonLd(null);
     }
-    for (const sel of ['meta[property="og:title"]', 'meta[name="twitter:title"]']) {
-      document.querySelector(sel)?.setAttribute('content', t.title_home);
-    }
-    document.querySelector('meta[property="og:site_name"]')?.setAttribute('content', t.site_name);
 
     // Ikon tab. index.html sudah menunjuk /logo.png sejak muat pertama, jadi
     // baris ini hanya berlaku kalau admin mengunggah ikon lain — dan sengaja
@@ -160,7 +172,7 @@ export default function App() {
         if (el) el.setAttribute('href', ikon);
       }
     }
-  }, [t]);
+  }, [t, currentPage, selectedBlogId, selectedProjectId]);
 
   // Muat ulang halaman saat LEBAR viewport berubah (mis. rotasi layar, jendela
   // desktop di-resize). Efek WebGL menghitung ukuran kanvas dan konstanta kelas

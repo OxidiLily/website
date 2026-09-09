@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -24,6 +24,14 @@
     <meta property="og:title" content="OxidiLily — Portfolio" />
     <meta property="og:description" content="Portfolio & digital store modern dengan interactive 3D physics ballpit, scroll velocity banner, serta halaman home, project, blog, shop, contact, dan about." />
     <meta property="og:site_name" content="OxidiLily" />
+    <!-- og:image dan og:url wajib ada di HTML MENTAH: perayap kartu tautan
+         (WhatsApp, Twitter, Slack) tidak menjalankan JavaScript, jadi nilai
+         yang dipasang lib/seo.ts saat runtime tidak pernah mereka lihat.
+         Nilai di sini adalah cadangan tingkat situs; halaman artikel
+         menimpanya untuk pengunjung dan untuk perayap yang menjalankan JS. -->
+    <meta property="og:image" content="/logo.png" />
+    <meta property="og:url" content="/" />
+    <link rel="canonical" href="/" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

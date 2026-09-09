@@ -1,0 +1,11 @@
+# Situs ini SPA tanpa SSR: perayap yang tidak menjalankan JavaScript hanya
+# melihat kerangka kosong. Yang tetap masuk akal dilarang adalah panel admin —
+# halamannya tidak punya isi publik dan tidak layak muncul di hasil pencarian.
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /login
+
+# Baris `Sitemap:` ditambahkan saat build oleh scripts/seo-files.ts, karena
+# spesifikasinya menuntut URL ABSOLUT sementara domainnya hidup di panel.
