@@ -513,6 +513,12 @@ const RowForm: React.FC<{
   const [aiBusy, setAiBusy] = useState(false);
   const [aiErr, setAiErr] = useState('');
 
+  // Bahan rujukan untuk sekali generate — SENGAJA tidak ikut disimpan ke baris.
+  // Yang perlu dibaca publik adalah daftar sumber di akhir artikel (dituntut
+  // oleh prompt), bukan bahan mentahnya; menyimpannya berarti kolom baru di
+  // tabel `blogs` yang tidak pernah ditampilkan di mana pun.
+  const [sumber, setSumber] = useState('');
+
   // `cfg.systemPrompt` SENGAJA tidak dipakai di sini. Isinya persona asisten
   // chat publik (mis. "jawab dengan sesuai yang ada di website"); dulu ia
   // dipasang sebagai `cfg.systemPrompt || <instruksi penulis>`, sehingga begitu
@@ -531,7 +537,7 @@ const RowForm: React.FC<{
       if (!cfg.enabled) throw new Error('AI agent belum diaktifkan di Pengaturan.');
       const out = await aiComplete(cfg, [
         { role: 'system', content: PROMPT_PENULIS_BLOG },
-        { role: 'user', content: tugasArtikel(topic) },
+        { role: 'user', content: tugasArtikel(topic, sumber) },
       ], { maxTokens: 8192 });
       set(aiGenerate.to, bersihkanHtmlArtikel(out));
     } catch (e: any) {
@@ -593,6 +599,35 @@ const RowForm: React.FC<{
                 </span>
                 {aiGenerate?.to === f.name && aiErr && (
                   <span className="text-[11px] text-red-300">{aiErr}</span>
+                )}
+                {/* Tanpa bahan rujukan, model menulis dari ingatannya sendiri —
+                    itulah asal artikel yang terdengar meyakinkan tapi salah
+                    versi, salah perintah, dan tanpa sumber yang bisa dicek.
+                    Diisi URL dokumentasi resmi (dan kutipannya kalau ada),
+                    isinya dirangkum jadi satu dan dicantumkan di bagian
+                    "Sumber" di akhir artikel. aria-label dipasang sendiri karena
+                    <label> di sekelilingnya sudah menamai medan isi artikel. */}
+                {aiGenerate?.to === f.name && (
+                  <>
+                    <textarea
+                      value={sumber}
+                      onChange={(e) => setSumber(e.target.value)}
+                      rows={3}
+                      aria-label="Sumber rujukan untuk artikel yang akan dibuat AI"
+                      placeholder={
+                        'Sumber rujukan (opsional, satu per baris)\n' +
+                        'https://dokumentasi-resmi/halaman\n' +
+                        'Boleh juga menempel kutipan isi halamannya di sini.'
+                      }
+                      className={`${inputClass} text-[11px] font-mono`}
+                    />
+                    <span className="text-[10px] text-neutral-500">
+                      Diisi sumber terpercaya (dokumentasi resmi, repositori resmi). AI merangkum
+                      dari bahan ini dan mencantumkannya sebagai daftar &quot;Sumber&quot; di akhir
+                      artikel. Dikosongkan → artikel ditulis dari ingatan model dan isinya tidak
+                      bisa ditelusuri.
+                    </span>
+                  </>
                 )}
 
                 {f.type === 'image' ? (

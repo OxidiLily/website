@@ -3,7 +3,8 @@ import { motion } from 'motion/react';
 import { BlogPost, PageId } from '../types';
 import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
 import { useSettings } from '../lib/content';
-import { tampakHtml } from '../lib/blogWriter';
+import { pecahArtikel, tampakHtml } from '../lib/blogWriter';
+import { KodeBlok } from './KodeBlok';
 
 interface BlogPostDetailProps {
   post: BlogPost;
@@ -250,7 +251,19 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                    terlihat seperti satu paragraf. Penulisnya hanya admin —
                    RLS menutup tulis tabel `blogs` untuk selain admin — jadi
                    sumber HTML ini setingkat kepercayaan dengan CMS mana pun. */
-                <div className="isi-artikel" dangerouslySetInnerHTML={{ __html: post.content }} />
+                <div className="isi-artikel">
+                  {pecahArtikel(post.content).map((bagian, i) =>
+                    /* Blok <pre><code> dikeluarkan dari aliran HTML dan digambar
+                       sebagai kartu: nomor baris, tombol salin, dan pewarnaan
+                       sintaks mustahil dilakukan pada HTML mentah yang cuma
+                       disuntikkan. Sisanya tetap disuntikkan apa adanya. */
+                    bagian.jenis === 'kode' ? (
+                      <KodeBlok key={i} kode={bagian.isi} bahasa={bagian.bahasa} berkas={bagian.berkas} />
+                    ) : (
+                      <div key={i} dangerouslySetInnerHTML={{ __html: bagian.isi }} />
+                    ),
+                  )}
+                </div>
               ) : (
                 /* Baris warisan yang terlanjur tersimpan sebagai markdown/teks.
                    Tidak boleh disuntikkan sebagai HTML — yang terjadi bukan
