@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, Loader2, Pencil, Plus, Search, Trash2, X } f
 import { supabase } from '../../lib/supabase';
 import { aiComplete, loadAiConfig } from '../../lib/ai';
 import { PROMPT_PENULIS_BLOG, tugasArtikel, bersihkanHtmlArtikel } from '../../lib/blogWriter';
+import { bahanDariSumber, promptKandidat, uraikanKandidat, type SumberRujukan } from '../../lib/riset';
 import type { Field, Resource } from './resources';
 import { slugify } from './resources';
 
@@ -513,11 +514,15 @@ const RowForm: React.FC<{
   const [aiBusy, setAiBusy] = useState(false);
   const [aiErr, setAiErr] = useState('');
 
-  // Bahan rujukan untuk sekali generate — SENGAJA tidak ikut disimpan ke baris.
-  // Yang perlu dibaca publik adalah daftar sumber di akhir artikel (dituntut
-  // oleh prompt), bukan bahan mentahnya; menyimpannya berarti kolom baru di
-  // tabel `blogs` yang tidak pernah ditampilkan di mana pun.
+  // Bahan rujukan TAMBAHAN dari admin, untuk sekali generate — SENGAJA tidak
+  // ikut disimpan ke baris. Yang perlu dibaca publik adalah daftar sumber di
+  // akhir artikel (dituntut oleh prompt), bukan bahan mentahnya; menyimpannya
+  // berarti kolom baru di tabel `blogs` yang tidak pernah ditampilkan di mana
+  // pun. Sumber utamanya sekarang datang dari riset otomatis di `/riset`.
   const [sumber, setSumber] = useState('');
+  const [aiTahap, setAiTahap] = useState('');
+  const [sumberDipakai, setSumberDipakai] = useState<SumberRujukan[]>([]);
+  const [sumberDitolak, setSumberDitolak] = useState<{ url: string; tolak: string }[]>([]);
 
   // `cfg.systemPrompt` SENGAJA tidak dipakai di sini. Isinya persona asisten
   // chat publik (mis. "jawab dengan sesuai yang ada di website"); dulu ia
@@ -531,18 +536,59 @@ const RowForm: React.FC<{
     const topic = String(form[aiGenerate.from] || '').trim();
     if (!topic) return setAiErr(`Isi dulu "${aiGenerate.from}".`);
     setAiErr('');
+    setSumberDipakai([]);
+    setSumberDitolak([]);
     setAiBusy(true);
     try {
       const cfg = await loadAiConfig();
       if (!cfg.enabled) throw new Error('AI agent belum diaktifkan di Pengaturan.');
+
+      // Tahap 1 — model MENGUSULKAN alamat, bukan menyimpulkan isinya. Usulan
+      // yang salah tidak berbahaya di sini: yang menentukan bukan ingatan
+      // model, melainkan halaman mana yang benar-benar berhasil diunduh.
+      setAiTahap('Mencari alamat sumber…');
+      const usul = await aiComplete(cfg, [{ role: 'user', content: promptKandidat(topic) }], {
+        maxTokens: 700,
+        // Suhu rendah: yang diminta alamat yang benar-benar ada, bukan variasi.
+        temperature: 0.1,
+      });
+
+      // Tahap 2 — server menelusuri repositori resmi topik ini di GitHub,
+      // mengunduh tiap alamat, dan MEMBUANG yang bukan sumber tepercaya atau
+      // yang ternyata tidak bisa diunduh. Browser tidak bisa melakukannya
+      // sendiri: halaman dokumentasi tidak mengirim header CORS untuk situs ini.
+      setAiTahap('Mengunduh & memverifikasi sumber…');
+      const res = await fetch('/riset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topik: topic, kandidat: uraikanKandidat(usul) }),
+      });
+      if (!res.ok) throw new Error(`Riset sumber gagal (HTTP ${res.status}).`);
+      const { sumber: terverifikasi = [], ditolak = [] } = await res.json();
+      setSumberDipakai(terverifikasi);
+      setSumberDitolak(ditolak);
+
+      // Tahap 3 — barulah menulis. Tanpa satu pun bahan, permintaannya
+      // DIHENTIKAN, bukan dilanjutkan tanpa sumber: artikel yang ditulis dari
+      // ingatan model persis yang membuat isinya meleset selama ini.
+      const bahan = [bahanDariSumber(terverifikasi), sumber.trim()].filter(Boolean).join('\n\n———\n\n');
+      if (!bahan) {
+        throw new Error(
+          'Tidak ada satu pun sumber tepercaya yang berhasil diunduh untuk topik ini. ' +
+            'Tempel URL dokumentasi resminya (atau kutipan isinya) di kotak "Sumber rujukan", lalu ulangi.',
+        );
+      }
+
+      setAiTahap(`Menulis artikel dari ${terverifikasi.length} sumber…`);
       const out = await aiComplete(cfg, [
         { role: 'system', content: PROMPT_PENULIS_BLOG },
-        { role: 'user', content: tugasArtikel(topic, sumber) },
+        { role: 'user', content: tugasArtikel(topic, bahan) },
       ], { maxTokens: 8192 });
       set(aiGenerate.to, bersihkanHtmlArtikel(out));
     } catch (e: any) {
       setAiErr(e?.message ?? 'Gagal memanggil AI.');
     } finally {
+      setAiTahap('');
       setAiBusy(false);
     }
   };
@@ -593,12 +639,50 @@ const RowForm: React.FC<{
                       disabled={aiBusy}
                       className="px-2 py-1 rounded-md border border-neutral-700 text-[11px] font-medium text-neutral-300 hover:bg-neutral-900 disabled:opacity-50 flex items-center gap-1.5"
                     >
-                      {aiBusy && <Loader2 className="w-3 h-3 animate-spin" />} Generate dengan AI
+                      {aiBusy && <Loader2 className="w-3 h-3 animate-spin" />}
+                      {aiBusy && aiTahap ? aiTahap : 'Generate dengan AI'}
                     </button>
                   )}
                 </span>
                 {aiGenerate?.to === f.name && aiErr && (
                   <span className="text-[11px] text-red-300">{aiErr}</span>
+                )}
+                {/* Daftar sumber yang benar-benar diunduh, beserta ALASAN tiap
+                    alamat dianggap layak. Daftar sumber yang tidak bisa
+                    dibantah sama saja dengan tidak punya daftar sumber — di
+                    sinilah admin memeriksa apakah artikelnya berpijak pada
+                    dokumentasi resmi atau pada halaman sembarangan. */}
+                {aiGenerate?.to === f.name && sumberDipakai.length > 0 && (
+                  <div className="rounded-lg border border-neutral-800 bg-neutral-900/60 p-2 space-y-1">
+                    <div className="text-[10px] font-semibold text-neutral-300">
+                      {sumberDipakai.length} sumber dipakai
+                    </div>
+                    {sumberDipakai.map((s) => (
+                      <div key={s.url} className="text-[10px] text-neutral-400 leading-snug">
+                        <a
+                          href={s.url}
+                          target="_blank"
+                          rel="noreferrer noopener"
+                          className="text-blue-300 hover:underline break-all"
+                        >
+                          {s.judul || s.url}
+                        </a>
+                        <span className="text-neutral-500"> — {s.alasan}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {aiGenerate?.to === f.name && sumberDitolak.length > 0 && (
+                  <details className="text-[10px] text-neutral-500">
+                    <summary className="cursor-pointer">{sumberDitolak.length} alamat ditolak</summary>
+                    <div className="mt-1 space-y-0.5">
+                      {sumberDitolak.map((s) => (
+                        <div key={s.url} className="break-all leading-snug">
+                          {s.url} — {s.tolak}
+                        </div>
+                      ))}
+                    </div>
+                  </details>
                 )}
                 {/* Tanpa bahan rujukan, model menulis dari ingatannya sendiri —
                     itulah asal artikel yang terdengar meyakinkan tapi salah
@@ -615,17 +699,18 @@ const RowForm: React.FC<{
                       rows={3}
                       aria-label="Sumber rujukan untuk artikel yang akan dibuat AI"
                       placeholder={
-                        'Sumber rujukan (opsional, satu per baris)\n' +
-                        'https://dokumentasi-resmi/halaman\n' +
-                        'Boleh juga menempel kutipan isi halamannya di sini.'
+                        'Sumber tambahan (opsional) — riset otomatis sudah jalan sendiri.\n' +
+                        'Tempel di sini kalau ada halaman yang WAJIB dipakai, atau kalau\n' +
+                        'sumbernya tidak bisa diunduh: kutipan isinya boleh ditempel apa adanya.'
                       }
                       className={`${inputClass} text-[11px] font-mono`}
                     />
                     <span className="text-[10px] text-neutral-500">
-                      Diisi sumber terpercaya (dokumentasi resmi, repositori resmi). AI merangkum
-                      dari bahan ini dan mencantumkannya sebagai daftar &quot;Sumber&quot; di akhir
-                      artikel. Dikosongkan → artikel ditulis dari ingatan model dan isinya tidak
-                      bisa ditelusuri.
+                      Generate akan mencari sendiri dokumentasi resmi dan penerbit tepercaya untuk
+                      judul di atas, mengunduh halamannya, lalu merangkum HANYA dari isi yang
+                      berhasil diunduh — dan mencantumkannya sebagai daftar &quot;Sumber&quot; di
+                      akhir artikel. Kalau tidak ada satu pun sumber yang bisa diunduh, artikel
+                      TIDAK ditulis; isi kotak ini lalu ulangi.
                     </span>
                   </>
                 )}

@@ -2,6 +2,7 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
+import {alasanTepercaya, bersihkanHalaman, repoMilikTopik, type SumberRujukan} from './src/lib/riset';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -115,9 +116,138 @@ export default defineConfig(({mode}) => {
       : {}),
   };
 
+  // ── /riset — pengunduh sumber untuk penulis artikel AI ───────────────────
+  //
+  // Kenapa di server dan bukan di browser: halaman dokumentasi tidak mengirim
+  // header CORS untuk situs ini, jadi browser tidak akan pernah bisa membaca
+  // isinya sendiri. Yang bisa mengunduhnya cuma mesin penyaji.
+  //
+  // Jalur ini TIDAK berautentikasi — sama seperti /supabase dan /ai — jadi
+  // batasannya harus ada di dalam, bukan di depan: satu-satunya URL yang mau
+  // diunduhnya adalah yang lolos `alasanTepercaya()`, yaitu https ke daftar
+  // penerbit tetap, subdomain dokumentasi, atau situs resmi proyek menurut
+  // GitHub. Alamat internal homelab tidak ada di semesta itu, jadi jalur ini
+  // tidak bisa dipakai untuk mengintip jaringan dalam.
+  const UA = 'desain-web-riset/1.0 (+penulis artikel panel admin)';
+  const BATAS_UNDUH = 2_000_000;
+
+  /** Repositori GitHub teratas untuk sebuah topik → situs resmi dan README-nya. */
+  async function jejakGithub(topik: string): Promise<{ situsResmi: string[]; kandidat: string[] }> {
+    try {
+      const res = await fetch(
+        `https://api.github.com/search/repositories?q=${encodeURIComponent(topik)}&sort=stars&per_page=3`,
+        { headers: { 'user-agent': UA, accept: 'application/vnd.github+json' }, signal: AbortSignal.timeout(12_000) },
+      );
+      if (!res.ok) return { situsResmi: [], kandidat: [] };
+      const json: any = await res.json();
+      // Nama repo harus benar-benar milik topiknya, bukan sekadar repo paling
+      // populer yang kebetulan cocok kata kuncinya: untuk "web hosting" GitHub
+      // mengembalikan `awesome-selfhosted`, dan tanpa penjaga ini README-nya
+      // masuk sebagai sumber resmi artikel tentang web hosting.
+      //
+      // Ambang bintang menyaring repo tiruan yang namanya memang sama.
+      const repo = (json?.items ?? []).find(
+        (r: any) => (r?.stargazers_count ?? 0) >= 100 && repoMilikTopik(r?.name ?? '', topik),
+      );
+      if (!repo) return { situsResmi: [], kandidat: [] };
+      const situsResmi = [repo.homepage, repo.html_url].filter(Boolean) as string[];
+      return {
+        situsResmi,
+        kandidat: [
+          `https://raw.githubusercontent.com/${repo.full_name}/HEAD/README.md`,
+          ...(repo.homepage ? [repo.homepage as string] : []),
+        ],
+      };
+    } catch {
+      // GitHub tidak terjangkau atau kena batas laju → riset lanjut tanpa jejak
+      // ini. Yang tidak boleh terjadi cuma satu: menulis artikel tanpa sumber.
+      return { situsResmi: [], kandidat: [] };
+    }
+  }
+
+  /** Satu URL → isi halamannya sebagai teks, atau alasan kenapa ditolak. */
+  async function unduhSumber(url: string, situsResmi: string[]): Promise<SumberRujukan | { url: string; tolak: string }> {
+    const alasan = alasanTepercaya(url, situsResmi);
+    if (!alasan) return { url, tolak: 'bukan sumber tepercaya (bukan https, bukan dokumentasi resmi, bukan penerbit terdaftar)' };
+    try {
+      const res = await fetch(url, {
+        headers: { 'user-agent': UA, accept: 'text/html,text/plain,text/markdown' },
+        redirect: 'follow',
+        signal: AbortSignal.timeout(20_000),
+      });
+      if (!res.ok) return { url, tolak: `halaman menjawab HTTP ${res.status}` };
+      // Alamat bisa berpindah ke domain lain lewat redirect; yang dinilai layak
+      // tadi URL awalnya, jadi tujuan akhirnya dinilai ulang.
+      if (res.url !== url && !alasanTepercaya(res.url, situsResmi)) {
+        return { url, tolak: `dialihkan ke ${res.url} yang tidak tepercaya` };
+      }
+      const jenis = res.headers.get('content-type') ?? '';
+      if (!/text\/(html|plain|markdown)|application\/(xhtml|json)/i.test(jenis)) {
+        return { url, tolak: `bukan halaman teks (${jenis || 'tanpa content-type'})` };
+      }
+      const mentah = (await res.text()).slice(0, BATAS_UNDUH);
+      const { judul, teks } = bersihkanHalaman(mentah);
+      // Halaman yang isinya baru muncul setelah JavaScript jalan mengembalikan
+      // kerangka kosong. Merangkumnya sama saja dengan mengarang.
+      if (teks.length < 400) return { url, tolak: 'isi halaman terlalu pendek untuk dirangkum (butuh JavaScript?)' };
+      return { url: res.url, judul, teks, alasan };
+    } catch (e: any) {
+      return { url, tolak: `gagal diunduh: ${e?.name === 'TimeoutError' ? 'waktu habis' : e?.message ?? e}` };
+    }
+  }
+
+  const riset = () => {
+    const tangani = async (req: any, res: any, next: any) => {
+      if (!req.url?.startsWith('/riset') || req.method !== 'POST') return next();
+      const kirim = (kode: number, isi: unknown) => {
+        res.statusCode = kode;
+        res.setHeader('content-type', 'application/json; charset=utf-8');
+        res.end(JSON.stringify(isi));
+      };
+      try {
+        const potong: Buffer[] = [];
+        for await (const c of req) potong.push(c);
+        const body = JSON.parse(Buffer.concat(potong).toString('utf8') || '{}');
+        const topik = String(body.topik ?? '').trim();
+        if (!topik) return kirim(400, { error: 'topik kosong' });
+
+        const jejak = await jejakGithub(topik);
+        const daftar = [
+          ...jejak.kandidat,
+          ...(Array.isArray(body.kandidat) ? body.kandidat.map(String) : []),
+        ];
+        // Maksimal 8 unduhan per permintaan: cukup untuk artikel, dan menjaga
+        // jalur ini tidak bisa dipakai memuntahkan lalu lintas ke pihak lain.
+        const unik = [...new Set(daftar)].slice(0, 8);
+        const hasil = await Promise.all(unik.map((u) => unduhSumber(u, jejak.situsResmi)));
+
+        kirim(200, {
+          sumber: hasil.filter((h): h is SumberRujukan => 'teks' in h),
+          ditolak: hasil.filter((h): h is { url: string; tolak: string } => 'tolak' in h),
+        });
+      } catch (e: any) {
+        kirim(500, { error: String(e?.message ?? e) });
+      }
+    };
+    return {
+      name: 'riset-sumber',
+      // Badan blok, BUKAN arrow ringkas: `s.middlewares.use()` mengembalikan
+      // aplikasi connect-nya sendiri, dan Vite memperlakukan nilai balik hook
+      // ini sebagai post-hook yang lalu dipanggil tanpa argumen — server dev
+      // mati saat start dengan "Cannot read properties of undefined (reading
+      // 'url')" yang tidak menyebut plugin ini sama sekali.
+      configureServer: (s: any) => {
+        s.middlewares.use(tangani);
+      },
+      configurePreviewServer: (s: any) => {
+        s.middlewares.use(tangani);
+      },
+    };
+  };
+
   return {
     assetsInclude: ['**/*.glb'],
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), riset()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

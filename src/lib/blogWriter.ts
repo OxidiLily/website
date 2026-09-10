@@ -142,9 +142,22 @@ const ENTITAS: Record<string, string> = {
   '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&apos;': "'", '&nbsp;': ' ',
 };
 
-/** Entitas → karakter aslinya. `&amp;` dibuka terakhir supaya `&amp;lt;` tidak jadi `<`. */
-function nyahEntitas(s: string): string {
-  return s.replace(/&(?:lt|gt|quot|#39|apos|nbsp);/g, (m) => ENTITAS[m]).replace(/&amp;/g, '&');
+/**
+ * Entitas → karakter aslinya.
+ *
+ * `&amp;` dibuka TERAKHIR: kalau ia dibuka lebih dulu, `&amp;lt;` — cara menulis
+ * teks literal "&lt;" — berubah jadi `<` dan tampil sebagai tag, bukan sebagai
+ * kode yang memang ingin ditunjukkan penulisnya.
+ *
+ * Diekspor karena src/lib/riset.ts memakainya untuk membersihkan halaman
+ * sumber; aturan urutannya sama persis dan tidak layak ditulis dua kali.
+ */
+export function nyahEntitas(s: string): string {
+  return s
+    .replace(/&(?:lt|gt|quot|#39|apos|nbsp);/g, (m) => ENTITAS[m])
+    .replace(/&#(\d{1,6});/g, (_, n) => String.fromCodePoint(Number(n)))
+    .replace(/&#[xX]([\da-fA-F]{1,6});/g, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&amp;/g, '&');
 }
 
 const atributNilai = (atribut: string, nama: string): string =>
