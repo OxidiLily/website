@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import {readFileSync} from 'node:fs';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 import {alasanTepercaya, bersihkanHalaman, repoMilikTopik, type SumberRujukan} from './src/lib/riset';
@@ -12,6 +13,34 @@ export default defineConfig(({mode}) => {
   // Wajib diisi kalau endpoint AI di Pengaturan ada di host lain — CSP
   // memblokir fetch ke origin yang tidak terdaftar, dan gejalanya terlihat
   // seperti "AI tidak merespons" tanpa pesan error dari server mana pun.
+  /**
+   * Kunci gateway AI untuk asisten di halaman PUBLIK.
+   *
+   * Dibaca dari BERKAS kalau `AI_API_KEY_FILE` diisi, dan itulah bentuk yang
+   * dipakai docker-compose.yml. Alasannya terukur: nilai yang ditaruh di
+   * `environment:` (atau `env_file:`) IKUT TERCETAK oleh
+   * `docker compose config` dan `docker inspect` — sekali perintah itu masuk
+   * log, kuncinya bocor tanpa ada yang menyadarinya. Compose `secrets:`
+   * menaruhnya sebagai berkas di /run/secrets dan tidak pernah
+   * memunculkannya di keluaran mana pun.
+   *
+   * Nilai langsung di `AI_API_KEY` tetap didukung — itu yang dipakai
+   * `npm run dev` dan unit systemd di host, yang membaca berkas `.env`.
+   */
+  const aiApiKey = ((): string => {
+    const berkas = env.AI_API_KEY_FILE;
+    if (!berkas) return env.AI_API_KEY ?? '';
+    try {
+      return readFileSync(berkas, 'utf8').trim();
+    } catch (e: any) {
+      // Bukan lempar: server harus tetap menyala. Asisten publiknya yang
+      // mundur ke jawaban cadangan dari panel, dan sebabnya disebut sekali
+      // di log alih-alih muncul sebagai 401 yang membingungkan.
+      console.warn(`[ai] AI_API_KEY_FILE tidak terbaca (${berkas}): ${e?.message ?? e}`);
+      return '';
+    }
+  })();
+
   const aiOrigins = (env.VITE_AI_ORIGIN || '')
     .split(',')
     .map((s) => s.trim())
@@ -102,13 +131,13 @@ export default defineConfig(({mode}) => {
             // adanya, pengunjung tidak mengirim apa pun dan dilengkapi di sini.
             configure: (proxy: any) => {
               proxy.on('proxyReq', (proxyReq: any) => {
-                if (!env.AI_API_KEY) return;
+                if (!aiApiKey) return;
                 if (proxyReq.getHeader('authorization') || proxyReq.getHeader('x-api-key')) return;
                 // Kedua bentuk dikirim sekaligus: jalur /v1/chat/completions
                 // membaca Authorization, /v1/messages membaca x-api-key, dan
                 // masing-masing mengabaikan yang bukan miliknya.
-                proxyReq.setHeader('authorization', `Bearer ${env.AI_API_KEY}`);
-                proxyReq.setHeader('x-api-key', env.AI_API_KEY);
+                proxyReq.setHeader('authorization', `Bearer ${aiApiKey}`);
+                proxyReq.setHeader('x-api-key', aiApiKey);
               });
             },
           },
