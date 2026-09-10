@@ -1,0 +1,46 @@
+# Menjalankan situs desain-web sebagai container.
+#
+# Nilai environment di bawah diinterpolasi Compose dari berkas `.env` di
+# direktori ini — berkas yang sama yang dipakai `npm run dev` — jadi tidak ada
+# kunci yang ditulis dua kali dan tidak ada yang perlu disalin ke sini.
+#
+# Port host 3000 mungkin sudah dipegang unit systemd `desain-web.service` yang
+# menjalankan `vite preview` langsung di host. Keduanya tidak bisa hidup
+# bersama di port yang sama: matikan unit itu
+# (`systemctl --user stop desain-web.service`), atau jalankan container ini di
+# port lain dengan `WEB_PORT=3001 docker compose up -d`.
+services:
+  web:
+    build:
+      context: .
+      args:
+        # Dipanggang ke dalam bundel — lihat komentar ARG di Dockerfile.
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-}
+        VITE_SUPABASE_PUBLISHABLE_KEY: ${VITE_SUPABASE_PUBLISHABLE_KEY:-}
+        VITE_AI_ORIGIN: ${VITE_AI_ORIGIN:-}
+        SITE_URL: ${SITE_URL:-}
+    image: desain-web:latest
+    container_name: desain-web
+    restart: unless-stopped
+    ports:
+      - '${WEB_PORT:-3000}:3000'
+    environment:
+      # Dibaca SAAT JALAN oleh vite.config.ts sebagai sasaran proxy: browser
+      # pengunjung memanggil origin situs ini, bukan Supabase atau gateway AI
+      # secara langsung (lihat src/lib/apiBase.ts).
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-}
+      VITE_AI_ORIGIN: ${VITE_AI_ORIGIN:-}
+      # Kunci gateway untuk asisten AI di halaman PUBLIK. Sengaja tanpa awalan
+      # VITE_: hanya variabel berawalan itu yang ikut ke bundel, jadi kunci ini
+      # tetap di sisi server dan tidak pernah terbaca pengunjung. Server
+      # penyaji menyuntikkannya ke tiap permintaan `/ai/*` yang belum membawa
+      # auth sendiri.
+      AI_API_KEY: ${AI_API_KEY:-}
+    healthcheck:
+      # wget ada di busybox milik image alpine, jadi tidak perlu menambah paket
+      # apa pun hanya untuk pemeriksaan ini.
+      test: ['CMD', 'wget', '-q', '-O', '-', 'http://127.0.0.1:3000/']
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3

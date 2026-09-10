@@ -1,0 +1,30 @@
+# Yang tidak boleh masuk image, dan alasannya masing-masing.
+.git
+.gitignore
+
+# Diunduh ulang di dalam image oleh `npm ci`; menyalin milik host berarti
+# binary native untuk sistem yang salah.
+node_modules
+
+# Dibuat di dalam image oleh `npm run build`. Menyalinnya justru menimpa hasil
+# build baru dengan bundel lama dari host.
+dist
+build
+
+# Berisi kunci Supabase dan gateway AI. Nilainya masuk lewat environment
+# container (lihat docker-compose.yml), TIDAK dipanggang ke dalam image —
+# berkas di dalam image ikut ke mana pun image itu dikirim.
+.env
+.env.*
+!.env.example
+
+# Hasil scan Strix: artefak lokal, tidak pernah ikut ke mana pun.
+strix_runs
+
+# Perkakas dan berkas sementara yang tidak dipakai saat build.
+.claude
+coverage
+*.log
+Dockerfile
+.dockerignore
+docker-compose.yml
