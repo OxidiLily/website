@@ -205,3 +205,13 @@
 .tok-teks { color: #a31515; }
 .tok-angka { color: #098658; }
 .tok-kunci { color: #0000ff; }
+/* Muncul hanya kalau browser menolak menyalin (halaman tanpa TLS + izin
+   execCommand ditolak). Kodenya sudah dipilihkan, jadi yang tersisa cuma
+   memberi tahu tombol papan klipnya. */
+.blok-kode-pesan {
+  flex: none;
+  color: #9a6700;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}

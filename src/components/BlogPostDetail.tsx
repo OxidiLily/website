@@ -5,6 +5,7 @@ import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
 import { useSettings } from '../lib/content';
 import { pecahArtikel, tampakHtml } from '../lib/blogWriter';
 import { KodeBlok } from './KodeBlok';
+import { salinTeks } from '../lib/salin';
 
 interface BlogPostDetailProps {
   post: BlogPost;
@@ -58,10 +59,15 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [post.sections]);
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+  // Lewat `salinTeks`, bukan `navigator.clipboard` langsung: situs ini dibuka
+  // lewat alamat LAN tanpa TLS, dan di sana API papan klip tidak ada sama
+  // sekali — tombol ini dulu berganti jadi centang tanpa pernah menyalin apa
+  // pun, yang lebih buruk daripada gagal terang-terangan.
+  const handleShare = async () => {
+    if (await salinTeks(window.location.href)) {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    }
   };
 
   return (
