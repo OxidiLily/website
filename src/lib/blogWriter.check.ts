@@ -98,3 +98,26 @@ assert.deepEqual(pecahArtikel('<p>Hanya prosa</p>'), [{ jenis: 'html', isi: '<p>
 assert.deepEqual(pecahArtikel(''), []);
 
 console.log('[✓] blogWriter: semua pemeriksaan lolos');
+
+// ── susunArtikel: daftar isi dari <h2> ─────────────────────────────────────
+import { susunArtikel } from './blogWriter';
+{
+  const { html, sections } = susunArtikel(
+    '<h2>Apa Itu CasaOS?</h2><p>a</p><h2 class="x" id="lama">Cara &amp; Syarat</h2><p>b</p><h2>Kesimpulan</h2><h2>Kesimpulan</h2>',
+  );
+  assert.deepEqual(sections.map((s) => [s.id, s.title]), [
+    ['apa-itu-casaos', 'Apa Itu CasaOS?'],
+    ['cara-syarat', 'Cara & Syarat'],
+    ['kesimpulan', 'Kesimpulan'],
+    ['kesimpulan-2', 'Kesimpulan'],
+  ]);
+  // id yang dipasang di HTML HARUS sama persis dengan yang ada di daftar —
+  // itu yang membuat tombol lompat benar-benar mendarat.
+  for (const s of sections) assert.match(html, new RegExp(`<h2 id="${s.id}"`));
+  // id lama diganti, bukan ditumpuk; atribut lain dipertahankan.
+  assert.match(html, /<h2 id="cara-syarat" class="x">/);
+  assert.doesNotMatch(html, /id="lama"/);
+}
+assert.deepEqual(susunArtikel(''), { html: '', sections: [] });
+assert.deepEqual(susunArtikel('<p>tanpa judul</p>').sections, []);
+console.log('[✓] blogWriter: susunArtikel lolos');

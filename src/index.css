@@ -63,6 +63,8 @@
   margin-top: 1rem;
 }
 .isi-artikel h2 {
+  /* Jangkar daftar isi: ruang untuk navbar lengket saat dilompati. */
+  scroll-margin-top: 7rem;
   margin-top: 2rem;
   font-size: 1.125rem;
   font-weight: 700;

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { BlogPost, PageId } from '../types';
 import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
 import { useSettings } from '../lib/content';
-import { pecahArtikel, tampakHtml } from '../lib/blogWriter';
+import { pecahArtikel, susunArtikel, tampakHtml } from '../lib/blogWriter';
 import { KodeBlok } from './KodeBlok';
 import { salinTeks } from '../lib/salin';
 
@@ -19,9 +19,24 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
   onNavigateHome,
 }) => {
   const t = useSettings();
-  const [activeSection, setActiveSection] = useState<string>(
-    post.sections?.[0]?.id || 'overview'
-  );
+
+  // Bagian artikel: dari `meta.sections` untuk artikel warisan yang diisi
+  // tangan, atau DIBACA DARI <h2> artikelnya sendiri untuk artikel HTML —
+  // hasil AI maupun tulisan manusia. Tanpa ini daftar isinya kosong, tombol
+  // lompatnya tidak menunjuk ke mana pun, dan label bawaan pengaturan
+  // ("Beginner's Guide", "Gardening Guide") tampil di artikel yang tidak ada
+  // hubungannya.
+  const warisan = !!post.sections?.length;
+  const artikelHtml = !warisan && tampakHtml(post.content);
+  const tersusun = useMemo(() => (artikelHtml ? susunArtikel(post.content) : null), [artikelHtml, post.content]);
+  const sections = warisan ? post.sections! : (tersusun?.sections ?? []);
+
+  const [activeSection, setActiveSection] = useState<string>(sections[0]?.id || 'overview');
+  // Artikel yang sama dimuat dua kali: cadangan statis dulu, lalu baris dari
+  // database. Daftar isinya ikut berganti, dan penanda aktif harus mengikuti.
+  useEffect(() => {
+    setActiveSection(sections[0]?.id || 'overview');
+  }, [sections]);
   const [isCopied, setIsCopied] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -36,28 +51,26 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
     }
   };
 
-  // Observe active section on scroll
+  // Bagian aktif = bagian TERAKHIR yang judulnya sudah lewat di atas layar.
+  // Aturan lama ("scrollPos di antara top dan top+height elemen") hanya cocok
+  // untuk <section> warisan yang membungkus isinya; jangkar artikel HTML
+  // adalah <h2> setinggi satu baris, jadi rentangnya nyaris tak pernah kena
+  // dan penanda daftar isinya membeku di bagian pertama.
   useEffect(() => {
+    if (!sections.length) return;
     const handleScroll = () => {
-      if (!post.sections) return;
       const scrollPos = window.scrollY + 160;
-
-      for (const section of post.sections) {
+      let aktif = sections[0].id;
+      for (const section of sections) {
         const el = document.getElementById(section.id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(section.id);
-            break;
-          }
-        }
+        if (el && el.getBoundingClientRect().top + window.scrollY <= scrollPos) aktif = section.id;
       }
+      setActiveSection(aktif);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [post.sections]);
+  }, [sections]);
 
   // Lewat `salinTeks`, bukan `navigator.clipboard` langsung: situs ini dibuka
   // lewat alamat LAN tanpa TLS, dan di sana API papan klip tidak ada sama
@@ -142,30 +155,35 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
         <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
           <button
             onClick={() => {
-              if (post.sections?.[0]?.id) scrollToSection(post.sections[0].id);
+              if (sections[0]?.id) scrollToSection(sections[0].id);
             }}
             className="min-h-[40px] px-4 py-2 rounded-lg bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 active:scale-95 transition-all shadow-sm cursor-pointer"
           >
             {post.actionLabel || t.post_action_default}
           </button>
-          <button
-            onClick={() => {
-              if (post.sections?.[1]?.id) scrollToSection(post.sections[1].id);
-            }}
-            className="min-h-[40px] px-4 py-2 rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-300 font-medium text-xs sm:text-sm hover:bg-neutral-900 active:scale-95 hover:text-white transition-all cursor-pointer"
-          >
-            {post.guideType || t.post_guide_type_default}
-          </button>
+          {/* Label bawaan pengaturan ("Gardening Guide") hanya untuk artikel
+              warisan yang memang dirancang dengannya. Artikel HTML menampilkan
+              tombol ini kalau ia sendiri menetapkan `guideType`. */}
+          {(post.guideType || (warisan && t.post_guide_type_default)) && (
+            <button
+              onClick={() => {
+                if (sections[1]?.id) scrollToSection(sections[1].id);
+              }}
+              className="min-h-[40px] px-4 py-2 rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-300 font-medium text-xs sm:text-sm hover:bg-neutral-900 active:scale-95 hover:text-white transition-all cursor-pointer"
+            >
+              {post.guideType || t.post_guide_type_default}
+            </button>
+          )}
         </div>
 
         {/* Mobile-Only Quick Jump Table of Contents Pill Bar */}
-        {post.sections && post.sections.length > 0 && (
+        {sections.length > 0 && (
           <div className="md:hidden mt-6 pt-4">
             <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-500 mb-2">
               {t.post_jump_label}
             </div>
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 -mx-4 px-4">
-              {post.sections.map((sec) => {
+              {sections.map((sec) => {
                 const isActive = activeSection === sec.id;
                 return (
                   <button
@@ -230,17 +248,22 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
           {/* Center Column: isi artikel. Sengaja tanpa kartu grafis — halaman
               detail blog memang tidak menampilkan gambar. */}
           <div className="md:col-span-6 space-y-8">
-            {/* Main Section Header */}
-            <div className="pt-2">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                {post.mainHeading || t.post_main_heading}
-              </h2>
-            </div>
+            {/* Judul kelompok bagian. Bawaan pengaturan ("Beginner's Guide")
+                hanya untuk artikel warisan; artikel HTML sudah membawa judul
+                bagiannya sendiri di <h2>, dan judul umum di atasnya cuma
+                menyesatkan. */}
+            {(post.mainHeading || (warisan && t.post_main_heading)) && (
+              <div className="pt-2">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  {post.mainHeading || t.post_main_heading}
+                </h2>
+              </div>
+            )}
 
             {/* Sub-sections rendering */}
             <div className="space-y-8 text-neutral-300 leading-relaxed text-sm sm:text-[15px]">
-              {post.sections && post.sections.length > 0 ? (
-                post.sections.map((sec) => (
+              {warisan ? (
+                sections.map((sec) => (
                   <section key={sec.id} id={sec.id} className="scroll-mt-32 space-y-2">
                     <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
                       {sec.title}
@@ -250,7 +273,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                     </p>
                   </section>
                 ))
-              ) : tampakHtml(post.content) ? (
+              ) : tersusun ? (
                 /* Isi artikel disimpan sebagai HTML (field "Isi (HTML)" di panel).
                    Sebelumnya seluruhnya dibuang ke satu <p> sebagai teks, jadi
                    tag dan markdown tampil mentah dan artikel sepanjang apa pun
@@ -258,7 +281,7 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                    RLS menutup tulis tabel `blogs` untuk selain admin — jadi
                    sumber HTML ini setingkat kepercayaan dengan CMS mana pun. */
                 <div className="isi-artikel">
-                  {pecahArtikel(post.content).map((bagian, i) =>
+                  {pecahArtikel(tersusun.html).map((bagian, i) =>
                     /* Blok <pre><code> dikeluarkan dari aliran HTML dan digambar
                        sebagai kartu: nomor baris, tombol salin, dan pewarnaan
                        sintaks mustahil dilakukan pada HTML mentah yang cuma
@@ -289,8 +312,8 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             </div>
 
             <div className="space-y-1 text-xs sm:text-sm">
-              {post.sections && post.sections.length > 0 ? (
-                post.sections.map((sec) => {
+              {sections.length > 0 ? (
+                sections.map((sec) => {
                   const isActive = activeSection === sec.id;
                   return (
                     <button

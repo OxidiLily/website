@@ -215,3 +215,46 @@ export function pecahArtikel(html: string): PotonganArtikel[] {
   if (akhir < teks.length) out.push({ jenis: 'html', isi: teks.slice(akhir) });
   return out;
 }
+
+// ── Daftar isi dari judul bagian ───────────────────────────────────────────
+
+/** Judul bagian → id jangkar: huruf kecil, tanpa tanda baca, spasi jadi strip. */
+const idDariJudul = (judul: string): string =>
+  judul
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 60);
+
+/**
+ * Isi artikel HTML → HTML yang setiap <h2>-nya punya `id`, plus daftar bagiannya.
+ *
+ * Halaman detail dulu hanya tahu bagian artikel dari `meta.sections` — kolom
+ * yang diisi tangan untuk artikel warisan. Artikel hasil AI (dan artikel HTML
+ * tulisan manusia) tidak punya itu, jadi daftar isinya kosong dan tombol
+ * lompatnya menunjuk ke mana-mana. Di sini bagiannya dibaca dari judul <h2>
+ * yang memang sudah ada di artikelnya sendiri.
+ *
+ * Dikerjakan dalam SATU lintasan supaya id di HTML dan id di daftar tidak
+ * mungkin berbeda — dua fungsi terpisah yang sama-sama mengurai <h2> adalah
+ * dua tempat untuk tidak sinkron.
+ */
+export function susunArtikel(html: string): { html: string; sections: { id: string; title: string; content: string }[] } {
+  const sections: { id: string; title: string; content: string }[] = [];
+  const terpakai = new Set<string>();
+  const hasil = (html || '').replace(/<h2\b([^>]*)>([\s\S]*?)<\/h2>/gi, (_, atribut: string, dalam: string) => {
+    const title = nyahEntitas(dalam.replace(/<[^>]*>/g, '')).replace(/\s+/g, ' ').trim();
+    let id = idDariJudul(title) || `bagian-${sections.length + 1}`;
+    // Dua judul yang sama (jarang, tapi "Kesimpulan" bisa muncul dua kali di
+    // artikel panjang) tidak boleh berebut satu jangkar.
+    for (let n = 2; terpakai.has(id); n++) id = `${idDariJudul(title)}-${n}`;
+    terpakai.add(id);
+    sections.push({ id, title, content: '' });
+    // id lama (kalau penulisnya menulis sendiri) diganti, bukan ditumpuk —
+    // dua atribut id pada satu elemen bukan HTML yang sah.
+    const bersih = atribut.replace(/\s+id\s*=\s*("[^"]*"|'[^']*'|\S+)/i, '');
+    return `<h2 id="${id}"${bersih}>${dalam}</h2>`;
+  });
+  return { html: hasil, sections };
+}
