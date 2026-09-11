@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'motion/react';
 import { BlogPost, BlogSection, PageId } from '../types';
-import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
+import { ArrowLeft, Check, Share2 } from 'lucide-react';
 import { useSettings } from '../lib/content';
 import { susunArtikel } from '../lib/blogWriter';
 import { IsiKonten, keHtml } from './IsiKonten';
@@ -45,7 +45,6 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
     setActiveSection(sections[0]?.id || 'overview');
   }, [sections]);
   const [isCopied, setIsCopied] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
 
   // Smooth scroll to section
   const scrollToSection = (id: string) => {
@@ -122,7 +121,9 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             </span>
           </nav>
 
-          {/* Quick Actions (Share & Bookmark) */}
+          {/* Tombol bagikan. Tombol bookmark yang dulu di sebelahnya dihapus:
+              ia hanya mengubah warna di state komponen — tidak menyimpan ke mana
+              pun dan tidak ada halaman yang menampilkan daftar tersimpan. */}
           <div className="flex items-center gap-2">
             <button
               onClick={handleShare}
@@ -131,17 +132,6 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             >
               {isCopied ? <Check className="w-3.5 h-3.5 text-white" /> : <Share2 className="w-3.5 h-3.5" />}
               <span>{isCopied ? t.post_copied : t.post_share}</span>
-            </button>
-            <button
-              onClick={() => setIsSaved(!isSaved)}
-              className={`p-1.5 rounded-lg border text-xs font-medium transition-colors cursor-pointer ${
-                isSaved
-                  ? 'bg-white text-black border-white'
-                  : 'border-neutral-800 bg-neutral-950 text-neutral-300 hover:bg-neutral-900 hover:text-white'
-              }`}
-              title={t.post_bookmark}
-            >
-              <Bookmark className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

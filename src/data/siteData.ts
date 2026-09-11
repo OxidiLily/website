@@ -843,7 +843,6 @@ export const defaultSettings: SiteSettings = {
   post_back: "Back to all articles",
   post_share: "Share",
   post_copied: "Copied",
-  post_bookmark: "Bookmark article",
   contact_field_first_name: "First Name",
   contact_field_last_name: "Last Name",
   contact_field_email: "Email",

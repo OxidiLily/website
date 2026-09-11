@@ -256,7 +256,6 @@ export const PAGE_EDITORS = {
           { key: 'post_back', label: 'Tautan kembali' },
           { key: 'post_share', label: 'Tombol bagikan' },
           { key: 'post_copied', label: 'Tombol bagikan setelah disalin' },
-          { key: 'post_bookmark', label: 'Tombol simpan' },
         ],
       },
     ],
