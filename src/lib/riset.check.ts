@@ -33,6 +33,8 @@ assert.match(
 assert.equal(alasanTepercaya('https://medium.com/@seseorang/casaos-hebat'), null);
 assert.equal(alasanTepercaya('https://blog-acak.xyz/casaos'), null);
 assert.equal(alasanTepercaya('https://stackoverflow.com/questions/1'), null, 'forum tanya-jawab bukan rujukan');
+// `dev.to` adalah platform blog pribadi; awalan `dev.` pernah meloloskannya.
+assert.equal(alasanTepercaya('https://dev.to/seseorang/casaos-hebat'), null);
 // http polos: isinya bisa diubah di jalur, dan artikelnya jadi salah tanpa jejak.
 assert.equal(alasanTepercaya('http://developer.mozilla.org/x'), null);
 // Alamat internal homelab — inilah yang membuat jalur /riset tidak bisa dipakai

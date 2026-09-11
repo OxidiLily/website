@@ -199,17 +199,29 @@ export default defineConfig(({mode}) => {
     const alasan = alasanTepercaya(url, situsResmi);
     if (!alasan) return { url, tolak: 'bukan sumber tepercaya (bukan https, bukan dokumentasi resmi, bukan penerbit terdaftar)' };
     try {
-      const res = await fetch(url, {
-        headers: { 'user-agent': UA, accept: 'text/html,text/plain,text/markdown' },
-        redirect: 'follow',
-        signal: AbortSignal.timeout(20_000),
-      });
-      if (!res.ok) return { url, tolak: `halaman menjawab HTTP ${res.status}` };
-      // Alamat bisa berpindah ke domain lain lewat redirect; yang dinilai layak
-      // tadi URL awalnya, jadi tujuan akhirnya dinilai ulang.
-      if (res.url !== url && !alasanTepercaya(res.url, situsResmi)) {
-        return { url, tolak: `dialihkan ke ${res.url} yang tidak tepercaya` };
+      // Pengalihan diikuti MANUAL, dinilai satu per satu SEBELUM diikuti.
+      // Dengan `redirect: 'follow'`, permintaan ke tujuan pengalihan sudah
+      // terkirim sebelum kode ini sempat menilainya — domain tepercaya yang
+      // mengalihkan ke alamat jaringan dalam berarti server ini yang mengetuk
+      // alamat itu. Penilaian setelah kejadian tidak membatalkan ketukannya.
+      let tujuan = url;
+      let res: Response;
+      for (let lompatan = 0; ; lompatan++) {
+        res = await fetch(tujuan, {
+          headers: { 'user-agent': UA, accept: 'text/html,text/plain,text/markdown' },
+          redirect: 'manual',
+          signal: AbortSignal.timeout(20_000),
+        });
+        const lokasi = res.headers.get('location');
+        if (res.status < 300 || res.status >= 400 || !lokasi) break;
+        const berikut = new URL(lokasi, tujuan).toString();
+        if (!alasanTepercaya(berikut, situsResmi)) {
+          return { url, tolak: `dialihkan ke ${berikut} yang tidak tepercaya` };
+        }
+        if (lompatan >= 3) return { url, tolak: 'terlalu banyak pengalihan' };
+        tujuan = berikut;
       }
+      if (!res.ok) return { url, tolak: `halaman menjawab HTTP ${res.status}` };
       const jenis = res.headers.get('content-type') ?? '';
       if (!/text\/(html|plain|markdown)|application\/(xhtml|json)/i.test(jenis)) {
         return { url, tolak: `bukan halaman teks (${jenis || 'tanpa content-type'})` };
@@ -219,7 +231,7 @@ export default defineConfig(({mode}) => {
       // Halaman yang isinya baru muncul setelah JavaScript jalan mengembalikan
       // kerangka kosong. Merangkumnya sama saja dengan mengarang.
       if (teks.length < 400) return { url, tolak: 'isi halaman terlalu pendek untuk dirangkum (butuh JavaScript?)' };
-      return { url: res.url, judul, teks, alasan };
+      return { url: tujuan, judul, teks, alasan };
     } catch (e: any) {
       return { url, tolak: `gagal diunduh: ${e?.name === 'TimeoutError' ? 'waktu habis' : e?.message ?? e}` };
     }

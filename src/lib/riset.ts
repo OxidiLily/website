@@ -68,8 +68,16 @@ export const DOMAIN_TEPERCAYA = [
  * — setiap proyek punya domainnya sendiri — tetap bisa dipercaya tanpa daftar
  * yang harus terus dikejar.
  */
+//
+// `dev.` SENGAJA tidak ada: `dev.to` — platform blog pribadi, persis jenis
+// sumber yang mau disingkirkan — lolos lewat awalan itu. Terukur, bukan dugaan.
+//
+// ponytail: awalan apa pun bisa didaftarkan siapa pun (`docs.situs-acak.xyz`
+// lolos). Batasnya diterima sadar: yang mengusulkan alamat adalah model, bukan
+// pengunjung, dan alasan tiap sumber tampil di panel untuk dibantah admin.
+// Naikkan ke daftar domain resmi per-topik kalau nanti ada kasus nyata.
 export const AWALAN_DOKUMENTASI = [
-  'docs.', 'doc.', 'documentation.', 'wiki.', 'developer.', 'developers.', 'dev.',
+  'docs.', 'doc.', 'documentation.', 'wiki.', 'developer.', 'developers.',
   'help.', 'support.', 'learn.', 'manual.', 'devdocs.',
 ];
 
