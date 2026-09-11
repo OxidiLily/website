@@ -22,6 +22,26 @@ services:
     image: desain-web:latest
     container_name: desain-web
     restart: unless-stopped
+    # tini sebagai PID 1: sinyal stop diteruskan ke node dan proses yatim
+    # dituai — tanpa ini `docker stop` menunggu 10 detik lalu membunuh paksa.
+    init: true
+    # Pengecil radius ledakan kalau ada yang berhasil masuk ke container:
+    # tidak bisa menaikkan hak lewat setuid, dan tidak punya satu pun
+    # capability kernel — server web memang tidak butuh apa pun.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    # Root filesystem SENGAJA tidak read-only: Vite menulis berkas sementara
+    # di sebelah vite.config.ts saat mem-bundle-nya (lihat Dockerfile).
+    # Batas sumber daya supaya satu proses liar tidak menyeret host.
+    mem_limit: 1g
+    pids_limit: 256
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
     ports:
       - '${WEB_PORT:-3000}:3000'
     environment:
