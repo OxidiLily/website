@@ -3,8 +3,8 @@ import { motion } from 'motion/react';
 import { BlogPost, BlogSection, PageId } from '../types';
 import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
 import { useSettings } from '../lib/content';
-import { pecahArtikel, susunArtikel, tampakHtml } from '../lib/blogWriter';
-import { KodeBlok } from './KodeBlok';
+import { susunArtikel } from '../lib/blogWriter';
+import { IsiKonten, keHtml } from './IsiKonten';
 import { salinTeks } from '../lib/salin';
 
 const TANPA_BAGIAN: BlogSection[] = [];
@@ -29,8 +29,9 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
   // ("Beginner's Guide", "Gardening Guide") tampil di artikel yang tidak ada
   // hubungannya.
   const warisan = !!post.sections?.length;
-  const artikelHtml = !warisan && tampakHtml(post.content);
-  const tersusun = useMemo(() => (artikelHtml ? susunArtikel(post.content) : null), [artikelHtml, post.content]);
+  // Isi disimpan sebagai Markdown (artikel baru) atau HTML (baris lama);
+  // keduanya jadi HTML dulu, baru judulnya dibaca untuk daftar isi.
+  const tersusun = useMemo(() => (warisan ? null : susunArtikel(keHtml(post.content))), [warisan, post.content]);
   // `TANPA_BAGIAN` adalah satu array tetap, bukan `[]` baru tiap render:
   // dua effect di bawah bergantung pada `sections`, dan referensi yang
   // berganti setiap render membuat keduanya dipasang-lepas terus untuk
@@ -279,34 +280,12 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
                     </p>
                   </section>
                 ))
-              ) : tersusun ? (
-                /* Isi artikel disimpan sebagai HTML (field "Isi (HTML)" di panel).
-                   Sebelumnya seluruhnya dibuang ke satu <p> sebagai teks, jadi
-                   tag dan markdown tampil mentah dan artikel sepanjang apa pun
-                   terlihat seperti satu paragraf. Penulisnya hanya admin —
-                   RLS menutup tulis tabel `blogs` untuk selain admin — jadi
-                   sumber HTML ini setingkat kepercayaan dengan CMS mana pun. */
-                <div className="isi-artikel">
-                  {pecahArtikel(tersusun.html).map((bagian, i) =>
-                    /* Blok <pre><code> dikeluarkan dari aliran HTML dan digambar
-                       sebagai kartu: nomor baris, tombol salin, dan pewarnaan
-                       sintaks mustahil dilakukan pada HTML mentah yang cuma
-                       disuntikkan. Sisanya tetap disuntikkan apa adanya. */
-                    bagian.jenis === 'kode' ? (
-                      <KodeBlok key={i} kode={bagian.isi} bahasa={bagian.bahasa} berkas={bagian.berkas} />
-                    ) : (
-                      <div key={i} dangerouslySetInnerHTML={{ __html: bagian.isi }} />
-                    ),
-                  )}
-                </div>
               ) : (
-                /* Baris warisan yang terlanjur tersimpan sebagai markdown/teks.
-                   Tidak boleh disuntikkan sebagai HTML — yang terjadi bukan
-                   tampil jelek tapi hilang. `whitespace-pre-line` setidaknya
-                   mempertahankan pergantian barisnya. */
-                <div className="space-y-4">
-                  <p className="whitespace-pre-line">{post.content}</p>
-                </div>
+                /* Blok <pre><code> dikeluarkan dari aliran HTML dan digambar
+                   sebagai kartu oleh IsiKonten: nomor baris, tombol salin, dan
+                   pewarnaan sintaks mustahil dilakukan pada HTML mentah yang
+                   cuma disuntikkan. */
+                <IsiKonten html={tersusun!.html} />
               )}
             </div>
           </div>

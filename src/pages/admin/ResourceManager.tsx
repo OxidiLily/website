@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Loader2, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { aiComplete, loadAiConfig } from '../../lib/ai';
-import { PROMPT_PENULIS_BLOG, tugasArtikel, bersihkanHtmlArtikel } from '../../lib/blogWriter';
+import { PROMPT_PENULIS_BLOG, tugasArtikel, bersihkanKeluaranArtikel } from '../../lib/blogWriter';
 import { bahanDariSumber, promptKandidat, uraikanKandidat, type SumberRujukan } from '../../lib/riset';
 import type { Field, Resource } from './resources';
 import { slugify } from './resources';
@@ -584,7 +584,7 @@ const RowForm: React.FC<{
         { role: 'system', content: PROMPT_PENULIS_BLOG },
         { role: 'user', content: tugasArtikel(topic, bahan) },
       ], { maxTokens: 8192 });
-      set(aiGenerate.to, bersihkanHtmlArtikel(out));
+      set(aiGenerate.to, bersihkanKeluaranArtikel(out));
     } catch (e: any) {
       setAiErr(e?.message ?? 'Gagal memanggil AI.');
     } finally {

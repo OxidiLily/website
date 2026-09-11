@@ -6,6 +6,8 @@ import { projectsData } from '../data/siteData';
 import { fetchProjects, useSettings } from '../lib/content';
 import { ProjectItem } from '../types';
 import { canRenderWebGL } from '../lib/device';
+import { IsiKonten, keHtml } from '../components/IsiKonten';
+import { ringkasUntukMeta } from '../lib/seo';
 
 // Aurora (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const Aurora = lazy(() => import('../components/Aurora').then(m => ({ default: m.Aurora })));
@@ -153,8 +155,10 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                 <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-neutral-200 transition-colors">
                   {project.title}
                 </h3>
+                {/* Kartu cuma cuplikan: penanda Markdown (##, **, `) dibuang
+                    supaya tidak tampil sebagai simbol di ringkasan tiga baris. */}
                 <p className="text-xs sm:text-sm text-neutral-400 mt-2 line-clamp-3 leading-relaxed">
-                  {project.description}
+                  {ringkasUntukMeta(project.description, 300)}
                 </p>
               </div>
 
@@ -225,9 +229,12 @@ export const ProjectPage: React.FC<ProjectPageProps> = ({
                   </h2>
                 </div>
 
-                <p className="text-neutral-300 text-xs sm:text-sm md:text-base leading-relaxed">
-                  {activeModalProject.description}
-                </p>
+                {/* Deskripsi proyek ditulis Markdown di panel — judul, daftar,
+                    dan kode dirender sama seperti artikel blog. */}
+                <IsiKonten
+                  html={keHtml(activeModalProject.description)}
+                  className="text-neutral-300 text-xs sm:text-sm md:text-base leading-relaxed"
+                />
 
                 <div>
                   <h4 className="text-[11px] sm:text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2.5">

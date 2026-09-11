@@ -105,6 +105,9 @@ export function ringkasUntukMeta(teks: string, maks = 160): string {
     // biasa di dalam kalimat tidak ikut hilang.
     .replace(/(\*\*|__)(.*?)\1/g, '$2')
     .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^\s*(?:[-*+]|\d+[.)])\s+/gm, '')
+    .replace(/^```.*$/gm, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
     .replace(/`([^`]*)`/g, '$1')
     .replace(/\s+/g, ' ')
     .trim();

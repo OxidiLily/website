@@ -3,36 +3,50 @@
 // Salah di sini tersimpan diam-diam ke database dan baru terlihat sebagai
 // artikel rusak di halaman publik, jadi tiap cabang dicek satu per satu.
 import assert from 'node:assert/strict';
-import { bersihkanHtmlArtikel, pecahArtikel, tampakHtml, tugasArtikel, PROMPT_PENULIS_BLOG } from './blogWriter';
+import { bersihkanKeluaranArtikel as bersihkan, pecahArtikel, tampakHtml, tugasArtikel, PROMPT_PENULIS_BLOG } from './blogWriter';
 
 // Pagar kode yang membungkus seluruh jawaban — dikupas.
-assert.equal(bersihkanHtmlArtikel('```html\n<p>Halo</p>\n```'), '<p>Halo</p>');
-assert.equal(bersihkanHtmlArtikel('```\n<p>Halo</p>\n```'), '<p>Halo</p>');
+assert.equal(bersihkan('```html\n<p>Halo</p>\n```'), '<p>Halo</p>');
+assert.equal(bersihkan('```\n<p>Halo</p>\n```'), '<p>Halo</p>');
 
 // Pagar kode DI DALAM artikel (contoh perintah) — TIDAK boleh ikut terkupas.
 const denganContoh = '<p>Pasang:</p>\n<pre><code>```bash\ncurl x\n```</code></pre>';
-assert.equal(bersihkanHtmlArtikel(denganContoh), denganContoh);
+assert.equal(bersihkan(denganContoh), denganContoh);
+// Markdown yang dibungkus ```markdown DAN memuat pagar kode di dalamnya:
+// pembungkusnya dikupas, pagar kodenya tetap.
+assert.equal(bersihkan('```markdown\n## A\n\n```bash\nls\n```\n```'), '## A\n\n```bash\nls\n```');
+// Markdown yang DIAKHIRI blok kode tanpa pembungkus — jangan dikupas sama
+// sekali: pagar pertamanya bukan di baris pertama.
+const akhirKode = '## A\n\n```bash\nls\n```';
+assert.equal(bersihkan(akhirKode), akhirKode);
+// Pagar di baris pertama yang BUKAN pembungkus (artikel dibuka dengan kode)
+// dan berpasangan ganjil di tengah — tidak dikupas.
+assert.equal(bersihkan('```bash\nls\n```\n\n## B\n\n```\nx\n```'), '```bash\nls\n```\n\n## B\n\n```\nx\n```');
 
 // Wrapper dokumen penuh — hanya isi <body> yang diambil.
 assert.equal(
-  bersihkanHtmlArtikel('<html><head><title>x</title></head><body><h2>Bab</h2><p>Isi</p></body></html>'),
+  bersihkan('<html><head><title>x</title></head><body><h2>Bab</h2><p>Isi</p></body></html>'),
   '<h2>Bab</h2><p>Isi</p>',
 );
 // Wrapper tanpa <body>.
-assert.equal(bersihkanHtmlArtikel('<html><p>Isi</p></html>'), '<p>Isi</p>');
+assert.equal(bersihkan('<html><p>Isi</p></html>'), '<p>Isi</p>');
 
 // Masukan kosong tidak melempar.
-assert.equal(bersihkanHtmlArtikel(''), '');
-assert.equal(bersihkanHtmlArtikel(undefined as unknown as string), '');
+assert.equal(bersihkan(''), '');
+assert.equal(bersihkan(undefined as unknown as string), '');
 
-// Deteksi HTML vs markdown warisan — inilah yang memutuskan cara render.
+// Deteksi HTML (baris lama) vs Markdown — inilah yang memutuskan cara render.
 assert.equal(tampakHtml('<p>Artikel baru</p>'), true);
-assert.equal(tampakHtml('<h2>Bab</h2>'), true);
+assert.equal(tampakHtml('  <h2>Bab</h2>'), true);
 assert.equal(tampakHtml('**CasaOS: OS Server Rumahan Ringan** **Apa:** Sistem operasi...'), false);
+assert.equal(tampakHtml('## Judul\n\nParagraf'), false);
+// Markdown tentang HTML memuat <p> di dalam pagar kodenya — tetap Markdown.
+assert.equal(tampakHtml('## Contoh\n\n```html\n<p>Halo</p>\n```'), false);
 assert.equal(tampakHtml(''), false);
 
-// Prompt harus benar-benar melarang markdown dan menuntut penutup.
-assert.match(PROMPT_PENULIS_BLOG, /DILARANG memakai markdown/);
+// Prompt harus meminta Markdown, melarang HTML, dan menuntut penutup.
+assert.match(PROMPT_PENULIS_BLOG, /dalam Markdown/);
+assert.match(PROMPT_PENULIS_BLOG, /DILARANG menulis tag HTML/);
 assert.match(tugasArtikel('CasaOS'), /Kesimpulan/);
 assert.match(tugasArtikel('CasaOS'), /"CasaOS"/);
 
@@ -45,12 +59,12 @@ assert.match(tugasArtikel('CasaOS'), /Kata kunci utama artikel ini adalah "CasaO
 // Aturan blok kode harus ikut terkirim — inilah yang membuat model menandai
 // bahasa dan nama berkas, dan tanpa penanda itu kartu kodenya tidak punya apa
 // pun untuk ditampilkan di kepalanya.
-assert.match(PROMPT_PENULIS_BLOG, /class="language-XXX"/);
-assert.match(PROMPT_PENULIS_BLOG, /data-file="Terminal"/);
+assert.match(PROMPT_PENULIS_BLOG, /```ts use-theme\.ts/);
+assert.match(PROMPT_PENULIS_BLOG, /```bash Terminal/);
 
 // Aturan akurasi + kewajiban mencantumkan sumber.
 assert.match(PROMPT_PENULIS_BLOG, /Jangan mengarang versi/);
-assert.match(PROMPT_PENULIS_BLOG, /<h2>Sumber<\/h2>/);
+assert.match(PROMPT_PENULIS_BLOG, /## Sumber/);
 
 // Bahan rujukan yang ditempel admin harus benar-benar masuk ke perintahnya,
 // dan mengikat model pada bahan itu. Tanpa ini artikelnya kembali ditulis dari

@@ -15,22 +15,24 @@ export const PROMPT_PENULIS_BLOG = [
   'Kamu penulis artikel teknologi berbahasa Indonesia yang menulis untuk pembaca umum.',
   '',
   'ATURAN KELUARAN — tidak bisa ditawar:',
-  '- Keluarkan HANYA potongan HTML isi artikel. Tanpa <html>, <head>, <body>.',
-  '- Tanpa pagar kode (```). Tanpa penjelasan sebelum atau sesudah HTML.',
-  '- Tag yang boleh: <h2> <h3> <p> <ul> <ol> <li> <strong> <em> <blockquote> <pre> <code> <a>.',
-  '- DILARANG memakai markdown. `**tebal**` dan `## judul` salah; pakai <strong> dan <h2>.',
-  '- Jangan mengulang judul artikel sebagai <h1>; halaman sudah menampilkannya.',
+  '- Keluarkan HANYA isi artikel dalam Markdown. Tanpa pembuka, tanpa penutup,',
+  '  tanpa pagar ``` yang membungkus seluruh jawaban.',
+  '- Judul bagian: `## Judul`. Sub-bagian: `### Sub judul`. JANGAN memakai `#`',
+  '  satu pagar — judul artikel sudah ditampilkan halaman.',
+  '- Paragraf dipisah satu baris kosong. Daftar: `- butir` atau `1. langkah`.',
+  '- Tebal `**teks**`, miring `*teks*`, kode sebaris `kode`, tautan [teks](https://...).',
+  '- DILARANG menulis tag HTML apa pun (<p>, <h2>, <br>); semuanya akan tampil',
+  '  sebagai teks mentah, bukan sebagai format.',
   '',
   'KODE DAN PERINTAH — dipakai halaman untuk menggambar kartu kode:',
-  '- Setiap kode, perintah terminal, atau berkas konfigurasi ditulis sebagai',
-  '  <pre><code class="language-XXX" data-file="NAMA">…</code></pre>.',
-  '- class="language-XXX" wajib: ts, tsx, js, jsx, python, bash, json, yaml, sql, css, html.',
-  '- data-file="NAMA" diisi nama berkas yang masuk akal (use-theme.ts, docker-compose.yml).',
-  '  Untuk perintah yang diketik di terminal, tulis data-file="Terminal".',
-  '- Di dalam <code>, tanda < > & ditulis sebagai &lt; &gt; &amp; supaya tidak',
-  '  dibaca sebagai tag dan hilang dari layar.',
-  '- Satu blok = satu berkas atau satu rangkaian perintah utuh, bukan potongan',
-  '  satu baris yang berserakan. Kode yang cuma satu istilah pakai <code> biasa.',
+  '- Setiap kode, perintah terminal, atau berkas konfigurasi ditulis dalam pagar',
+  '  tiga backtick dengan BAHASA lalu NAMA BERKAS di baris pembukanya:',
+  '  ```ts use-theme.ts',
+  '  ```yaml docker-compose.yml',
+  '  ```bash Terminal   ← untuk perintah yang diketik di terminal',
+  '- Bahasa yang dikenal: ts, tsx, js, jsx, python, bash, json, yaml, sql, css, html.',
+  '- Satu pagar = satu berkas atau satu rangkaian perintah utuh, bukan potongan',
+  '  satu baris yang berserakan. Kode yang cuma satu istilah pakai `kode sebaris`.',
   '',
   'AKURASI — ini yang membedakan artikel yang berguna dari artikel yang menyesatkan:',
   '- Jangan mengarang versi, angka, harga, tanggal rilis, atau nama perintah.',
@@ -38,18 +40,20 @@ export const PROMPT_PENULIS_BLOG = [
   '  arahkan pembaca ke dokumentasi resmi — jangan menebak nilai spesifik.',
   '- Rujuk sumber primer: dokumentasi resmi proyek, repositori resminya, atau',
   '  rilis resmi vendor. Blog pihak ketiga dan forum bukan rujukan utama.',
-  '- Tutup artikel dengan <h2>Sumber</h2> berisi <ol> tautan sumber yang dipakai,',
-  '  masing-masing <a href="URL">Judul sumber</a> ditambah satu kalimat isi.',
+  '- Tutup artikel dengan `## Sumber` berisi daftar `- [Judul sumber](URL) — satu',
+  '  kalimat isi` untuk tiap sumber yang dipakai.',
   '',
   'SEO — tulis untuk pembaca dulu, mesin pencari mengikuti:',
   '- Kalimat pertama harus sudah menjawab "ini apa", memuat kata kunci utama',
   '  secara wajar, dan berdiri sendiri kalau dikutip sebagai cuplikan hasil pencarian.',
-  '- Judul <h2> ditulis sebagai pertanyaan atau frasa yang benar-benar diketik orang',
+  '- Judul `##` ditulis sebagai pertanyaan atau frasa yang benar-benar diketik orang',
   '  ("Apa itu X", "Cara memasang X", "X vs Y"), bukan label satu kata seperti "Fitur".',
   '- Sebar kata kunci utama dan variasinya secara alami. Mengulang-ulang kata kunci',
   '  merusak tulisan sekaligus peringkatnya — jangan.',
   '- Jawab pertanyaan turunan yang wajar muncul (syarat, harga/lisensi, alternatif),',
   '  karena itu yang dicari orang setelah pertanyaan pertama.',
+  '- Baca ulang setiap judul dan kalimat pertama: salah ketik di judul ("Apa Ita")',
+  '  ikut masuk ke daftar isi dan hasil pencarian.',
 ].join('\n');
 
 /**
@@ -79,17 +83,17 @@ export function tugasArtikel(topik: string, sumber = ''): string {
           '  jelaskan mana yang lebih baru atau lebih resmi.',
           '- Fakta yang TIDAK ada di bahan mana pun jangan ditambahkan. Kalau bagian',
           '  penting tidak tercakup, tulis satu kalimat jujur bahwa itu di luar sumber.',
-          '- Bagian <h2>Sumber</h2> di akhir memuat SELURUH URL di bahan rujukan.',
+          '- Bagian `## Sumber` di akhir memuat SELURUH URL di bahan rujukan.',
           '',
         ]
       : []),
     'Struktur wajib:',
     '1. Paragraf pembuka: jelaskan apa itu dan kenapa pembaca perlu peduli.',
-    '2. Minimal 4 bagian <h2> yang masing-masing berisi 2-4 paragraf <p> yang benar-benar menjelaskan, bukan daftar poin telanjang.',
-    '3. Sertakan hal praktis: cara pakai, syarat, atau langkah — dalam <ol> atau blok <pre><code> bila memang kode/perintah.',
+    '2. Minimal 4 bagian `##` yang masing-masing berisi 2-4 paragraf yang benar-benar menjelaskan, bukan daftar poin telanjang.',
+    '3. Sertakan hal praktis: cara pakai, syarat, atau langkah — dalam daftar bernomor, atau pagar kode bila memang kode/perintah.',
     '4. Satu bagian yang jujur soal keterbatasan atau kapan TIDAK cocok dipakai.',
-    '5. Bagian penutup <h2>Kesimpulan</h2> berisi 1-2 paragraf yang merangkum dan memberi rekomendasi tegas.',
-    '6. Paling akhir <h2>Sumber</h2> berisi <ol> tautan rujukan.',
+    '5. Bagian penutup `## Kesimpulan` berisi 1-2 paragraf yang merangkum dan memberi rekomendasi tegas.',
+    '6. Paling akhir `## Sumber` berisi daftar tautan rujukan.',
     '',
     'Panjang sasaran 900-1500 kata. Tulis mengalir seperti penulis manusia:',
     'hindari kalimat template, hindari mengulang kata kunci, dan jangan menutup',
@@ -100,22 +104,29 @@ export function tugasArtikel(topik: string, sumber = ''): string {
 }
 
 /**
- * Rapikan keluaran model jadi HTML yang siap disimpan.
+ * Rapikan keluaran model jadi Markdown yang siap disimpan.
  *
- * Dua kotoran yang benar-benar sering muncul dan merusak tampilan:
- * pagar kode ```html yang ikut tersimpan, dan wrapper <html>/<body> lengkap.
- * Selebihnya dibiarkan apa adanya — ini perapih, bukan sanitizer, dan bukan
- * pengurai markdown.
+ * Dua kotoran yang benar-benar sering muncul: pagar ```markdown yang
+ * membungkus SELURUH jawaban, dan — dari masa keluaran masih HTML — wrapper
+ * <html>/<body>. Selebihnya dibiarkan apa adanya; ini perapih, bukan sanitizer.
+ *
+ * Pagar pembungkus hanya dikupas kalau pagar pertama ada di baris PERTAMA,
+ * pagar terakhir di baris TERAKHIR, dan pagar di antaranya berpasangan. Tanpa
+ * syarat ketiga, artikel yang kebetulan DIAKHIRI blok kode akan dikupas dari
+ * pagar kode pertamanya sampai penutup terakhir — dan kodenya lenyap.
  */
-export function bersihkanHtmlArtikel(mentah: string): string {
-  let s = (mentah || '').trim();
+export function bersihkanKeluaranArtikel(mentah: string): string {
+  let s = (mentah || '').replace(/\r\n?/g, '\n').trim();
 
-  // Pagar kode yang membungkus SELURUH jawaban. Dibatasi pada kasus itu supaya
-  // <pre><code> berisi contoh perintah di dalam artikel tidak ikut terkupas.
-  const pagar = s.match(/^```[a-zA-Z]*\s*\n([\s\S]*?)\n?```$/);
-  if (pagar) s = pagar[1].trim();
+  const baris = s.split('\n');
+  const pagarPertama = /^```\s*(markdown|md|html)?\s*$/i.test(baris[0] ?? '');
+  const pagarTerakhir = /^```\s*$/.test(baris[baris.length - 1] ?? '');
+  const jumlahPagarDalam = baris.slice(1, -1).filter((b) => /^```/.test(b)).length;
+  if (baris.length >= 2 && pagarPertama && pagarTerakhir && jumlahPagarDalam % 2 === 0) {
+    s = baris.slice(1, -1).join('\n').trim();
+  }
 
-  // Wrapper dokumen penuh: ambil isi <body> saja.
+  // Wrapper dokumen penuh dari keluaran HTML lama: ambil isi <body> saja.
   const body = s.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
   if (body) s = body[1].trim();
   s = s.replace(/<\/?(?:html|head|body)[^>]*>/gi, '').trim();
@@ -123,14 +134,20 @@ export function bersihkanHtmlArtikel(mentah: string): string {
   return s;
 }
 
+/** @deprecated nama lama; dipertahankan supaya pemanggil lama tidak putus. */
+export const bersihkanHtmlArtikel = bersihkanKeluaranArtikel;
+
 /**
- * Isi artikel ini HTML, atau teks/markdown warisan?
+ * Isi artikel ini HTML (baris lama), atau Markdown/teks yang harus diubah dulu?
  *
- * Dipakai halaman detail untuk memutuskan cara render. Baris lama yang
- * terlanjur tersimpan sebagai markdown tidak boleh disuntikkan sebagai HTML —
- * hasilnya justru hilang sama sekali, bukan cuma jelek.
+ * Dinilai dari AWAL dokumen, bukan dari ada-tidaknya tag di mana pun: artikel
+ * Markdown tentang HTML wajar memuat `<p>` di dalam pagar kodenya, dan aturan
+ * lama ("ada tag <p> di mana saja") akan menyuntikkannya sebagai HTML — isinya
+ * lalu hilang, bukan sekadar jelek. Baris lama yang ditulis sebagai HTML
+ * selalu dibuka dengan <p>, <h2>, atau tag blok lain.
  */
-export const tampakHtml = (isi: string): boolean => /<(p|h2|h3|ul|ol|li|pre|blockquote|strong|em)\b[^>]*>/i.test(isi || '');
+export const tampakHtml = (isi: string): boolean =>
+  /^\s*<(p|h[1-6]|ul|ol|pre|blockquote|div|section|table|figure)\b/i.test(isi || '');
 
 // ── Pemisahan blok kode ────────────────────────────────────────────────────
 

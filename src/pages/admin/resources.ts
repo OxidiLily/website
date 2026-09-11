@@ -85,7 +85,7 @@ export const RESOURCES = {
       },
       { name: 'status', label: 'Status', type: 'select', required: true, list: true, filter: true, options: STATUS_BLOG },
       { name: 'author', label: 'Penulis', type: 'text', list: true },
-      { name: 'content', label: 'Isi (HTML)', type: 'textarea', required: true },
+      { name: 'content', label: 'Isi (Markdown)', type: 'textarea', required: true },
       { name: 'reading_time', label: 'Waktu baca (menit)', type: 'number', form: false, list: true },
     ],
     beforeSave: (row) => ({ ...row, reading_time: readingTime(row.content) }),
@@ -104,7 +104,7 @@ export const RESOURCES = {
     fields: [
       { name: 'name', label: 'Nama', type: 'text', required: true, list: true },
       { name: 'slug', label: 'Slug', type: 'text', placeholder: 'otomatis dari nama' },
-      { name: 'description', label: 'Deskripsi', type: 'textarea' },
+      { name: 'description', label: 'Deskripsi (Markdown)', type: 'textarea' },
       { name: 'color', label: 'Warna', type: 'text', list: true },
     ],
   },
@@ -134,7 +134,7 @@ export const RESOURCES = {
       { name: 'deadline', label: 'Tenggat', type: 'date', list: true },
       { name: 'tech_stack', label: 'Tech stack (pisah koma)', type: 'list' },
       { name: 'team_members', label: 'Anggota tim (pisah koma)', type: 'list' },
-      { name: 'description', label: 'Deskripsi', type: 'textarea' },
+      { name: 'description', label: 'Deskripsi (Markdown)', type: 'textarea' },
     ],
   },
 
@@ -177,7 +177,7 @@ export const RESOURCES = {
       { name: 'buy_link_shopee', label: 'Tautan Shopee', type: 'text' },
       { name: 'is_top_seller', label: 'Terlaris', type: 'boolean', list: true },
       { name: 'is_active', label: 'Aktif', type: 'boolean', list: true, defaultValue: true },
-      { name: 'description', label: 'Deskripsi', type: 'textarea' },
+      { name: 'description', label: 'Deskripsi (Markdown)', type: 'textarea' },
     ],
   },
 
