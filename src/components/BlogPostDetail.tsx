@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion } from 'motion/react';
-import { BlogPost, PageId } from '../types';
+import { BlogPost, BlogSection, PageId } from '../types';
 import { ArrowLeft, Check, Share2, Bookmark } from 'lucide-react';
 import { useSettings } from '../lib/content';
 import { pecahArtikel, susunArtikel, tampakHtml } from '../lib/blogWriter';
 import { KodeBlok } from './KodeBlok';
 import { salinTeks } from '../lib/salin';
+
+const TANPA_BAGIAN: BlogSection[] = [];
 
 interface BlogPostDetailProps {
   post: BlogPost;
@@ -29,7 +31,11 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
   const warisan = !!post.sections?.length;
   const artikelHtml = !warisan && tampakHtml(post.content);
   const tersusun = useMemo(() => (artikelHtml ? susunArtikel(post.content) : null), [artikelHtml, post.content]);
-  const sections = warisan ? post.sections! : (tersusun?.sections ?? []);
+  // `TANPA_BAGIAN` adalah satu array tetap, bukan `[]` baru tiap render:
+  // dua effect di bawah bergantung pada `sections`, dan referensi yang
+  // berganti setiap render membuat keduanya dipasang-lepas terus untuk
+  // artikel teks polos yang memang tidak punya bagian.
+  const sections = warisan ? post.sections! : (tersusun?.sections ?? TANPA_BAGIAN);
 
   const [activeSection, setActiveSection] = useState<string>(sections[0]?.id || 'overview');
   // Artikel yang sama dimuat dua kali: cadangan statis dulu, lalu baris dari
