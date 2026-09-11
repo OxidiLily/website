@@ -124,3 +124,13 @@ assert.ok(alasanTepercaya('https://www.hostgator.com/help'));
 assert.ok(alasanTepercaya('https://www.siteground.com/kb/'));
 
 console.log('[✓] riset: penjaga topik & daftar penyedia lolos');
+
+// ── Alamat jaringan dalam ─────────────────────────────────────────────────
+import { ipPrivat } from './riset';
+for (const ip of ['10.0.0.1', '127.0.0.1', '172.16.5.5', '172.31.255.255', '192.168.2.99', '169.254.1.1', '100.115.194.5', '0.0.0.0', '::1', 'fd12::1', 'fe80::1', '::ffff:192.168.1.1']) {
+  assert.equal(ipPrivat(ip), true, `${ip} harus dianggap privat`);
+}
+for (const ip of ['8.8.8.8', '172.32.0.1', '172.15.0.1', '100.63.255.255', '100.128.0.1', '2606:4700::1111', '140.82.121.4']) {
+  assert.equal(ipPrivat(ip), false, `${ip} harus dianggap publik`);
+}
+console.log('[✓] riset: ipPrivat lolos');

@@ -1,9 +1,10 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import {lookup} from 'node:dns/promises';
 import {readFileSync} from 'node:fs';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
-import {alasanTepercaya, bersihkanHalaman, repoMilikTopik, type SumberRujukan} from './src/lib/riset';
+import {alasanTepercaya, bersihkanHalaman, ipPrivat, repoMilikTopik, type SumberRujukan} from './src/lib/riset';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -194,6 +195,31 @@ export default defineConfig(({mode}) => {
     }
   }
 
+  /**
+   * Nama host ini menunjuk ke jaringan dalam?
+   *
+   * Dinilai dari SEMUA alamat hasil resolusi, bukan dari bentuk namanya:
+   * saringan `alasanTepercaya()` meloloskan `docs.apa-saja.xyz`, dan siapa pun
+   * bisa mengarahkan nama seperti itu ke alamat homelab. Sebelum ini yang
+   * menahannya cuma kegagalan TLS ke layanan internal — pengaman yang tidak
+   * disengaja.
+   *
+   * ponytail: masih ada jendela kecil antara resolusi di sini dan resolusi
+   * ulang oleh fetch (DNS rebinding). Menutupnya butuh menyambung ke IP hasil
+   * resolusi lewat agen undici kustom; naikkan ke sana kalau situs ini nanti
+   * memuat layanan internal bersertifikat sah.
+   */
+  async function hostJaringanDalam(hostname: string): Promise<boolean> {
+    try {
+      const alamat = await lookup(hostname, { all: true });
+      return alamat.length === 0 || alamat.some((a) => ipPrivat(a.address));
+    } catch {
+      // Nama yang tidak bisa diresolusi tidak akan bisa diunduh juga; ditolak
+      // di sini supaya alasannya jelas, bukan "fetch failed".
+      return true;
+    }
+  }
+
   /** Satu URL → isi halamannya sebagai teks, atau alasan kenapa ditolak. */
   async function unduhSumber(url: string, situsResmi: string[]): Promise<SumberRujukan | { url: string; tolak: string }> {
     const alasan = alasanTepercaya(url, situsResmi);
@@ -207,6 +233,9 @@ export default defineConfig(({mode}) => {
       let tujuan = url;
       let res: Response;
       for (let lompatan = 0; ; lompatan++) {
+        if (await hostJaringanDalam(new URL(tujuan).hostname)) {
+          return { url, tolak: 'nama host menunjuk ke alamat jaringan dalam' };
+        }
         res = await fetch(tujuan, {
           headers: { 'user-agent': UA, accept: 'text/html,text/plain,text/markdown' },
           redirect: 'manual',

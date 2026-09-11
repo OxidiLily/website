@@ -243,3 +243,35 @@ export function bahanDariSumber(sumber: SumberRujukan[]): string {
     .map((s, i) => [`[SUMBER ${i + 1}] ${s.judul || s.url}`, `URL: ${s.url}`, '', s.teks].join('\n'))
     .join('\n\n———\n\n');
 }
+
+/**
+ * Alamat IP ini milik jaringan dalam?
+ *
+ * Saringan nama host di `alasanTepercaya()` bisa dilewati siapa pun yang
+ * mendaftarkan `docs.apa-saja.xyz` lalu mengarahkan A-record-nya ke alamat
+ * homelab. Yang menahannya selama ini cuma validasi sertifikat TLS Node —
+ * pengaman yang tidak disengaja dan hilang begitu ada layanan internal
+ * bersertifikat sah (mis. `tailscale serve`). Karena itu alamat hasil resolusi
+ * DNS diperiksa sendiri sebelum satu byte pun dikirim.
+ *
+ * Termasuk 100.64.0.0/10: itu rentang CGNAT yang dipakai Tailscale, jadi
+ * seluruh tailnet ikut tertutup.
+ */
+export function ipPrivat(ip: string): boolean {
+  const v4 = ip.replace(/^::ffff:/i, '');
+  const m = v4.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+  if (m) {
+    const [a, b] = [Number(m[1]), Number(m[2])];
+    return (
+      a === 10 ||
+      a === 127 ||
+      a === 0 ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168) ||
+      (a === 169 && b === 254) ||
+      (a === 100 && b >= 64 && b <= 127)
+    );
+  }
+  const v6 = ip.toLowerCase();
+  return v6 === '::1' || v6 === '::' || /^f[cd]/.test(v6) || /^fe[89ab]/.test(v6);
+}
