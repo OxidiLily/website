@@ -83,6 +83,7 @@ export const PAGE_EDITORS = {
           { key: 'search_filter_about', label: 'Tab About' },
           { key: 'search_filter_contact', label: 'Tab Contact' },
           { key: 'search_suggestions_label', label: 'Judul saran cepat' },
+          { key: 'search_suggestions', label: 'Saran cepat', hint: 'Kata kunci yang jadi tombol di kotak pencarian, dipisah koma. Kosong = bagian saran tidak tampil.' },
           { key: 'search_found_label', label: 'Awalan jumlah hasil', hint: 'Angkanya ditambahkan otomatis.' },
           { key: 'search_recommended_label', label: 'Judul hasil rekomendasi' },
           { key: 'search_nav_hint', label: 'Petunjuk tombol panah' },

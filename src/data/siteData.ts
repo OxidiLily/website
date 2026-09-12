@@ -764,6 +764,7 @@ export const defaultSettings: SiteSettings = {
   search_filter_about: "About",
   search_filter_contact: "Contact",
   search_suggestions_label: "Quick Suggestions",
+  search_suggestions: "",
   search_nav_hint: "Use ↑ ↓ keys to navigate",
   search_found_label: "Found",
   search_recommended_label: "Recommended",

@@ -290,20 +290,6 @@ export const searchIndex: SearchItem[] = [
   },
 ];
 
-// Popular quick search suggestion keywords
-export const popularSearchQueries = [
-  'React',
-  'Three.js',
-  'Accessibility',
-  'Design System',
-  'Tailwind CSS',
-  'Performance',
-  'Alun-Alun Batang',
-  'VS Code',
-  'TypeScript',
-  'Figma',
-];
-
 // Search execution engine with keyword matching and scoring
 export function searchAllContent(
   query: string,

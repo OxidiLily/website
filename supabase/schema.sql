@@ -519,6 +519,7 @@ insert into web.settings (key, value, is_public) values
   ('search_filter_about', 'About', true),
   ('search_filter_contact', 'Contact', true),
   ('search_suggestions_label', 'Quick Suggestions', true),
+  ('search_suggestions', '', true),
   ('search_nav_hint', 'Use ↑ ↓ keys to navigate', true),
   ('search_found_label', 'Found', true),
   ('search_recommended_label', 'Recommended', true),
