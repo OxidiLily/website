@@ -56,7 +56,6 @@ export const blogToSearchItem = (post: BlogPost): SearchItem => ({
     ...post.tags,
     ...(post.topics || []),
     post.category,
-    post.guideType || 'Article',
     'Blog',
     'Guide',
     'Article',

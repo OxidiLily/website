@@ -20,6 +20,15 @@ export interface Field {
   filter?: boolean;
   placeholder?: string;
   /**
+   * Disimpan di dalam kolom `meta` (jsonb), bukan sebagai kolom sendiri.
+   *
+   * Medan seperti ringkasan artikel tidak punya kolom di skema — ia hidup di
+   * `meta` bersama field kaya lain yang disebar kembali oleh toBlog(). Tanpa
+   * penanda ini form akan mengirimnya sebagai kolom `subtitle` dan PostgREST
+   * menolaknya.
+   */
+  meta?: boolean;
+  /**
    * Nilai awal untuk baris BARU (diabaikan saat mengubah baris lama).
    *
    * Tanpa ini setiap kolom boolean mulai dari `false`: admin menambah produk
@@ -45,8 +54,11 @@ export interface Resource {
   slugFrom?: string;
   /** Penyesuaian terakhir sebelum simpan. */
   beforeSave?: (row: Record<string, any>) => Record<string, any>;
-  /** Tombol "Generate dengan AI": isi field `to` dari nilai field `from`. */
-  aiGenerate?: { from: string; to: string };
+  /**
+   * Tombol "Generate dengan AI": isi field `to` dari nilai field `from`, lalu
+   * — kalau `ringkasan` diisi — satu kalimat pengantar ke field itu.
+   */
+  aiGenerate?: { from: string; to: string; ringkasan?: string };
 }
 
 const STATUS_BLOG = [
@@ -85,11 +97,15 @@ export const RESOURCES = {
       },
       { name: 'status', label: 'Status', type: 'select', required: true, list: true, filter: true, options: STATUS_BLOG },
       { name: 'author', label: 'Penulis', type: 'text', list: true },
+      {
+        name: 'subtitle', label: 'Ringkasan (satu kalimat pengantar)', type: 'textarea', meta: true,
+        placeholder: 'Tampil di bawah judul, di kartu daftar artikel, dan sebagai deskripsi di hasil pencarian. Diisi otomatis oleh Generate dengan AI.',
+      },
       { name: 'content', label: 'Isi (Markdown)', type: 'textarea', required: true },
       { name: 'reading_time', label: 'Waktu baca (menit)', type: 'number', form: false, list: true },
     ],
     beforeSave: (row) => ({ ...row, reading_time: readingTime(row.content) }),
-    aiGenerate: { from: 'title', to: 'content' },
+    aiGenerate: { from: 'title', to: 'content', ringkasan: 'subtitle' },
   },
 
   blog_categories: {

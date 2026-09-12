@@ -212,7 +212,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
                   <div className="pt-2">
                     <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-900 dark:text-white group-hover:gap-2.5 transition-all">
-                      <span>{featuredPost.actionLabel || t.blog_featured_cta}</span>
+                      <span>{t.blog_featured_cta}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -312,7 +312,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                 {/* Action Link at Bottom */}
                 <div className="px-6 pb-6 pt-0">
                   <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-neutral-950 dark:text-white group-hover:gap-2.5 transition-all">
-                    <span>{post.actionLabel || t.blog_card_cta}</span>
+                    <span>{t.blog_card_cta}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>

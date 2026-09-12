@@ -50,9 +50,6 @@ export interface BlogPost {
   readTime: string;
   excerpt: string;
   topics?: string[];
-  actionLabel?: string;
-  guideType?: string;
-  mainHeading?: string;
   featuredHero?: boolean;
   sections?: BlogSection[];
   content: string;

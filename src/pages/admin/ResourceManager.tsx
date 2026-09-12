@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight, Loader2, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { aiComplete, loadAiConfig } from '../../lib/ai';
-import { PROMPT_PENULIS_BLOG, tugasArtikel, bersihkanKeluaranArtikel } from '../../lib/blogWriter';
+import { PROMPT_PENULIS_BLOG, tugasArtikel, bersihkanKeluaranArtikel, promptRingkasan, bersihkanRingkasan } from '../../lib/blogWriter';
 import { bahanDariSumber, promptKandidat, uraikanKandidat, type SumberRujukan } from '../../lib/riset';
 import type { Field, Resource } from './resources';
 import { slugify } from './resources';
@@ -135,7 +135,15 @@ export const ResourceManager: React.FC<{ resource: Resource }> = ({ resource }) 
     setError('');
 
     let payload: Row = {};
-    for (const f of formFields) payload[f.name] = form[f.name];
+    const metaBaru: Row = {};
+    for (const f of formFields) {
+      if (f.meta) metaBaru[f.name] = form[f.name];
+      else payload[f.name] = form[f.name];
+    }
+    // Medan `meta` digabung dengan isi lama, bukan menimpa: baris warisan
+    // menyimpan sections/topics di sana, dan menyunting ringkasan tidak boleh
+    // menghapus isi artikelnya.
+    if (Object.keys(metaBaru).length) payload.meta = { ...(editing?.meta ?? {}), ...metaBaru };
     if (resource.slugFrom && !String(payload.slug || '').trim()) {
       payload.slug = slugify(String(form[resource.slugFrom] || ''));
     }
@@ -487,7 +495,7 @@ export const ImageInput: React.FC<{ value: string; onChange: (url: string) => vo
 
 const RowForm: React.FC<{
   fields: Field[];
-  aiGenerate?: { from: string; to: string };
+  aiGenerate?: { from: string; to: string; ringkasan?: string };
   refOptions: Record<string, { value: string; label: string }[]>;
   initial: Row;
   busy: boolean;
@@ -501,7 +509,7 @@ const RowForm: React.FC<{
     for (const fd of fields) {
       // `initial` kosong berarti tambah-baru: pakai defaultValue kalau field
       // itu punya, bukan false/'' yang diam-diam menyembunyikan baris baru.
-      const v = initial[fd.name] ?? (barisBaru ? fd.defaultValue : undefined);
+      const v = (fd.meta ? initial.meta?.[fd.name] : initial[fd.name]) ?? (barisBaru ? fd.defaultValue : undefined);
       if (fd.type === 'boolean') f[fd.name] = v ?? false;
       else if (fd.type === 'list') f[fd.name] = Array.isArray(v) ? v.join(', ') : '';
       else f[fd.name] = v ?? '';
@@ -584,7 +592,19 @@ const RowForm: React.FC<{
         { role: 'system', content: PROMPT_PENULIS_BLOG },
         { role: 'user', content: tugasArtikel(topic, bahan) },
       ], { maxTokens: 8192 });
-      set(aiGenerate.to, bersihkanKeluaranArtikel(out));
+      const artikel = bersihkanKeluaranArtikel(out);
+      set(aiGenerate.to, artikel);
+
+      // Tahap 4 — satu kalimat pengantar, dari artikel yang BARU jadi (bukan
+      // dari topik): tampil di bawah judul, di kartu, dan di hasil pencarian.
+      if (aiGenerate.ringkasan) {
+        setAiTahap('Menulis ringkasan…');
+        const ringkas = await aiComplete(cfg, [{ role: 'user', content: promptRingkasan(topic, artikel) }], {
+          maxTokens: 300,
+          temperature: 0.3,
+        });
+        set(aiGenerate.ringkasan, bersihkanRingkasan(ringkas));
+      }
     } catch (e: any) {
       setAiErr(e?.message ?? 'Gagal memanggil AI.');
     } finally {

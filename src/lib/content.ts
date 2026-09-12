@@ -97,7 +97,7 @@ function toBlog(r: any): BlogPost {
     // Potong di batas kata, bukan di karakter ke-160: excerpt ini dipakai
     // kartu blog SEKALIGUS meta description, dan potongan di tengah kata
     // terbaca rusak di hasil pencarian.
-    excerpt: meta.excerpt ?? ringkasUntukMeta(r.content ?? ''),
+    excerpt: meta.excerpt ?? meta.subtitle ?? ringkasUntukMeta(r.content ?? ''),
     content: r.content ?? '',
     tags: meta.tags ?? [category],
   };

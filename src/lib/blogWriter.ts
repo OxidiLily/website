@@ -104,6 +104,41 @@ export function tugasArtikel(topik: string, sumber = ''): string {
 }
 
 /**
+ * Perintah untuk satu kalimat pengantar artikel.
+ *
+ * Dipanggil SETELAH artikelnya jadi, dengan artikel itu sebagai bahan — bukan
+ * dari topik saja — supaya pengantarnya benar-benar merangkum yang ditulis,
+ * bukan menebak isinya. Kalimat ini tampil di bawah judul, di kartu daftar
+ * artikel, dan jadi meta description di hasil pencarian, jadi batasnya
+ * mengikuti batas cuplikan mesin pencari.
+ */
+export function promptRingkasan(topik: string, artikel: string): string {
+  return [
+    `Tulis SATU kalimat pengantar (maksimal 160 karakter) untuk artikel tentang "${topik}" di bawah ini.`,
+    'Kalimatnya harus menjawab "artikel ini tentang apa dan kenapa pembaca peduli",',
+    'berdiri sendiri kalau dikutip sebagai cuplikan hasil pencarian, tanpa tanda',
+    'kutip, tanpa Markdown, tanpa kalimat pembuka seperti "Artikel ini membahas".',
+    'Keluarkan HANYA kalimatnya.',
+    '',
+    '---',
+    artikel.slice(0, 6000),
+  ].join('\n');
+}
+
+/** Jawaban model → satu baris bersih. Kutip, pagar, dan label "Ringkasan:" dibuang. */
+export function bersihkanRingkasan(mentah: string): string {
+  return (mentah || '')
+    .replace(/```[\s\S]*?```/g, '')
+    .split('\n')
+    .map((b) => b.trim())
+    .filter(Boolean)[0]
+    ?.replace(/^(ringkasan|summary|pengantar)\s*:\s*/i, '')
+    .replace(/^["'“”]+|["'“”]+$/g, '')
+    .replace(/\*\*/g, '')
+    .trim() ?? '';
+}
+
+/**
  * Rapikan keluaran model jadi Markdown yang siap disimpan.
  *
  * Dua kotoran yang benar-benar sering muncul: pagar ```markdown yang

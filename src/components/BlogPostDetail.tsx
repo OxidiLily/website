@@ -38,6 +38,14 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
   // artikel teks polos yang memang tidak punya bagian.
   const sections = warisan ? post.sections! : (tersusun?.sections ?? TANPA_BAGIAN);
 
+  // Sasaran tombol "Kesimpulan": bagian yang judulnya memang kesimpulan, atau
+  // — untuk artikel yang tidak menamainya begitu — bagian terakhir sebelum
+  // daftar sumber. Artikel satu bagian tidak punya kesimpulan untuk dituju.
+  const kesimpulan = useMemo(() => {
+    const isi = sections.filter((s) => !/^(sumber|referensi|references|sources)$/i.test(s.title.trim()));
+    return isi.find((s) => /kesimpulan|conclusion|penutup|summary/i.test(s.title)) ?? (isi.length > 1 ? isi[isi.length - 1] : undefined);
+  }, [sections]);
+
   const [activeSection, setActiveSection] = useState<string>(sections[0]?.id || 'overview');
   // Artikel yang sama dimuat dua kali: cadangan statis dulu, lalu baris dari
   // database. Daftar isinya ikut berganti, dan penanda aktif harus mengikuti.
@@ -148,7 +156,11 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
           </p>
         )}
 
-        {/* Action Buttons */}
+        {/* Dua tombol yang sama untuk SEMUA artikel: ke bagian pertama, dan ke
+            kesimpulan. Label per-artikel (actionLabel/guideType) dari contoh
+            bawaan sengaja tidak dipakai lagi — artikel yang ditulis lewat panel
+            tidak punya itu, dan dua bentuk header untuk satu situs cuma
+            terlihat seperti dua situs. */}
         <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2.5 sm:gap-3">
           <button
             onClick={() => {
@@ -156,19 +168,14 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
             }}
             className="min-h-[40px] px-4 py-2 rounded-lg bg-white text-black font-semibold text-xs sm:text-sm hover:bg-neutral-200 active:scale-95 transition-all shadow-sm cursor-pointer"
           >
-            {post.actionLabel || t.post_action_default}
+            {t.post_action_default}
           </button>
-          {/* Label bawaan pengaturan ("Gardening Guide") hanya untuk artikel
-              warisan yang memang dirancang dengannya. Artikel HTML menampilkan
-              tombol ini kalau ia sendiri menetapkan `guideType`. */}
-          {(post.guideType || (warisan && t.post_guide_type_default)) && (
+          {kesimpulan && (
             <button
-              onClick={() => {
-                if (sections[1]?.id) scrollToSection(sections[1].id);
-              }}
+              onClick={() => scrollToSection(kesimpulan.id)}
               className="min-h-[40px] px-4 py-2 rounded-lg border border-neutral-800 bg-neutral-950 text-neutral-300 font-medium text-xs sm:text-sm hover:bg-neutral-900 active:scale-95 hover:text-white transition-all cursor-pointer"
             >
-              {post.guideType || t.post_guide_type_default}
+              {t.post_conclusion}
             </button>
           )}
         </div>
@@ -245,18 +252,6 @@ export const BlogPostDetail: React.FC<BlogPostDetailProps> = ({
           {/* Center Column: isi artikel. Sengaja tanpa kartu grafis — halaman
               detail blog memang tidak menampilkan gambar. */}
           <div className="md:col-span-6 space-y-8">
-            {/* Judul kelompok bagian. Bawaan pengaturan ("Beginner's Guide")
-                hanya untuk artikel warisan; artikel HTML sudah membawa judul
-                bagiannya sendiri di <h2>, dan judul umum di atasnya cuma
-                menyesatkan. */}
-            {(post.mainHeading || (warisan && t.post_main_heading)) && (
-              <div className="pt-2">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                  {post.mainHeading || t.post_main_heading}
-                </h2>
-              </div>
-            )}
-
             {/* Sub-sections rendering */}
             <div className="space-y-8 text-neutral-300 leading-relaxed text-sm sm:text-[15px]">
               {warisan ? (

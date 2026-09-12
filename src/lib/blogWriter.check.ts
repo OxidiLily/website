@@ -135,3 +135,13 @@ import { susunArtikel } from './blogWriter';
 assert.deepEqual(susunArtikel(''), { html: '', sections: [] });
 assert.deepEqual(susunArtikel('<p>tanpa judul</p>').sections, []);
 console.log('[✓] blogWriter: susunArtikel lolos');
+
+// ── Ringkasan satu kalimat ────────────────────────────────────────────────
+import { bersihkanRingkasan, promptRingkasan } from './blogWriter';
+assert.match(promptRingkasan('CasaOS', '## A\n\nisi'), /160 karakter/);
+assert.match(promptRingkasan('CasaOS', '## A\n\nisi'), /isi$/);
+assert.equal(bersihkanRingkasan('"CasaOS mengubah PC bekas jadi server rumahan."'), 'CasaOS mengubah PC bekas jadi server rumahan.');
+assert.equal(bersihkanRingkasan('Ringkasan: **CasaOS** itu mudah.\n\nKalimat kedua yang tidak diminta.'), 'CasaOS itu mudah.');
+assert.equal(bersihkanRingkasan('```\nkode\n```\nKalimat.'), 'Kalimat.');
+assert.equal(bersihkanRingkasan(''), '');
+console.log('[✓] blogWriter: ringkasan lolos');

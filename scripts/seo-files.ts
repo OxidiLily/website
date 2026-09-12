@@ -75,7 +75,7 @@ export interface Artikel {
   author?: string;
   created_at?: string;
   updated_at?: string;
-  meta?: { excerpt?: string } | null;
+  meta?: { excerpt?: string; subtitle?: string } | null;
 }
 
 async function ambilArtikel(): Promise<Artikel[]> {
@@ -127,7 +127,7 @@ export function htmlArtikel(kerangka: string, asal: string, a: Artikel, namaSitu
   const url = `${asal}/blog/${encodeURIComponent(a.slug)}`;
   const gambar = `${asal}/logo.png`;
   const judul = `${a.title} — ${namaSitus}`;
-  const deskripsi = ringkasUntukMeta(a.meta?.excerpt || a.content || '');
+  const deskripsi = ringkasUntukMeta(a.meta?.excerpt || a.meta?.subtitle || a.content || '');
 
   let html = kerangka;
   html = html.replace(/<title>[^<]*<\/title>/i, `<title>${escAttr(judul)}</title>`);

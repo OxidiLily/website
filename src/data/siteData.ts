@@ -81,9 +81,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '5 min read',
     excerpt: 'Explore how tools like GitHub Copilot, AI design generators, and code assistants are changing the way developers build UIs and ship features faster.',
     topics: ['AI Code Assistance', 'Autonomous Testing', 'Component Generation'],
-    actionLabel: 'Discover the Future',
-    guideType: 'AI Engineering',
-    mainHeading: 'AI-Augmented Development Workflows',
     featuredHero: true,
     sections: [
       {
@@ -121,9 +118,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '4 min read',
     excerpt: 'Discover must-have extensions to boost your coding efficiency and streamline your workflow.',
     topics: ['Developer Tooling', 'Editor Workflows', 'Productivity Hacks'],
-    actionLabel: 'Boost Your Editor',
-    guideType: 'Tooling Guide',
-    mainHeading: 'Essential VS Code Extensions',
     sections: [
       {
         id: 'overview',
@@ -160,9 +154,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '6 min read',
     excerpt: 'Making your product inclusive from day one improves usability and reach.',
     topics: ['Inclusive Design', 'WCAG AA Standards', 'Screen Readers'],
-    actionLabel: 'Learn Why',
-    guideType: 'Design Strategy',
-    mainHeading: 'Building Accessible Products from Day 1',
     sections: [
       {
         id: 'overview',
@@ -199,9 +190,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '5 min read',
     excerpt: 'Improve load times by using native lazy-loading and fallback strategies for images.',
     topics: ['Core Web Vitals', 'Image Optimization', 'HTML5 Attributes'],
-    actionLabel: 'Optimize Images',
-    guideType: 'Performance Manual',
-    mainHeading: 'Mastering Native Image Lazy Loading',
     sections: [
       {
         id: 'overview',
@@ -238,9 +226,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '7 min read',
     excerpt: 'Learn proven strategies to avoid burnout and stay on top of your tasks without stress.',
     topics: ['Deep Work', 'Async Communication', 'Burnout Prevention'],
-    actionLabel: 'Manage Your Time',
-    guideType: 'Productivity Blueprint',
-    mainHeading: 'Developer Time Management Systems',
     sections: [
       {
         id: 'overview',
@@ -277,9 +262,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '6 min read',
     excerpt: 'Understand how to enhance screen reader support using ARIA roles and landmarks.',
     topics: ['ARIA Landmarks', 'Assistive Tech', 'Semantic HTML'],
-    actionLabel: 'Improve Semantics',
-    guideType: 'Technical Guide',
-    mainHeading: 'Demystifying ARIA Roles & Attributes',
     sections: [
       {
         id: 'overview',
@@ -316,9 +298,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '5 min read',
     excerpt: 'Best practices for minifying and tree-shaking your JS bundles to boost speed.',
     topics: ['Tree Shaking', 'Bundle Size', 'esbuild & Rollup'],
-    actionLabel: 'Shrink Your Code',
-    guideType: 'Build Optimization',
-    mainHeading: 'Advanced JavaScript Minification & Tree-Shaking',
     sections: [
       {
         id: 'overview',
@@ -355,9 +334,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '6 min read',
     excerpt: 'Use tools like Gulp, npm scripts, and GitHub Actions to automate tedious development chores.',
     topics: ['CI/CD', 'NPM Scripts', 'Automation Pipelines'],
-    actionLabel: 'Automate Now',
-    guideType: 'Workflow Guide',
-    mainHeading: 'Building Modern Automation Pipelines',
     sections: [
       {
         id: 'overview',
@@ -394,9 +370,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '4 min read',
     excerpt: 'Learn how to choose accessible color pairings that pass WCAG contrast criteria.',
     topics: ['Color Science', 'WCAG AA/AAA', 'Visual Ergonomics'],
-    actionLabel: 'Check Contrast',
-    guideType: 'Design Spec',
-    mainHeading: 'Designing Legible & Compliant Color Palettes',
     sections: [
       {
         id: 'overview',
@@ -433,9 +406,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '7 min read',
     excerpt: 'Learn how to measure and improve Core Web Vitals for a better user experience.',
     topics: ['LCP', 'CLS', 'INP / FID', 'Speed Index'],
-    actionLabel: 'Improve Vitals',
-    guideType: 'Performance Spec',
-    mainHeading: 'Mastering Google Core Web Vitals',
     sections: [
       {
         id: 'overview',
@@ -472,9 +442,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '5 min read',
     excerpt: 'Discover routines that top developers follow to stay productive, creative, and focused.',
     topics: ['Daily Habits', 'Mental Clarity', 'Workflow Rituals'],
-    actionLabel: 'Find Your Flow',
-    guideType: 'Lifestyle Guide',
-    mainHeading: 'High-Impact Developer Daily Routines',
     sections: [
       {
         id: 'overview',
@@ -511,9 +478,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '6 min read',
     excerpt: 'Ensure your website is fully usable with just a keyboard, for accessibility and speed.',
     topics: ['Focus Management', 'Tab Trapping', 'Shortcut Ergonomics'],
-    actionLabel: 'Test Navigation',
-    guideType: 'UX Manual',
-    mainHeading: 'Designing Flawless Keyboard Experiences',
     sections: [
       {
         id: 'overview',
@@ -550,9 +514,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '8 min read',
     excerpt: 'Compare SSR and CSR strategies and when to use each for better performance.',
     topics: ['Hydration Costs', 'TTFB vs TTI', 'Edge Rendering'],
-    actionLabel: 'Explore Options',
-    guideType: 'Architecture Deep-Dive',
-    mainHeading: 'SSR vs CSR: Benchmarks & Architectural Tradeoffs',
     sections: [
       {
         id: 'overview',
@@ -589,9 +550,6 @@ export const blogPostsData: BlogPost[] = [
     readTime: '6 min read',
     excerpt: 'Transform your apartment balcony or tiny yard into a thriving green oasis with our proven techniques.',
     topics: ['Container Gardens', 'Vertical Systems'],
-    actionLabel: 'Get Started',
-    guideType: 'Gardening Guide',
-    mainHeading: "Beginner's Guide",
     sections: [
       {
         id: 'overview',
@@ -830,9 +788,8 @@ export const defaultSettings: SiteSettings = {
   post_jump_label: "JUMP TO SECTION:",
   post_toc_label: "ON THIS PAGE",
   post_overview: "Overview",
-  post_main_heading: "Beginner's Guide",
   post_action_default: "Get Started",
-  post_guide_type_default: "Gardening Guide",
+  post_conclusion: "Kesimpulan",
   nav_mobile_label: "Mobile Navigation",
   search_clear_input_label: "Clear search input",
   search_close_label: "Close search",
