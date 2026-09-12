@@ -615,7 +615,15 @@ select * from (values
   ('GitHub',       'VERSION CONTROL',      110),
   ('Vercel',       'HOSTING PLATFORM',     120),
   ('Cursor',       'AI CODE EDITOR',       130),
-  ('Shadcn/ui',    'COMPONENT LIBRARY',    140)
+  ('Shadcn/ui',    'COMPONENT LIBRARY',    140),
+  ('JavaScript',   'PROGRAMMING LANGUAGE', 150),
+  ('PHP',          'PROGRAMMING LANGUAGE', 160),
+  ('Laravel',      'PHP FRAMEWORK',        170),
+  ('Go',           'PROGRAMMING LANGUAGE', 180),
+  ('Python',       'PROGRAMMING LANGUAGE', 190),
+  ('Node.js',      'JAVASCRIPT RUNTIME',   200),
+  ('Docker',       'CONTAINER PLATFORM',   210),
+  ('Supabase',     'BACKEND PLATFORM',     220)
 ) as seed(name, category, sort_order)
 where not exists (select 1 from web.tools);
 

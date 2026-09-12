@@ -864,6 +864,14 @@ export const defaultTools: ToolItem[] = [
   { id: 'vercel', name: 'Vercel', category: 'HOSTING PLATFORM' },
   { id: 'cursor', name: 'Cursor', category: 'AI CODE EDITOR' },
   { id: 'shadcn', name: 'Shadcn/ui', category: 'COMPONENT LIBRARY' },
+  { id: 'javascript', name: 'JavaScript', category: 'PROGRAMMING LANGUAGE' },
+  { id: 'php', name: 'PHP', category: 'PROGRAMMING LANGUAGE' },
+  { id: 'laravel', name: 'Laravel', category: 'PHP FRAMEWORK' },
+  { id: 'go', name: 'Go', category: 'PROGRAMMING LANGUAGE' },
+  { id: 'python', name: 'Python', category: 'PROGRAMMING LANGUAGE' },
+  { id: 'nodejs', name: 'Node.js', category: 'JAVASCRIPT RUNTIME' },
+  { id: 'docker', name: 'Docker', category: 'CONTAINER PLATFORM' },
+  { id: 'supabase', name: 'Supabase', category: 'BACKEND PLATFORM' },
 ];
 
 export const defaultExperiences: ExperienceItem[] = [
