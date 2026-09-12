@@ -3,55 +3,93 @@ import { motion } from 'motion/react';
 import type { ToolItem } from '../types';
 import { LOGO, useSettings, useTools } from '../lib/content';
 import { warnaIkon } from '../lib/warna';
-import {
-  siAstro, siBun, siClaude, siCloudflare, siCss, siCursor, siDart, siDebian, siDocker, siFigma,
-  siFlutter, siGit, siGithub, siGo, siHtml5, siJavascript, siKotlin, siLaravel, siLinux, siMysql,
-  siNextdotjs, siNginx, siNodedotjs, siNotion, siOllama, siPhp, siPostgresql, siProxmox, siPython,
-  siReact, siRust, siShadcnui, siSupabase, siSvelte, siSwift, siTailwindcss, siThreedotjs,
-  siTypescript, siUbuntu, siV0, siVercel, siVite, siVuedotjs,
-} from 'simple-icons';
+import { siClaude, siCursor, siOllama, siProxmox, siShadcnui, siV0 } from 'simple-icons';
+// Salinan devicon astro-original.svg dengan huruf A-nya diputihkan: aslinya
+// gradasi hitam-ungu (logo untuk latar terang) yang lenyap di kartu hitam,
+// sementara api jingganya harus tetap jingga — jadi tidak bisa sekadar
+// dibalik warnanya seperti GitHub/Vercel.
+import astro from '../assets/ikon/astro-latar-gelap.svg';
+import bun from 'devicon/icons/bun/bun-original.svg';
+import cloudflare from 'devicon/icons/cloudflare/cloudflare-original.svg';
+import css3 from 'devicon/icons/css3/css3-original.svg';
+import dart from 'devicon/icons/dart/dart-original.svg';
+import debian from 'devicon/icons/debian/debian-original.svg';
+import docker from 'devicon/icons/docker/docker-original.svg';
+import figma from 'devicon/icons/figma/figma-original.svg';
+import flutter from 'devicon/icons/flutter/flutter-original.svg';
+import git from 'devicon/icons/git/git-original.svg';
+import github from 'devicon/icons/github/github-original.svg';
+import go from 'devicon/icons/go/go-original.svg';
+import html5 from 'devicon/icons/html5/html5-original.svg';
+import javascript from 'devicon/icons/javascript/javascript-original.svg';
+import kotlin from 'devicon/icons/kotlin/kotlin-original.svg';
+import laravel from 'devicon/icons/laravel/laravel-original.svg';
+import linux from 'devicon/icons/linux/linux-original.svg';
+import mysql from 'devicon/icons/mysql/mysql-original.svg';
+import nextjs from 'devicon/icons/nextjs/nextjs-original.svg';
+import nginx from 'devicon/icons/nginx/nginx-original.svg';
+import nodejs from 'devicon/icons/nodejs/nodejs-original.svg';
+import notion from 'devicon/icons/notion/notion-original.svg';
+import php from 'devicon/icons/php/php-original.svg';
+import postgresql from 'devicon/icons/postgresql/postgresql-original.svg';
+import python from 'devicon/icons/python/python-original.svg';
+import react from 'devicon/icons/react/react-original.svg';
+import rust from 'devicon/icons/rust/rust-original.svg';
+import supabase from 'devicon/icons/supabase/supabase-original.svg';
+import svelte from 'devicon/icons/svelte/svelte-original.svg';
+import swift from 'devicon/icons/swift/swift-original.svg';
+import tailwindcss from 'devicon/icons/tailwindcss/tailwindcss-original.svg';
+import threejs from 'devicon/icons/threejs/threejs-original.svg';
+import typescript from 'devicon/icons/typescript/typescript-original.svg';
+import ubuntu from 'devicon/icons/ubuntu/ubuntu-original.svg';
+import vercel from 'devicon/icons/vercel/vercel-original.svg';
+import vite from 'devicon/icons/vitejs/vitejs-original.svg';
+import vscode from 'devicon/icons/vscode/vscode-original.svg';
+import vuejs from 'devicon/icons/vuejs/vuejs-original.svg';
 
 /**
- * Ikon merek dari Simple Icons — bentuk resmi tiap merek, bukan gambar
- * tangan yang "mirip". Sebelumnya tiap ikon adalah SVG yang ditulis manual
- * dan sebagian cuma bentuk generik (Cursor digambar sebagai kubus). Daftar ini
- * dikurasi, bukan seluruh paket: Vite hanya membundel ikon yang diimpor, dan
- * mengimpor semuanya berarti ribuan ikon ikut ke pengunjung.
+ * Logo merek BERWARNA resmi dari Devicon (varian `-original`): Figma dengan
+ * lima warnanya, Astro dengan roket jingga, Next.js lingkaran hitam ber-N
+ * putih. Simple Icons yang dipakai sebelumnya sengaja satu warna — bentuknya
+ * resmi, warnanya tidak.
  *
- * VS Code tidak ada di Simple Icons (dicabut atas permintaan merek dagang),
- * jadi tetap memakai SVG manual di bawah.
+ * Daftar ini dikurasi, bukan seluruh paket: setiap SVG yang diimpor ikut ke
+ * bundel (yang kecil disisipkan sebagai data URI), dan mengimpor ratusan logo
+ * berarti pengunjung mengunduh ratusan logo.
+ *
+ * Kunci = nama tool yang dinormalkan (huruf kecil, tanpa tanda baca), jadi
+ * "Next.js", "next js", dan "NextJS" sama-sama jatuh ke `nextjs`.
  */
+const LOGO_MEREK: Record<string, string> = {
+  astro, bun, cloudflare, css: css3, css3, dart, debian, docker, figma, flutter, git, github, go,
+  golang: go, html: html5, html5, javascript, js: javascript, kotlin, laravel, linux, mysql, nextjs,
+  nginx, nodejs, node: nodejs, notion, php, postgresql, postgres: postgresql, python,
+  react, rust, supabase, svelte, swift, tailwindcss, tailwind: tailwindcss, threejs, typescript,
+  ts: typescript, ubuntu, vercel, vite, vscode, visualstudiocode: vscode, vuejs, vue: vuejs,
+};
 
+/**
+ * Logo yang resminya hitam — lenyap di kartu hitam. Dibalik jadi putih:
+ * itu persis varian "untuk latar gelap" yang dipublikasikan merek-merek ini
+ * sendiri (Invertocat putih GitHub, segitiga putih Vercel, N putih Next.js).
+ */
+const DIBALIK_DI_GELAP = new Set(['github', 'vercel', 'threejs', 'rust', 'nextjs', 'notion']);
+
+/**
+ * Merek yang tidak ada di Devicon (atau yang varian Devicon-nya buruk —
+ * Proxmox berupa tulisan tak terbaca di 24 px), dari Simple Icons: satu
+ * warna, bentuk resmi. v0, Cursor, shadcn/ui, Ollama resminya hitam pekat,
+ * jadi putih di latar gelap sudah tepat; Claude jingga, Proxmox jingga.
+ */
 type IkonMerek = { path: string; hex: string; title: string };
-
-// Kunci = nama tool yang dinormalkan (huruf kecil, tanpa tanda baca), jadi
-// "Next.js", "next js", dan "NextJS" sama-sama jatuh ke `nextjs`.
-const IKON_MEREK: Record<string, IkonMerek> = {
-  astro: siAstro, bun: siBun, claude: siClaude, cloudflare: siCloudflare, css: siCss, css3: siCss,
-  cursor: siCursor, dart: siDart, debian: siDebian, docker: siDocker, figma: siFigma,
-  flutter: siFlutter, git: siGit, github: siGithub, go: siGo, golang: siGo, html: siHtml5,
-  html5: siHtml5, javascript: siJavascript, js: siJavascript, kotlin: siKotlin, laravel: siLaravel,
-  linux: siLinux, mysql: siMysql, nextjs: siNextdotjs, nginx: siNginx, nodejs: siNodedotjs,
-  node: siNodedotjs, notion: siNotion, ollama: siOllama, php: siPhp, postgresql: siPostgresql,
-  postgres: siPostgresql, proxmox: siProxmox, python: siPython, react: siReact, rust: siRust,
-  shadcnui: siShadcnui, shadcn: siShadcnui, supabase: siSupabase, svelte: siSvelte, swift: siSwift,
-  tailwindcss: siTailwindcss, tailwind: siTailwindcss, threejs: siThreedotjs, typescript: siTypescript,
-  ts: siTypescript, ubuntu: siUbuntu, v0: siV0, vercel: siVercel, vite: siVite, vuejs: siVuedotjs,
-  vue: siVuedotjs,
+const IKON_MONO: Record<string, IkonMerek> = {
+  v0: siV0, cursor: siCursor, shadcnui: siShadcnui, shadcn: siShadcnui, ollama: siOllama, claude: siClaude,
+  proxmox: siProxmox,
 };
 
 const IkonSimple: React.FC<{ ikon: IkonMerek }> = ({ ikon }) => (
   <svg className="w-6 h-6" viewBox="0 0 24 24" role="img" aria-label={ikon.title} xmlns="http://www.w3.org/2000/svg">
     <path d={ikon.path} fill={warnaIkon(ikon.hex)} />
-  </svg>
-);
-
-const IkonVSCode = () => (
-  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.5 2L5.8 11.2L2.5 8.7C2.2 8.5 1.7 8.6 1.5 8.9L0.2 10.6C0 10.9 0 11.3 0.3 11.6L5.5 15.5L0.3 19.4C0 19.7 0 20.1 0.2 20.4L1.5 22.1C1.7 22.4 2.2 22.5 2.5 22.3L5.8 19.8L17.5 29V2Z" fill="#0065A9" />
-    <path d="M17.5 2L5.8 11.2L17.5 20.4V2Z" fill="#007ACC" />
-    <path d="M17.5 20.4L5.8 11.2L17.5 2V20.4Z" fill="#1F9CF0" />
-    <path d="M23.1 3.7C23.6 4.1 24 4.8 24 5.5V16.5C24 17.2 23.6 17.9 23.1 18.3L17.5 22.8V22.4L17.5 2L23.1 3.7Z" fill="#007ACC" />
   </svg>
 );
 
@@ -67,9 +105,21 @@ const ToolIcon: React.FC<{ tool: ToolItem }> = ({ tool }) => {
     return <img src={tool.icon} alt="" className="w-6 h-6 object-contain" loading="lazy" />;
   }
   const kunci = brandKey(tool.name);
-  if (kunci === 'vscode' || kunci === 'visualstudiocode') return <IkonVSCode />;
-  const merek = IKON_MEREK[kunci];
-  if (merek) return <IkonSimple ikon={merek} />;
+  const logo = LOGO_MEREK[kunci];
+  if (logo) {
+    return (
+      <img
+        src={logo}
+        alt=""
+        data-merek={kunci}
+        className="w-6 h-6 object-contain"
+        style={DIBALIK_DI_GELAP.has(kunci) ? { filter: 'invert(1)' } : undefined}
+        loading="lazy"
+      />
+    );
+  }
+  const mono = IKON_MONO[kunci];
+  if (mono) return <IkonSimple ikon={mono} />;
   return <img src={LOGO} alt="" className="w-6 h-6 object-contain" loading="lazy" />;
 };
 
