@@ -10,7 +10,33 @@
 # (`systemctl --user stop desain-web.service`), atau jalankan container ini di
 # port lain dengan `WEB_PORT=3001 docker compose up -d`.
 services:
+  # Otomatis sebelum web; akun lama tidak direset.
+  # Terapkan schema.sql lalu require-password-change.sql sebelum deploy.
+  admin-init:
+    image: node:22.23.2-alpine3.24
+    restart: 'no'
+    user: node
+    init: true
+    # Secrets berbasis environment memerlukan filesystem tulis pada Compose lokal.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop: [ALL]
+    volumes:
+      - ./scripts/create-admin.mjs:/app/create-admin.mjs:ro
+    command: [node, /app/create-admin.mjs]
+    environment:
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL:-}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      SUPABASE_SERVICE_ROLE_KEY_FILE: /run/secrets/supabase_service_role_key
+      ADMIN_PASSWORD_FILE: /run/secrets/admin_password
+    secrets:
+      - supabase_service_role_key
+      - admin_password
+
   web:
+    depends_on:
+      admin-init:
+        condition: service_completed_successfully
     build:
       context: .
       args:
@@ -71,6 +97,10 @@ services:
       retries: 3
 
 secrets:
+  supabase_service_role_key:
+    environment: SUPABASE_SERVICE_ROLE_KEY
+  admin_password:
+    environment: ADMIN_PASSWORD
   # Sumbernya tetap `AI_API_KEY` di berkas `.env` yang sama — tidak ada berkas
   # rahasia kedua yang harus dijaga tetap sinkron. Compose membacanya lalu
   # memasangnya sebagai berkas di dalam container; ia TIDAK pernah jadi

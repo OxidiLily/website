@@ -250,6 +250,7 @@ create policy ai_chat_public_insert on web.ai_chat_sessions
 -- sengaja TIDAK ada di daftar ini dan tetap tertutup seperti default kolomnya —
 -- kuncinya disuntikkan server penyaji di jalur `/ai/*` (lihat vite.config.ts),
 -- jadi tidak pernah ada alasan mengirimkannya ke browser pengunjung.
+alter table web.settings add column if not exists is_public boolean not null default false;
 update web.settings set is_public = true
 where key in ('ai_enabled', 'ai_endpoint', 'ai_format', 'ai_model', 'ai_system_prompt',
               'ai_greeting');
