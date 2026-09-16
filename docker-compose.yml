@@ -9,6 +9,15 @@
 # bersama di port yang sama: matikan unit itu
 # (`systemctl --user stop desain-web.service`), atau jalankan container ini di
 # port lain dengan `WEB_PORT=3001 docker compose up -d`.
+# Nama project dipatok eksplisit. Tanpa ini nama diturunkan dari nama folder
+# ("website"), sementara panel Docker di linux-dashboard menjalankan stack ini
+# dengan `-p web` — dua project berbeda untuk berkas compose yang sama. Karena
+# satu container di sini memakai `container_name` tetap, keduanya berebut
+# container yang sama: saat salah satunya membuat ulang network, container
+# milik project lain masih menunjuk ID network lama dan `up` gagal dengan
+# "failed to set up container networking: network ... not found".
+name: web
+
 services:
   # Otomatis sebelum web; akun lama tidak direset.
   # Terapkan schema.sql lalu require-password-change.sql sebelum deploy.
