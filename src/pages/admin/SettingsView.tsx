@@ -110,14 +110,20 @@ export const SettingsView: React.FC<{
     e.preventDefault();
     if (!ai) return;
     setAiBusy(true);
+    // `is_public` WAJIB ikut ditulis, dan itu bukan hiasan: baris baru yang
+    // di-INSERT tanpa kolom ini memakai default `false`, sehingga asisten di
+    // halaman publik — yang hanya membaca baris `is_public` lewat RLS — tidak
+    // pernah melihat `ai_enabled`/`ai_endpoint` dan menjawab dari teks
+    // cadangan panel, bukan dari model. Kunci API tetap TERTUTUP: server
+    // penyajilah yang menyuntikkannya ke jalur `/ai/*`.
     const rows = [
-      { key: 'ai_enabled', value: ai.enabled ? '1' : '0' },
-      { key: 'ai_endpoint', value: ai.endpoint },
-      { key: 'ai_format', value: ai.format },
-      { key: 'ai_api_key', value: ai.apiKey },
-      { key: 'ai_model', value: ai.model },
-      { key: 'ai_system_prompt', value: ai.systemPrompt },
-      { key: 'ai_greeting', value: ai.greeting },
+      { key: 'ai_enabled', value: ai.enabled ? '1' : '0', is_public: true },
+      { key: 'ai_endpoint', value: ai.endpoint, is_public: true },
+      { key: 'ai_format', value: ai.format, is_public: true },
+      { key: 'ai_api_key', value: ai.apiKey, is_public: false },
+      { key: 'ai_model', value: ai.model, is_public: true },
+      { key: 'ai_system_prompt', value: ai.systemPrompt, is_public: true },
+      { key: 'ai_greeting', value: ai.greeting, is_public: true },
     ];
     const { error } = await supabase.from('settings').upsert(rows, { onConflict: 'key' });
     setAiBusy(false);
@@ -265,6 +271,10 @@ export const SettingsView: React.FC<{
                 <code>https://api.openai.com/v1</code>, <code>https://api.deepseek.com</code>,{' '}
                 <code>http://localhost:11434/v1</code> (Ollama), <code>https://api.anthropic.com</code>.
                 Endpoint lengkap yang sudah terlanjur diisi tetap dipakai apa adanya.
+                <br />
+                Alamat absolut dari browser pengunjung <strong>selalu diblokir</strong> — 9router tidak
+                menjawab preflight CORS, jadi panggilan lintas-origin gagal sebelum sampai ke gateway.
+                Untuk 9router, origin HARUS jalur relatif: <code>/ai/v1</code>.
               </span>
             </label>
 

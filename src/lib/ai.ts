@@ -29,6 +29,21 @@ export interface AiConfig {
   greeting: string;
 }
 
+/**
+ * Baris `settings` yang boleh dibaca PENGUNJUNG (`is_public = true`) agar
+ * asisten di halaman publik tahu cara memanggil modelnya. `ai_api_key` sengaja
+ * TIDAK ada di sini — kuncinya disuntikkan server penyaji di jalur `/ai/*`
+ * (lihat vite.config.ts), jadi tidak pernah perlu sampai ke browser.
+ */
+export const AI_KEYS_PUBLIK = [
+  'ai_enabled',
+  'ai_endpoint',
+  'ai_format',
+  'ai_model',
+  'ai_system_prompt',
+  'ai_greeting',
+] as const;
+
 export const AI_KEYS = [
   'ai_enabled',
   'ai_endpoint',
@@ -75,8 +90,15 @@ export async function loadAiConfig(): Promise<AiConfig> {
  * di tabel `settings` tidak berubah arti setelah kode ini tayang.
  */
 export function aiUrl(endpoint: string, format: AiFormat): string {
-  const base = endpoint.trim().replace(/\/+$/, '');
+  let base = endpoint.trim().replace(/\/+$/, '');
   if (/\/(chat\/completions|messages)$/.test(base)) return base;
+  // Jalur relatif HANYA bermakna lewat proxy situs ini, dan proxy itu bernama
+  // `/ai` (lihat vite.config.ts). Tanpa awalan itu, `/v1` tetap dinilai relatif
+  // ke SITUS: permintaannya mendarat di /v1/... milik SPA dan dijawab 404 —
+  // terbaca persis seperti gateway yang mati atau model yang tidak ada,
+  // padahal gatewaynya sehat. Dilengkapi di satu tempat yang dilewati semua
+  // pemanggil, bukan di setiap layar Pengaturan.
+  if (base.startsWith('/') && !base.startsWith('/ai')) base = `/ai${base}`;
   // Anthropic menaruh versinya di jalur, bukan di base_url — dokumentasinya
   // menulis `https://api.anthropic.com`. `/v1` yang terlanjur diketik dibuang
   // supaya tidak jadi `/v1/v1/messages`.
@@ -105,21 +127,60 @@ export const bolehDipakaiPublik = (endpoint: string): boolean => endpoint.trim()
  * yang diproksikan vite.config.ts — dinilai se-origin, jadi lolos lewat
  * `'self'`. Tanpa basis itu `new URL()` melempar untuk setiap jalur relatif dan
  * endpoint proxy yang benar justru dilaporkan sebagai diblokir CSP.
+ *
+ * Kedua sisi dinormalkan ke origin dulu. Membandingkan string mentah membuat
+ * nilai yang wajar di `VITE_AI_ORIGIN` — `http://host:20128/v1`, disalin apa
+ * adanya dari dokumentasi gateway — tidak pernah cocok dengan origin
+ * `http://host:20128` milik request, padahal CSP di vite.config.ts SUDAH
+ * memakai origin hasil normalisasi. Yang muncul di layar cuma "tidak ada di
+ * Content-Security-Policy" untuk origin yang sebenarnya terdaftar.
  */
-export function cspAllowsOrigin(endpoint: string): boolean {
+export function originDiizinkan(endpoint: string, daftar: string, seOrigin: string): boolean {
   try {
-    const origin = new URL(endpoint, window.location.origin).origin;
-    const allowed = (import.meta.env.VITE_AI_ORIGIN || '')
+    const origin = new URL(endpoint, seOrigin).origin;
+    if (origin === new URL(seOrigin).origin) return true;
+    return daftar
       .split(',')
-      .map((s: string) => s.trim())
-      .filter(Boolean);
-    return allowed.includes(origin) || origin === window.location.origin;
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .some((s) => {
+        try {
+          return new URL(s, seOrigin).origin === origin;
+        } catch {
+          return false;
+        }
+      });
   } catch {
     return false;
   }
 }
 
+export function cspAllowsOrigin(endpoint: string): boolean {
+  return originDiizinkan(endpoint, import.meta.env.VITE_AI_ORIGIN || '', window.location.origin);
+}
+
 export class AiError extends Error {}
+
+/**
+ * Urai body jawaban jadi objek, tahan terhadap sentinel SSE yang menempel.
+ *
+ * Gateway (9router) menutup body JSON-nya dengan `data: [DONE]` TANPA baris
+ * baru, bahkan saat `stream:false` — terukur, body-nya `{...}"data: [DONE]`.
+ * `res.json()` menolak seluruh body karena itu (`Extra data`), dan gejalanya
+ * di layar bukan "gateway aneh" melainkan "Respons tidak berisi
+ * choices[0].message.content" — pesan yang menuduh modelnya, bukan penguraian
+ * kita. Sentinel itu dibuang dulu, baru diurai.
+ */
+export function uraiJawaban(teks: string): any {
+  const langsung = (s: string) => {
+    try {
+      return JSON.parse(s);
+    } catch {
+      return null;
+    }
+  };
+  return langsung(teks) ?? langsung(teks.replace(/(?:\s*data:\s*\[DONE\]\s*)+$/, ''));
+}
 
 /**
  * Satu panggilan chat, dalam bentuk kabel yang dipilih di `cfg.format`.
@@ -217,12 +278,20 @@ export async function aiComplete(
     throw new AiError(`HTTP ${res.status} — ${body.slice(0, 200)}`);
   }
 
-  const json = await res.json().catch(() => null);
+  // `res.json()` saja tidak cukup: body-nya membawa sentinel SSE yang
+  // menempel (lihat uraiJawaban).
+  const json = uraiJawaban(await res.text());
   const content = anthropic
     ? json?.content?.find((b: any) => b?.type === 'text')?.text
     : json?.choices?.[0]?.message?.content;
 
   if (!content) {
+    if (!json) {
+      // Body-nya bukan JSON sama sekali — halaman error, HTML login, atau
+      // sentinel yang tidak dikenal. Dibedakan dari jawaban kosong supaya
+      // tidak menyalahkan model untuk masalah penguraian.
+      throw new AiError('Respons endpoint bukan JSON — periksa alamat endpointnya di Pengaturan.');
+    }
     // Model reasoning menghabiskan seluruh anggaran token di field `reasoning`
     // sebelum menulis satu huruf pun jawaban; yang balik adalah jawaban kosong
     // dengan alasan berhenti "length", bukan error. Alasannya disebut supaya

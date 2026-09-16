@@ -28,6 +28,12 @@ Uji lokal tanpa koneksi Supabase:
 
     node scripts/create-admin.check.mjs
 
+- `ai-live-publik.mjs` — uji asisten AI di halaman PUBLIK lewat browser:
+  jawabannya harus datang dari model, bukan teks cadangan panel. Penjaga
+  regresi untuk baris `settings` berawalan `ai_` yang lahir dengan
+  `is_public = false` — gejalanya setiap pertanyaan dijawab "Terima kasih atas
+  pertanyaannya mengenai …" tanpa satu pun panggilan ke `/ai/*`.
+  `LD_LIBRARY_PATH=… node scripts/ai-live-publik.mjs`
 - `seed.ts` — isi Supabase dari `src/data/siteData.ts` (idempoten, upsert by slug).
   Menyasar schema `web` lewat header `Accept-Profile`/`Content-Profile`, bukan
   `public` — lihat `supabase/migrate-public-to-web.sql`.
