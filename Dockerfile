@@ -96,18 +96,24 @@ LABEL org.opencontainers.image.source="https://github.com/OxidiLily/desain-web" 
 ENV NODE_ENV=production
 WORKDIR /app
 
-# Yang dibawa: hasil build, dependensi runtime, vite.config.ts, dan dua modul
-# src/lib yang diimpor config itu (riset → blogWriter). Tidak ada sumber lain,
-# tidak ada perkakas build, tidak ada .env.
+# Yang dibawa: hasil build, dependensi runtime, vite.config.ts, modul src/lib
+# yang diimpor config itu (riset → blogWriter; ikon → sanitasi), dan katalog ikon
+# dashboard-icons. Katalog itu wajib ada: ia daftar-putih jalur /ikon/svg/<slug>.svg,
+# dan tanpa berkasnya seluruh pemilih ikon di panel berhenti dengan 503 yang
+# disengaja — bukan diam-diam membuka jalur unduhan tanpa batas.
+# Tidak ada sumber lain, tidak ada perkakas build, tidak ada .env.
 COPY --from=runtime-deps --chown=node:node /app/node_modules ./node_modules
 COPY --from=runtime-deps --chown=node:node /app/package.json ./package.json
 COPY --from=build        --chown=node:node /app/dist ./dist
 COPY --chown=node:node vite.config.ts ./
-COPY --chown=node:node src/lib/riset.ts src/lib/blogWriter.ts ./src/lib/
+COPY --chown=node:node src/lib/riset.ts src/lib/blogWriter.ts src/lib/ikon.ts src/lib/sanitasi.ts ./src/lib/
+COPY --chown=node:node src/data/ikon-katalog.json ./src/data/
 
 # /app milik `node` (chown di atas), bukan root: Vite menulis berkas sementara
-# `vite.config.ts.timestamp-*.mjs` di direktori config saat mem-bundle-nya —
-# itu juga sebabnya root filesystem container tidak bisa dibuat read-only.
+# `vite.config.ts.timestamp-*.mjs` di direktori config saat mem-bundle-nya, dan
+# cache ikon (.ikon-cache) juga ditulis di sini saat ikon pertama diminta. Itu
+# juga sebabnya root filesystem container tidak bisa dibuat read-only.
+RUN mkdir -p /app/.ikon-cache && chown -R node:node /app
 USER node
 EXPOSE 3000
 CMD ["node_modules/.bin/vite", "preview", "--host", "0.0.0.0", "--port", "3000", "--strictPort"]

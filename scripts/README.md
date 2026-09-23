@@ -32,6 +32,42 @@ Uji lokal tanpa koneksi Supabase:
     node scripts/create-admin.check.mjs
     node scripts/is-admin.check.mjs           # definisi web.is_admin() di 3 berkas SQL
     node scripts/runtime-manifest.check.mjs   # lockfile tahap runtime image
+    npx tsx src/lib/ikon.check.ts             # bentuk slug, terjemahan nilai, pencarian
+    npx tsx scripts/ikon-katalog.check.ts     # katalog ikon lolos daftar-putih /ikon
+    node scripts/ikon-jalur.check.mjs         # jalur /ikon di server sungguhan (butuh dist/)
+    PGLITE_MODULE=<dir>/pglite/dist/index.js node scripts/password-change.check.mjs
+
+`password-change.check.mjs` butuh PGlite (Postgres dalam WASM) dan paket itu
+sengaja TIDAK masuk dependensi repo — kalau belum ada, jalankan `npm i -D
+@electric-sql/pglite` di direktori lain lalu arahkan `PGLITE_MODULE` ke
+`dist/index.js` miliknya. Tanpa itu skripnya berhenti dengan ERR_MODULE_NOT_FOUND.
+
+## Ikon dashboard
+
+Kolom "Ikon" di panel (Tools & Stack, proyek, kategori toko) mengambil ikon dari
+https://dashboardicons.com (repo homarr-labs/dashboard-icons). Yang dipilih
+disimpan sebagai penanda `dashboardicon:<slug>`, bukan URL — origin situs ini
+berbeda antara LAN dan Tailscale, dan URL absolut di database rusak bagi pembaca
+dari origin lain.
+
+- `ikon-katalog.mjs` — menyusun `src/data/ikon-katalog.json` dari metadata
+  dashboard-icons (commit dipatok; `--terbaru` untuk menyegarkan). Berkas itu
+  ikut repo dan bukan sekadar daftar: jalur `/ikon/svg/<slug>.svg` menolak slug
+  yang tidak ada di dalamnya, jadi nama dari klien tidak pernah menentukan alamat
+  yang diunduh server.
+- `ikon-ambil.mjs` — menyalin berkas SVG ke `public/ikon/svg/` supaya situs tetap
+  punya ikonnya tanpa internet. `node scripts/ikon-ambil.mjs docker proxmox`,
+  `--kategori "Media-Servers"`, atau `--semua` (~2200 berkas, belasan MB).
+- Tanpa langkah itu pun ikonnya muncul: server mengambilnya sekali dari CDN lalu
+  menyimpannya di `.ikon-cache/` (diabaikan git dan Docker).
+- **Isi otomatis dari nama.** Kolom ikon TIDAK perlu diklik untuk tool biasa:
+  begitu formulir dibuka (atau nama diketik pada baris baru), panel menanyakan
+  nama barisnya ke `/ikon/cari` dan mengisi sendiri kalau jawabannya kecocokan
+  PERSIS (nama tool "7zip" → ikon `7zip`; "Docker Mailserver" → `docker-mailserver`).
+  Kecocokan samar sengaja tidak dipakai: "Docker Compose" tidak ada di
+  dashboard-icons, dan menebak ikon `docker` untuknya akan salah tanpa ada yang
+  menyadarinya. Ikon hasil isi-otomatis diberi tanda di bawah kolom, dan
+  "Kosongkan" menghentikannya supaya tidak diisi lagi.
 
 - `runtime-manifest.mjs` — menyusun manifes + lockfile tahap runtime image
   (dipakai Dockerfile). Pohonnya dipotong dari `package-lock.json` yang sudah

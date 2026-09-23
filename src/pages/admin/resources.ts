@@ -2,7 +2,15 @@
 // enam entitas CRUD yang bentuknya sama tidak perlu enam komponen.
 // Kolom & status mengikuti skema repo acuan (rebuild-oxidililyweb).
 
-export type FieldType = 'text' | 'textarea' | 'number' | 'select' | 'boolean' | 'date' | 'list' | 'image';
+/**
+ * `ikon` = ikon dari dashboardicons.com (homarr-labs/dashboard-icons): kotak
+ * pencarian + kisi pratinjau di panel, disimpan sebagai `dashboardicon:<slug>` —
+ * bukan URL, supaya tetap benar dibaca dari origin mana pun. Nilai lama (gambar
+ * unggahan/URL) tetap ditampilkan apa adanya dan unggahan tetap tersedia, karena
+ * beberapa merek (Cursor, Astro, Bun) tidak ada di dashboard-icons. Rinciannya di
+ * src/lib/ikon.ts.
+ */
+export type FieldType = 'text' | 'textarea' | 'number' | 'select' | 'boolean' | 'date' | 'list' | 'image' | 'ikon';
 
 export interface Field {
   name: string;
@@ -142,7 +150,7 @@ export const RESOURCES = {
         filter: true, ref: { table: 'project_categories', label: 'name' },
       },
       { name: 'status', label: 'Status', type: 'select', required: true, list: true, filter: true, options: STATUS_PROJECT },
-      { name: 'icon', label: 'Ikon', type: 'text' },
+      { name: 'icon', label: 'Ikon', type: 'ikon' },
       { name: 'image', label: 'Gambar', type: 'image' },
       { name: 'client', label: 'Klien', type: 'text', list: true },
       { name: 'year', label: 'Tahun', type: 'text', list: true },
@@ -209,7 +217,7 @@ export const RESOURCES = {
     fields: [
       { name: 'name', label: 'Nama', type: 'text', required: true, list: true },
       { name: 'slug', label: 'Slug', type: 'text', placeholder: 'otomatis dari nama' },
-      { name: 'icon', label: 'Ikon', type: 'text' },
+      { name: 'icon', label: 'Ikon', type: 'ikon' },
       { name: 'image', label: 'Gambar', type: 'image' },
       { name: 'client', label: 'Klien', type: 'text', list: true },
       { name: 'year', label: 'Tahun', type: 'text', list: true },
@@ -220,7 +228,8 @@ export const RESOURCES = {
   tools: {
     table: 'tools',
     title: 'Tools & Stack',
-    subtitle: 'Kartu perkakas di halaman About. Ikon kosong → ikon merek bawaan kalau namanya dikenali, kalau tidak logo situs.',
+    subtitle:
+      'Kartu perkakas di halaman About. Ikon dipilih dari dashboardicons.com; ikon kosong → ikon merek bawaan kalau namanya dikenali, kalau tidak logo situs.',
     order: { column: 'sort_order', ascending: true },
     canCreate: true,
     canEdit: true,
@@ -228,7 +237,7 @@ export const RESOURCES = {
     fields: [
       { name: 'name', label: 'Nama', type: 'text', required: true, list: true },
       { name: 'category', label: 'Kategori', type: 'text', list: true, placeholder: 'mis. CSS FRAMEWORK' },
-      { name: 'icon', label: 'Ikon', type: 'image' },
+      { name: 'icon', label: 'Ikon', type: 'ikon' },
       { name: 'link', label: 'Tautan', type: 'text', placeholder: 'https://…' },
       { name: 'sort_order', label: 'Urutan', type: 'number', list: true, defaultValue: 0 },
       { name: 'is_active', label: 'Tampil', type: 'boolean', list: true, defaultValue: true },

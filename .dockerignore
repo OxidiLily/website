@@ -25,6 +25,10 @@ strix_runs
 .claude
 coverage
 *.log
+
+# Cache ikon dari host: berkasnya diunduh di dalam container saat dipakai.
+# Menyalinnya berarti membawa ikon basi (dan katalog yang berbeda) ke image.
+.ikon-cache
 Dockerfile
 .dockerignore
 docker-compose.yml

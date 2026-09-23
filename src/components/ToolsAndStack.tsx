@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import type { ToolItem } from '../types';
 import { LOGO, useSettings, useTools } from '../lib/content';
+import { tautanIkon } from '../lib/ikon';
 import { warnaIkon } from '../lib/warna';
 import { siClaude, siCursor, siOllama, siProxmox, siShadcnui, siV0 } from 'simple-icons';
 // Salinan devicon astro-original.svg dengan huruf A-nya diputihkan: aslinya
@@ -96,13 +97,20 @@ const IkonSimple: React.FC<{ ikon: IkonMerek }> = ({ ikon }) => (
 const brandKey = (name: string): string => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 /**
- * Urutan pemilihan ikon: gambar yang diunggah admin → ikon merek bawaan →
- * logo situs. Tool baru yang dibuat dari panel karena itu selalu punya ikon,
- * bukan kotak kosong, walau adminnya belum sempat mengunggah apa pun.
+ * Urutan pemilihan ikon: ikon pilihan admin (dashboardicons.com atau gambar
+ * unggahan) → ikon merek bawaan → logo situs. Tool baru yang dibuat dari panel
+ * karena itu selalu punya ikon, bukan kotak kosong, walau adminnya belum sempat
+ * memilih apa pun.
+ *
+ * `tautanIkon` yang menerjemahkan penanda `dashboardicon:<slug>` ke jalur
+ * se-origin (`/ikon/svg/<slug>.svg`) sekaligus menolak nilai yang skemanya tidak
+ * layak dipakai sebagai `src` — kolom itu bisa diisi dari panel, dan URL
+ * ber-skema aneh di situ akan jadi permintaan dari browser setiap pengunjung.
  */
 const ToolIcon: React.FC<{ tool: ToolItem }> = ({ tool }) => {
-  if (tool.icon) {
-    return <img src={tool.icon} alt="" className="w-6 h-6 object-contain" loading="lazy" />;
+  const pilihan = tautanIkon(tool.icon);
+  if (pilihan) {
+    return <img src={pilihan} alt="" className="w-6 h-6 object-contain" loading="lazy" />;
   }
   const kunci = brandKey(tool.name);
   const logo = LOGO_MEREK[kunci];

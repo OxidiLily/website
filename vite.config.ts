@@ -1,10 +1,12 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import {createHash} from 'node:crypto';
 import {lookup} from 'node:dns/promises';
-import {readFileSync} from 'node:fs';
+import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
 import {alasanTepercaya, bersihkanHalaman, ipPrivat, repoMilikTopik, type SumberRujukan} from './src/lib/riset';
+import {cariIkon, slugIkonSah, JALUR_CARI_IKON, JALUR_IKON, type KatalogIkon} from './src/lib/ikon';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -576,9 +578,208 @@ export default defineConfig(({mode}) => {
     };
   };
 
+  // ── /ikon — ikon dari dashboardicons.com (homarr-labs/dashboard-icons) ───
+  //
+  // Berkas SVG-nya TIDAK ikut repo (3300 ikon, belasan MB). Yang ada di repo
+  // hanya katalognya (139 KB, dibuat `node scripts/ikon-katalog.mjs`), dan
+  // katalog itu bukan sekadar daftar untuk pencarian — ia BATAS: slug yang tidak
+  // ada di dalamnya tidak pernah menjadi alamat yang diunduh server ini. Tanpa
+  // batas itu, satu permintaan `/ikon/svg/...` dari siapa pun bisa menyuruh
+  // server ini mengambil apa saja dari internet (SSRF), persis lubang yang
+  // ditutup pada jalur /riset.
+  //
+  // Urutan penyajian satu ikon:
+  //   1. berkas lokal hasil `node scripts/ikon-ambil.mjs` — ada di `public/ikon/svg/`
+  //      saat dev dan di `dist/ikon/svg/` setelah build (vite menyalin public/ ke
+  //      dist/); image container hanya punya yang di dist/. Ini yang membuat situs
+  //      tetap punya ikonnya tanpa internet;
+  //   2. `.ikon-cache/<slug>.svg` — hasil unduhan sebelumnya;
+  //   3. CDN dashboard-icons, sekali per slug, lalu disimpan ke (2).
+  //
+  // Berkas lokal diperiksa DI SINI, bukan diserahkan ke penyaji statis Vite:
+  // pada `vite preview` (server yang dipakai produksi) middleware plugin berjalan
+  // LEBIH DULU daripada penyaji statis, jadi berkas di public/ tidak akan pernah
+  // tersaji kalau tidak dibaca sendiri. Ditemukan lewat uji container dengan CDN
+  // yang sengaja dimatikan: ikon hasil salinan tetap 502.
+  const DIREKTORI_LOKAL = [
+    path.resolve(__dirname, 'public/ikon/svg'),
+    path.resolve(__dirname, 'dist/ikon/svg'),
+  ];
+  const berkasLokal = (slug: string): string => {
+    for (const dir of DIREKTORI_LOKAL) {
+      const berkas = path.join(dir, `${slug}.svg`);
+      if (existsSync(berkas)) return berkas;
+    }
+    return '';
+  };
+  const KATALOG: {jumlah: number; komit: string; ikon: KatalogIkon} = (() => {
+    try {
+      const isi = JSON.parse(readFileSync(path.resolve(__dirname, 'src/data/ikon-katalog.json'), 'utf8'));
+      return {jumlah: Number(isi?.jumlah) || 0, komit: String(isi?.komit ?? ''), ikon: isi?.ikon ?? {}};
+    } catch (e: any) {
+      // Bukan lempar: situsnya harus tetap menyala. Yang mati hanya pemilih ikon
+      // di panel, dan sebabnya muncul di log alih-alih sebagai 404 misterius.
+      console.warn(`[ikon] katalog tidak terbaca: ${e?.message ?? e}`);
+      return {jumlah: 0, komit: '', ikon: {}};
+    }
+  })();
+  const CDN_IKON = env.IKON_CDN || 'https://raw.githubusercontent.com/homarr-labs/dashboard-icons';
+  const CACHE_IKON = path.resolve(__dirname, env.IKON_CACHE_DIR || '.ikon-cache');
+  const BATAS_IKON_BYTE = angka(env.IKON_MAX_BYTES, 512 * 1024);
+  // Batas ini menghitung SATU permintaan per ikon, dan satu kunjungan halaman
+  // bisa memuat puluhan ikon sekaligus (setiap kartu tool satu permintaan) —
+  // beberapa pengunjung dari satu alamat yang sama (NAT rumah, Tailscale exit
+  // node) tidak boleh saling memblokir. 60 permintaan/detik masih menahan
+  // pengunduhan massal, tapi tidak lagi menahan pemakaian wajar.
+  const LAJU_IKON = lajuDari(env.IKON_RATE_LIMIT, 3600, 60);
+  const UA_IKON = 'desain-web-ikon/1.0 (+panel admin)';
+
+  /** Satu unduhan ikon dari CDN. null = jangan disajikan (dan jangan di-cache). */
+  const unduhIkon = async (slug: string): Promise<Buffer | null> => {
+    if (!KATALOG.komit) return null;
+    try {
+      const res = await fetch(`${CDN_IKON}/${KATALOG.komit}/svg/${slug}.svg`, {
+        headers: {'user-agent': UA_IKON},
+        signal: AbortSignal.timeout(15_000),
+      });
+      if (!res.ok) return null;
+      const buf = Buffer.from(await res.arrayBuffer());
+      // Batas ukuran DAN pemeriksaan isi: yang boleh disajikan dari origin ini
+      // hanya berkas SVG. Tanpa pemeriksaan ini, halaman HTML dari CDN yang
+      // salah alamat akan tersaji sebagai `image/svg+xml` dari origin situs.
+      if (!buf.length || buf.length > BATAS_IKON_BYTE) return null;
+      if (!/<svg[\s>]/i.test(buf.toString('utf8').slice(0, 4000))) return null;
+      try {
+        mkdirSync(CACHE_IKON, {recursive: true});
+        writeFileSync(path.join(CACHE_IKON, `${slug}.svg`), buf);
+      } catch {
+        // Cache yang gagal ditulis bukan alasan menolak permintaan: berkasnya
+        // sudah ada di memori, dan unduhan berikutnya tinggal mengulang.
+      }
+      return buf;
+    } catch {
+      return null;
+    }
+  };
+
+  const ikonDashboard = () => {
+    const tangani = async (req: any, res: any, next: any) => {
+      if (!req.url?.startsWith('/ikon')) return next();
+      const kirim = (kode: number, isi: unknown, kepala: Record<string, string> = {}) => {
+        if (res.headersSent) return res.end();
+        res.statusCode = kode;
+        res.setHeader('content-type', 'application/json; charset=utf-8');
+        res.setHeader('cache-control', 'no-store');
+        for (const [k, v] of Object.entries(kepala)) res.setHeader(k, v);
+        res.end(JSON.stringify(isi));
+      };
+      try {
+        const lengkap = new URL(req.url, 'http://lokal');
+        const jalur = lengkap.pathname.replace(/\/+$/, '') || '/';
+        // Jalur di bawah /ikon bukan berarti milik plugin ini. Awalannya hanya
+        // saringan murah; pemilik yang sesungguhnya adalah dua rute di bawah.
+        // `/ikonxyz` atau `/ikon/apa-saja` diserahkan ke penangan berikutnya (SPA
+        // punya halaman tidak-ditemukan sendiri) daripada dijawab JSON 404 di sini.
+        if (jalur !== JALUR_CARI_IKON && !jalur.startsWith(JALUR_IKON)) return next();
+
+        if (req.method !== 'GET' && req.method !== 'HEAD') {
+          return kirim(405, {error: 'hanya menerima GET'}, {allow: 'GET, HEAD'});
+        }
+        // Katalog kosong = seluruh jalur ini tidak punya daftar putih, jadi
+        // tidak ada satu pun slug yang boleh diunduh. Menjawab 503 lebih jujur
+        // daripada 404 yang menyiratkan "ikonnya memang tidak ada".
+        if (!KATALOG.jumlah) {
+          return kirim(503, {error: 'katalog ikon belum ada di server (jalankan: node scripts/ikon-katalog.mjs)'});
+        }
+        if (lewatBatas(`ikon:${ipPemanggil(req)}`, LAJU_IKON)) {
+          return kirim(429, {error: 'terlalu banyak permintaan'}, {'retry-after': String(LAJU_IKON.detik)});
+        }
+
+        if (jalur === JALUR_CARI_IKON) {
+          const q = (lengkap.searchParams.get('q') ?? '').slice(0, 64);
+          const minta = Number(lengkap.searchParams.get('batas'));
+          const hasil = cariIkon(KATALOG.ikon, q, Number.isFinite(minta) ? minta : 60);
+          res.statusCode = 200;
+          res.setHeader('content-type', 'application/json; charset=utf-8');
+          // Sebentar di-cache: panel mengetik cepat dan hasil yang sama tidak
+          // perlu dihitung ulang, tapi daftar ikon baru tetap segera terlihat.
+          res.setHeader('cache-control', 'private, max-age=60');
+          return res.end(JSON.stringify({total: hasil.length, hasil}));
+        }
+
+        const cocok = /^\/ikon\/svg\/([^/]+)\.svg$/.exec(jalur);
+        if (!cocok) return kirim(404, {error: 'tidak ada'});
+        let slug: string;
+        try {
+          slug = decodeURIComponent(cocok[1]).toLowerCase();
+        } catch {
+          return kirim(400, {error: 'slug tidak sah'});
+        }
+        // Dua syarat, dan keduanya perlu: bentuknya sah DAN ada di katalog.
+        if (!slugIkonSah(slug) || !KATALOG.ikon[slug]) return kirim(404, {error: 'ikon tidak dikenal'});
+
+        let isi: Buffer | null = null;
+        // (1) berkas lokal, (2) cache unduhan — keduanya di disk; baru (3) CDN.
+        const lokal = berkasLokal(slug);
+        const tersimpan = lokal || path.join(CACHE_IKON, `${slug}.svg`);
+        if (existsSync(tersimpan)) {
+          try {
+            isi = readFileSync(tersimpan);
+          } catch {
+            isi = null; // berkas cache rusak → unduh ulang, jangan gagal
+          }
+        }
+        if (!isi || !isi.length) isi = await unduhIkon(slug);
+        if (!isi) {
+          return kirim(502, {
+            error: 'ikon tidak bisa diambil dari sumbernya',
+            saran: 'salin dulu ikonnya ke repo: node scripts/ikon-ambil.mjs <slug>',
+          });
+        }
+
+        const etag = `"${createHash('sha1').update(isi).digest('hex').slice(0, 16)}"`;
+        if (req.headers?.['if-none-match'] === etag) {
+          res.statusCode = 304;
+          res.setHeader('etag', etag);
+          return res.end();
+        }
+        res.statusCode = 200;
+        res.setHeader('content-type', 'image/svg+xml; charset=utf-8');
+        res.setHeader('content-length', String(isi.length));
+        res.setHeader('etag', etag);
+        // TIDAK `immutable`: alamat ikonnya tetap `/ikon/svg/7zip.svg` walau
+        // gambarnya berganti saat katalog disegarkan ke commit dashboard-icons
+        // yang lebih baru — dengan `immutable` + satu tahun, pengunjung yang
+        // pernah membuka situs akan melihat gambar lama selama itu. Tujuh hari
+        // cukup untuk menghemat permintaan, dan sesudahnya browser bertanya lagi
+        // lewat etag di atas.
+        res.setHeader('cache-control', 'public, max-age=604800');
+        res.setHeader('x-content-type-options', 'nosniff');
+        // Berkas ini datang dari repo pihak ketiga, dan SVG yang dibuka LANGSUNG
+        // sebagai dokumen bisa menjalankan skrip di origin ini. Disajikan sebagai
+        // gambar, kemampuannya sudah mati; header ini mematikannya juga untuk
+        // kasus dibuka langsung di tab.
+        res.setHeader('content-security-policy', "default-src 'none'; style-src 'unsafe-inline'; sandbox");
+        res.end(req.method === 'HEAD' ? undefined : isi);
+      } catch (e: any) {
+        kirim(500, {error: String(e?.message ?? e)});
+      }
+    };
+    return {
+      name: 'ikon-dashboard',
+      // Badan blok, bukan arrow ringkas — lihat catatan di `riset()`.
+      configureServer: (s: any) => {
+        s.middlewares.use(tangani);
+      },
+      configurePreviewServer: (s: any) => {
+        s.middlewares.use(tangani);
+      },
+    };
+  };
+
   return {
     assetsInclude: ['**/*.glb'],
-    plugins: [aiProxy(), react(), tailwindcss(), riset()],
+    plugins: [aiProxy(), ikonDashboard(), react(), tailwindcss(), riset()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

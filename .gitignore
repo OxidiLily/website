@@ -7,3 +7,7 @@ coverage/
 .env*
 !.env.example
 strix_runs/
+
+# Cache ikon dashboard-icons yang diunduh server saat dipakai (/ikon/svg/...).
+# Isinya bisa dibuat ulang kapan saja; yang ikut repo hanya katalognya.
+.ikon-cache/

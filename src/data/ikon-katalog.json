@@ -1,0 +1,11035 @@
+{
+ "versi": 1,
+ "sumber": "https://dashboardicons.com (homarr-labs/dashboard-icons)",
+ "komit": "cf87d9bbd47792b20893f090ff48763fe874b05d",
+ "dibuat": "2026-09-23",
+ "jumlah": 2227,
+ "ikon": {
+  "google-podcasts": {
+   "a": [
+    "Podcast Player"
+   ],
+   "k": [
+    "Media-Servers",
+    "Music-Streaming"
+   ]
+  },
+  "storj": {},
+  "docker": {},
+  "ceph": {},
+  "viber": {
+   "a": [
+    "viber-app",
+    "viber-messaging"
+   ],
+   "k": [
+    "Communication"
+   ]
+  },
+  "davical": {
+   "a": [
+    "calendar-server",
+    "scheduling-server"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Office-Suites"
+   ]
+  },
+  "kimi-ai": {},
+  "aliexpress": {},
+  "rumble": {
+   "a": [
+    "youtube-alternative",
+    "video-sharing-site"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "serviio": {
+   "a": [
+    "Media Server"
+   ],
+   "k": [
+    "Media-Servers",
+    "Home-Automation"
+   ],
+   "w": [
+    "serviio",
+    "serviio-light"
+   ]
+  },
+  "printables": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "portus": {},
+  "zoom": {
+   "a": [
+    "Video Conferencing"
+   ],
+   "k": [
+    "Communication",
+    "Office-Suites"
+   ]
+  },
+  "logto": {
+   "a": [
+    "Auth Service"
+   ],
+   "k": [
+    "Security",
+    "Developer-Tools"
+   ]
+  },
+  "swarmpit": {
+   "a": [
+    "Docker Swarm UI"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Monitoring-Tools"
+   ]
+  },
+  "mullvad": {},
+  "appwrite": {},
+  "shell": {
+   "a": [
+    "bash-scripting",
+    "command-line-scripting"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Operating-Systems"
+   ],
+   "w": [
+    "shell",
+    "shell-light"
+   ]
+  },
+  "distribution": {
+   "k": [
+    "Development",
+    "Cloud"
+   ]
+  },
+  "medusa": {
+   "w": [
+    "medusa",
+    "medusa-light"
+   ]
+  },
+  "airvpn": {},
+  "kali-linux": {
+   "a": [
+    "kali"
+   ],
+   "k": [
+    "Security"
+   ]
+  },
+  "onlyoffice": {},
+  "microsoft-to-do": {},
+  "poly": {},
+  "netbird": {},
+  "coolify": {
+   "a": [
+    "App Deployment"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Server-Panels"
+   ]
+  },
+  "ml-flow-wordmark": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "ml-flow-wordmark-dark",
+    "ml-flow-wordmark"
+   ]
+  },
+  "listmonk": {},
+  "firefox-reality": {},
+  "snapcast": {},
+  "viseron": {
+   "w": [
+    "viseron",
+    "viseron-light"
+   ]
+  },
+  "cloudflare": {
+   "a": [
+    "content-delivery-network",
+    "ddos-protection"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "Networking-Tools",
+    "Security"
+   ]
+  },
+  "truenas": {
+   "a": [
+    "NAS OS"
+   ],
+   "k": [
+    "Operating-Systems",
+    "File-Sharing-&-Sync",
+    "Media-Servers",
+    "Linux-Distributions"
+   ]
+  },
+  "control-d": {
+   "a": [
+    "controld"
+   ],
+   "k": [
+    "Security"
+   ],
+   "w": [
+    "control-d-dark",
+    "control-d"
+   ]
+  },
+  "files-community": {},
+  "hollo": {
+   "k": [
+    "Social-Media"
+   ],
+   "w": [
+    "hollo",
+    "hollo-light"
+   ]
+  },
+  "hashicorp-terraform": {},
+  "foreflight": {
+   "a": [
+    "Flight Planning"
+   ],
+   "k": [
+    "Travel"
+   ],
+   "w": [
+    "foreflight-dark",
+    "foreflight"
+   ]
+  },
+  "suwayomi": {
+   "w": [
+    "suwayomi",
+    "suwayomi-light"
+   ]
+  },
+  "loxone": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "mobilizon": {},
+  "aruba": {},
+  "thin-linc": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "renovate": {
+   "k": [
+    "Development"
+   ]
+  },
+  "linode": {},
+  "azure-container-instances": {},
+  "discourse": {
+   "w": [
+    "discourse",
+    "discourse-light"
+   ]
+  },
+  "whatsapp": {},
+  "bing": {
+   "a": [
+    "microsoft-search",
+    "web-search"
+   ],
+   "k": [
+    "Search-Engines"
+   ]
+  },
+  "slice": {},
+  "habitica": {
+   "w": [
+    "habitica-dark",
+    "habitica"
+   ]
+  },
+  "hbo": {
+   "w": [
+    "hbo",
+    "hbo-light"
+   ]
+  },
+  "xwiki": {
+   "a": [
+    "enterprise-wiki",
+    "knowledge-management"
+   ],
+   "k": [
+    "Note-taking-Apps"
+   ]
+  },
+  "sandstorm": {
+   "a": [
+    "Web Application Platform"
+   ],
+   "k": [
+    "Server-Panels",
+    "Web-Browsers"
+   ]
+  },
+  "lldap": {
+   "k": [
+    "Organization",
+    "Security"
+   ],
+   "w": [
+    "lldap-dark",
+    "lldap"
+   ]
+  },
+  "pepperminty-wiki": {},
+  "air-trail": {
+   "a": [
+    "airtrail"
+   ],
+   "k": [
+    "Travel"
+   ]
+  },
+  "note-mark": {},
+  "wiki-go": {
+   "k": [
+    "Wiki"
+   ]
+  },
+  "azuracast": {},
+  "rstudio": {},
+  "netdata": {},
+  "whatnot": {
+   "k": [
+    "E-Commerce"
+   ]
+  },
+  "monica": {
+   "w": [
+    "monica",
+    "monica-light"
+   ]
+  },
+  "woodpecker-ci": {
+   "a": [
+    "continuous-integration",
+    "build-pipeline"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Version-Control-Systems"
+   ]
+  },
+  "easy-gate": {
+   "a": [
+    "home-automation-hub",
+    "smart-home-controller"
+   ],
+   "k": [
+    "Smart-Home",
+    "Home-Automation"
+   ],
+   "w": [
+    "easy-gate",
+    "easy-gate-light"
+   ]
+  },
+  "nocodb": {},
+  "google-news": {
+   "a": [
+    "news-feed",
+    "current-events"
+   ],
+   "k": [
+    "News",
+    "Search-Engines"
+   ]
+  },
+  "ollama": {
+   "a": [
+    "LLM Server"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms",
+    "Developer-Tools"
+   ],
+   "w": [
+    "ollama-dark",
+    "ollama"
+   ]
+  },
+  "upwork": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "jfrog": {},
+  "policycontroller": {
+   "a": [
+    "kubernetes-security",
+    "policy-management"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Security"
+   ]
+  },
+  "feedly": {},
+  "google-translate": {},
+  "wireguard": {},
+  "hexo": {
+   "a": [
+    "blog-generator",
+    "website-builder"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "ramp": {
+   "k": [
+    "Finance"
+   ],
+   "w": [
+    "ramp-dark",
+    "ramp"
+   ]
+  },
+  "mailchimp": {
+   "w": [
+    "mailchimp",
+    "mailchimp-light"
+   ]
+  },
+  "booklogr": {
+   "a": [
+    "book-tracker",
+    "reading-log"
+   ],
+   "k": [
+    "Note-taking-Apps"
+   ],
+   "w": [
+    "booklogr",
+    "booklogr-light"
+   ]
+  },
+  "tpdb": {},
+  "javascript": {
+   "w": [
+    "javascript",
+    "javascript-light"
+   ]
+  },
+  "socialhome": {
+   "a": [
+    "federated-social-network",
+    "decentralized-social-media"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "mysql": {},
+  "squirrel-servers-manager": {
+   "a": [
+    "Game Server Manager"
+   ],
+   "k": [
+    "Gaming-Platforms",
+    "Server-Panels"
+   ]
+  },
+  "truecommand": {
+   "a": [
+    "truenas-manager",
+    "nas-management"
+   ],
+   "k": [
+    "Server-Panels",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "mediawiki": {},
+  "notion": {
+   "w": [
+    "notion",
+    "notion-light"
+   ]
+  },
+  "prime-video-alt": {
+   "k": [
+    "Video-Streaming"
+   ],
+   "w": [
+    "prime-video-alt-dark",
+    "prime-video-alt"
+   ]
+  },
+  "beszel": {
+   "w": [
+    "beszel",
+    "beszel-light"
+   ]
+  },
+  "bluetooth": {},
+  "nextjs": {
+   "w": [
+    "nextjs",
+    "nextjs-light"
+   ]
+  },
+  "miro": {
+   "a": [
+    "whiteboard",
+    "app"
+   ]
+  },
+  "notediscovery": {
+   "a": [
+    "note-discovery",
+    "Note Discovery"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "ghostty": {
+   "k": [
+    "Development"
+   ]
+  },
+  "spliit": {
+   "k": [
+    "Cloud",
+    "Finance"
+   ]
+  },
+  "sonarr-4k": {
+   "a": [
+    "sonarr-4k",
+    "sonarr4k"
+   ],
+   "k": [
+    "Media"
+   ]
+  },
+  "google-messages": {},
+  "keyoxide": {},
+  "google-search-console": {
+   "a": [
+    "seo-analytics",
+    "website-performance"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Search-Engines"
+   ]
+  },
+  "newsblur": {},
+  "safeline": {
+   "k": [
+    "Security"
+   ]
+  },
+  "geo-guessr": {
+   "a": [
+    "geoguessr"
+   ],
+   "k": [
+    "Gaming"
+   ]
+  },
+  "ko-fi": {},
+  "duckdns": {
+   "a": [
+    "ddns-provider",
+    "dynamic-ip-service"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Cloud-Computing"
+   ],
+   "w": [
+    "duckdns",
+    "duckdns-light"
+   ]
+  },
+  "firefox": {
+   "a": [
+    "Web Browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "google-keep": {
+   "a": [
+    "Note Taking"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Office-Suites"
+   ]
+  },
+  "nextcloud-social": {},
+  "freshping": {
+   "w": [
+    "freshping-dark",
+    "freshping"
+   ]
+  },
+  "hedgedoc": {
+   "a": [
+    "online-markdown-editor",
+    "realtime-markdown"
+   ],
+   "k": [
+    "Office-Suites",
+    "Note-taking-Apps"
+   ]
+  },
+  "flowise": {
+   "k": [
+    "Development"
+   ]
+  },
+  "foldingathome": {},
+  "emacs": {
+   "a": [
+    "Text Editor"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "duckduckgo": {
+   "a": [
+    "privacy-search-engine",
+    "private-search"
+   ],
+   "k": [
+    "Search-Engines"
+   ]
+  },
+  "apache-airflow": {},
+  "talos": {},
+  "crowdsec": {},
+  "uptime-kuma": {
+   "a": [
+    "status-page",
+    "website-monitor"
+   ],
+   "k": [
+    "Monitoring-Tools"
+   ]
+  },
+  "shelly": {
+   "a": [
+    "shelly-smart-home"
+   ],
+   "k": [
+    "home-automation"
+   ],
+   "w": [
+    "shelly-dark",
+    "shelly-light"
+   ]
+  },
+  "qdirstat": {
+   "a": [
+    "Disk Usage Analyzer"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Monitoring-Tools"
+   ]
+  },
+  "wger": {},
+  "kleopatra": {},
+  "typemill": {
+   "w": [
+    "typemill",
+    "typemill-light"
+   ]
+  },
+  "synapse": {
+   "w": [
+    "synapse",
+    "synapse-light"
+   ]
+  },
+  "borg": {},
+  "tailscale": {
+   "w": [
+    "tailscale",
+    "tailscale-light"
+   ]
+  },
+  "signal": {
+   "a": [
+    "Messaging App"
+   ],
+   "k": [
+    "Social-Media",
+    "Security"
+   ]
+  },
+  "balena-etcher": {},
+  "spiceworks": {},
+  "shellhub": {},
+  "hestia": {},
+  "todoist": {
+   "w": [
+    "todoist-dark",
+    "todoist"
+   ]
+  },
+  "gopeed": {
+   "k": [
+    "File"
+   ]
+  },
+  "budget-board": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "slskd": {},
+  "libreoffice": {
+   "w": [
+    "libreoffice",
+    "libreoffice-light"
+   ]
+  },
+  "inventree": {
+   "a": [
+    "Inventory Management"
+   ],
+   "k": [
+    "Office-Suites",
+    "E-commerce-Platforms"
+   ]
+  },
+  "audora": {
+   "a": [
+    "audora",
+    "music"
+   ],
+   "k": [
+    "Music"
+   ]
+  },
+  "italki": {},
+  "docsify": {},
+  "hashicorp-packer": {},
+  "jetkvm": {},
+  "ebay": {
+   "a": [
+    "online-auction",
+    "shopping-website"
+   ],
+   "k": [
+    "E-commerce-Platforms"
+   ]
+  },
+  "kodi": {},
+  "usermin": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "keepassxc": {},
+  "nzbhydra2": {
+   "w": [
+    "nzbhydra2",
+    "nzbhydra2-light"
+   ]
+  },
+  "neocities": {},
+  "yandex": {},
+  "playstation": {},
+  "wallabag": {
+   "a": [
+    "bookmarking-tool",
+    "offline-reader"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Web-Browsers"
+   ],
+   "w": [
+    "wallabag",
+    "wallabag-light"
+   ]
+  },
+  "vmware": {},
+  "gluetun": {},
+  "apache-openoffice": {},
+  "phanpy": {
+   "a": [
+    "mastodon-android-client",
+    "federated-social-client"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "droppy": {
+   "w": [
+    "droppy-dark",
+    "droppy"
+   ]
+  },
+  "openemr": {
+   "w": [
+    "openemr",
+    "openemr-light"
+   ]
+  },
+  "verriflo": {
+   "a": [
+    "verriflo-live"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "chainguard": {},
+  "hetzner": {},
+  "virtualmin": {},
+  "moodle": {
+   "w": [
+    "moodle",
+    "moodle-light"
+   ]
+  },
+  "tailwind": {
+   "k": [
+    "Design",
+    "Development"
+   ]
+  },
+  "sunsama": {},
+  "mumble": {
+   "a": [
+    "Voice Chat"
+   ],
+   "k": [
+    "Communication",
+    "Gaming-Platforms"
+   ],
+   "w": [
+    "mumble",
+    "mumble-light"
+   ]
+  },
+  "epic-games": {
+   "w": [
+    "epic-games",
+    "epic-games-light"
+   ]
+  },
+  "monero": {
+   "a": [
+    "privacy-coin",
+    "digital-currency"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "microsoft-intune": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "ksuite": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "university-applied-sciences-brandenburg": {
+   "k": [
+    "Education"
+   ]
+  },
+  "verdaccio": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "verdaccio-dark",
+    "verdaccio"
+   ]
+  },
+  "i2pd": {},
+  "tautulli": {
+   "a": [
+    "Plex Stats"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Media-Servers"
+   ]
+  },
+  "opnform": {
+   "a": [
+    "online-form-creator",
+    "survey-builder"
+   ],
+   "k": [
+    "Office-Suites",
+    "Developer-Tools"
+   ]
+  },
+  "nextcloud-photos": {
+   "a": [
+    "Photo Album"
+   ],
+   "k": [
+    "Media-Servers",
+    "File-Sharing-&-Sync",
+    "Office-Suites"
+   ]
+  },
+  "convex": {
+   "k": [
+    "Development"
+   ]
+  },
+  "media-manager": {
+   "k": [
+    "Media"
+   ]
+  },
+  "musescore": {
+   "k": [
+    "Music"
+   ]
+  },
+  "youtube-dl": {},
+  "zammad": {
+   "a": [
+    "customer-support",
+    "ticketing-system"
+   ],
+   "k": [
+    "Office-Suites"
+   ]
+  },
+  "manga-dex": {
+   "k": [
+    "Media"
+   ]
+  },
+  "papermark": {
+   "w": [
+    "papermark",
+    "papermark-light"
+   ]
+  },
+  "codeberg": {
+   "a": [
+    "Code Hosting"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ]
+  },
+  "filezilla": {},
+  "xmr": {},
+  "edge-dev": {
+   "a": [
+    "edge-developer",
+    "dev-browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "qwik": {
+   "a": [
+    "qwikjs"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "minecraft": {},
+  "dream-host": {
+   "w": [
+    "dream-host-dark",
+    "dream-host"
+   ]
+  },
+  "pi-hole": {},
+  "oracle": {},
+  "xbox-game-pass": {},
+  "kiwix": {
+   "w": [
+    "kiwix",
+    "kiwix-light"
+   ]
+  },
+  "guacamole": {
+   "a": [
+    "rdp-gateway",
+    "vnc-gateway"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Developer-Tools"
+   ],
+   "w": [
+    "guacamole",
+    "guacamole-light"
+   ]
+  },
+  "solaar": {
+   "k": [
+    "Software"
+   ]
+  },
+  "issabel-pbx": {
+   "w": [
+    "issabel-pbx-dark",
+    "issabel-pbx"
+   ]
+  },
+  "netapp": {
+   "w": [
+    "netapp",
+    "netapp-light"
+   ]
+  },
+  "disney-plus": {
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "mainsail": {},
+  "longhorn": {
+   "a": [
+    "Distributed Block Storage"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools"
+   ]
+  },
+  "traggo": {
+   "a": [
+    "Activity Tracking"
+   ],
+   "k": [
+    "Monitoring-Tools"
+   ]
+  },
+  "pdfding": {
+   "w": [
+    "pdfding",
+    "pdfding-light"
+   ]
+  },
+  "private-internet-access": {
+   "a": [
+    "PIA"
+   ],
+   "k": [
+    "VPN",
+    "Security"
+   ]
+  },
+  "shortcut": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "sysreptor": {},
+  "docker-moby": {},
+  "elastic-kibana": {
+   "a": [
+    "dashboarding-tool",
+    "log-analyzer"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Developer-Tools"
+   ]
+  },
+  "google-analytics": {
+   "a": [
+    "website-analytics",
+    "tracking-tool"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "nodejs": {},
+  "immich": {},
+  "krusader": {},
+  "paperless-ng": {
+   "a": [
+    "Document Management"
+   ],
+   "k": [
+    "Office-Suites",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "mailpit": {
+   "k": [
+    "Development"
+   ]
+  },
+  "splunk": {},
+  "nextcloud-tasks": {},
+  "ical": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "maintainerr": {},
+  "writefreely": {
+   "w": [
+    "writefreely",
+    "writefreely-light"
+   ]
+  },
+  "matterbridge": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "marimo": {
+   "k": [
+    "Development"
+   ]
+  },
+  "posteria": {
+   "k": [
+    "Media"
+   ]
+  },
+  "alloy": {
+   "a": [
+    "no-code-platform",
+    "app-builder"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "origin": {},
+  "nextdns": {
+   "a": [
+    "privacy-dns",
+    "secure-dns"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Security"
+   ]
+  },
+  "coder": {
+   "w": [
+    "coder",
+    "coder-light"
+   ]
+  },
+  "proton-drive": {
+   "a": [
+    "Cloud Storage"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "File-Sharing-&-Sync",
+    "Security"
+   ]
+  },
+  "jaeger": {},
+  "feedbin": {
+   "w": [
+    "feedbin",
+    "feedbin-light"
+   ]
+  },
+  "wolfi": {
+   "w": [
+    "wolfi",
+    "wolfi-light"
+   ]
+  },
+  "wakatime": {
+   "a": [
+    "coding-tracker",
+    "developer-analytics"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Monitoring-Tools"
+   ],
+   "w": [
+    "wakatime",
+    "wakatime-light"
+   ]
+  },
+  "nodebb": {
+   "a": [
+    "Forum Software"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Social-Media"
+   ]
+  },
+  "riverside-fm": {
+   "w": [
+    "riverside-fm",
+    "riverside-fm-light"
+   ]
+  },
+  "homarr": {
+   "a": [
+    "best-dashboard",
+    "homer",
+    "dashy",
+    "homepage",
+    "glance",
+    "dashboard"
+   ],
+   "k": [
+    "automation",
+    "development",
+    "home-automation",
+    "media",
+    "monitoring",
+    "security",
+    "tools",
+    "utility"
+   ]
+  },
+  "powerbi": {},
+  "netbox": {
+   "w": [
+    "netbox-dark",
+    "netbox"
+   ]
+  },
+  "csharp": {
+   "a": [
+    "dotnet-language",
+    "c-sharp"
+   ],
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ]
+  },
+  "incus": {
+   "a": [
+    "Container Manager"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools",
+    "Server-Panels"
+   ]
+  },
+  "bar-assistant": {},
+  "netlify": {},
+  "hoppscotch": {},
+  "squidex": {},
+  "anything-llm": {
+   "w": [
+    "anything-llm",
+    "anything-llm-light"
+   ]
+  },
+  "zot-registry": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "steam": {},
+  "hoarder": {
+   "w": [
+    "hoarder",
+    "hoarder-light"
+   ]
+  },
+  "tidal": {
+   "w": [
+    "tidal-dark",
+    "tidal"
+   ]
+  },
+  "arm": {},
+  "parseable": {},
+  "cloudflare-pages": {
+   "a": [
+    "Static Site Hosting"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Developer-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "hathway": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "gatus": {
+   "a": [
+    "Uptime Monitor"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "double-take": {
+   "a": [
+    "ai-face-recognition",
+    "object-detection"
+   ],
+   "k": [
+    "Smart-Home",
+    "Home-Automation"
+   ],
+   "w": [
+    "double-take-dark",
+    "double-take"
+   ]
+  },
+  "pixelfed": {},
+  "apple-tv-plus": {
+   "a": [
+    "apple-tv",
+    "streaming-service"
+   ],
+   "k": [
+    "Video-Streaming"
+   ],
+   "w": [
+    "apple-tv-plus",
+    "apple-tv-plus-light"
+   ]
+  },
+  "openwebrx-plus": {
+   "k": [
+    "Communication"
+   ],
+   "w": [
+    "openwebrx-plus-dark",
+    "openwebrx-plus"
+   ]
+  },
+  "draytek": {},
+  "libation": {
+   "a": [
+    "audiobook"
+   ],
+   "k": [
+    "media"
+   ]
+  },
+  "solidtime": {
+   "w": [
+    "solidtime",
+    "solidtime-light"
+   ]
+  },
+  "owncloud": {
+   "a": [
+    "Cloud Storage"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "File-Sharing-&-Sync",
+    "Office-Suites"
+   ]
+  },
+  "sophos": {
+   "w": [
+    "sophos-dark",
+    "sophos"
+   ]
+  },
+  "phoneinfoga": {
+   "w": [
+    "phoneinfoga",
+    "phoneinfoga-light"
+   ]
+  },
+  "apache-druid": {
+   "a": [
+    "realtime-database",
+    "analytics-database"
+   ],
+   "k": [
+    "Databases"
+   ]
+  },
+  "gramps": {
+   "a": [
+    "Genealogy Software"
+   ],
+   "k": [
+    "Office-Suites",
+    "Personal"
+   ]
+  },
+  "bitbucket": {},
+  "apache": {},
+  "archidekt": {
+   "k": [
+    "Gaming"
+   ]
+  },
+  "trilium": {},
+  "facebook-messenger": {},
+  "fidelity": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "reolink": {},
+  "blocky": {
+   "a": [
+    "dns-server",
+    "adblocking-dns"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Security"
+   ]
+  },
+  "cloudpanel": {},
+  "tabula": {},
+  "budibase": {},
+  "marktplaats": {},
+  "papermerge": {
+   "a": [
+    "document-scanner",
+    "digital-archive"
+   ],
+   "k": [
+    "Office-Suites",
+    "File-Sharing-&-Sync"
+   ],
+   "w": [
+    "papermerge",
+    "papermerge-light"
+   ]
+  },
+  "name-silo": {},
+  "prowlarr": {},
+  "webex": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "rotki": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "amazon-web-services": {
+   "w": [
+    "amazon-web-services",
+    "amazon-web-services-light"
+   ]
+  },
+  "affine": {
+   "w": [
+    "affine",
+    "affine-light"
+   ]
+  },
+  "ynab": {},
+  "termix": {},
+  "stash": {
+   "a": [
+    "Media Manager"
+   ],
+   "k": [
+    "Media-Servers"
+   ]
+  },
+  "peanut": {
+   "w": [
+    "peanut",
+    "peanut-light"
+   ]
+  },
+  "medama": {},
+  "google-photos": {},
+  "binner": {
+   "k": [
+    "Logistics"
+   ],
+   "w": [
+    "binner-dark",
+    "binner"
+   ]
+  },
+  "anime-kai": {
+   "k": [
+    "Streaming"
+   ]
+  },
+  "shoko-server": {},
+  "changedetection": {},
+  "deezer": {
+   "a": [
+    "Music Streaming"
+   ],
+   "k": [
+    "Music-Streaming"
+   ]
+  },
+  "lubuntu-linux": {},
+  "gitbook": {},
+  "jamstack": {
+   "a": [
+    "static-site-generator",
+    "modern-web-dev"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "recipesage": {
+   "a": [
+    "recipe-app",
+    "cooking-recipes"
+   ],
+   "k": [
+    "Home-Automation"
+   ]
+  },
+  "hemmelig": {
+   "a": [
+    "Secrets Manager"
+   ],
+   "k": [
+    "Password-Managers",
+    "Security",
+    "Developer-Tools"
+   ],
+   "w": [
+    "hemmelig",
+    "hemmelig-light"
+   ]
+  },
+  "dokploy": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "dokploy-dark",
+    "dokploy"
+   ]
+  },
+  "flaresolverr": {},
+  "kook": {
+   "a": [
+    "voice-chat-platform",
+    "community-platform"
+   ],
+   "k": [
+    "Social-Media",
+    "Communication"
+   ]
+  },
+  "amazon-prime": {
+   "a": [
+    "prime-video",
+    "amazon-video"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "self-hosted-gateway": {
+   "a": [
+    "API Gateway"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "network-ups-tools": {},
+  "prometheus": {},
+  "untangle": {},
+  "springboot-initializer": {
+   "a": [
+    "spring",
+    "springboot",
+    "initializer"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "sphinx-relay": {},
+  "retrom": {
+   "a": [
+    "Game Launcher"
+   ],
+   "k": [
+    "Gaming-Platforms"
+   ]
+  },
+  "draw-io": {},
+  "joplin": {},
+  "kopia": {},
+  "max": {},
+  "floatplane": {
+   "k": [
+    "Video"
+   ]
+  },
+  "rutorrent": {},
+  "wikijs-alt": {
+   "a": [
+    "Wiki"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Web-Browsers"
+   ]
+  },
+  "threadfin": {
+   "k": [
+    "Streaming"
+   ]
+  },
+  "intellij": {},
+  "jio": {},
+  "zitadel": {
+   "a": [
+    "Identity Management"
+   ],
+   "k": [
+    "Security",
+    "Developer-Tools"
+   ],
+   "w": [
+    "zitadel",
+    "zitadel-light"
+   ]
+  },
+  "scanopy": {},
+  "ipboard": {},
+  "manyfold": {},
+  "leetcode": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "leetcode-dark",
+    "leetcode"
+   ]
+  },
+  "keeper-security": {
+   "a": [
+    "keeper"
+   ],
+   "k": [
+    "Security"
+   ]
+  },
+  "element": {},
+  "spotify": {
+   "k": [
+    "media"
+   ],
+   "w": [
+    "spotify-dark",
+    "spotify-light"
+   ]
+  },
+  "bandcamp": {
+   "k": [
+    "Music"
+   ]
+  },
+  "step-ca": {
+   "a": [
+    "Certificate Authority"
+   ],
+   "k": [
+    "Security",
+    "Networking-Tools"
+   ]
+  },
+  "vouchervault": {
+   "a": [
+    "coupon-manager",
+    "discount-tracker"
+   ],
+   "k": [
+    "E-commerce-Platforms",
+    "Finance-&-Banking"
+   ]
+  },
+  "nodejs-alt": {
+   "a": [
+    "javascript-environment",
+    "server-side-js"
+   ],
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ]
+  },
+  "goaccess": {
+   "a": [
+    "Log Analyzer"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Developer-Tools",
+    "Networking-Tools"
+   ],
+   "w": [
+    "goaccess",
+    "goaccess-light"
+   ]
+  },
+  "shinkro": {},
+  "build-better": {
+   "k": [
+    "Communication"
+   ],
+   "w": [
+    "build-better-dark",
+    "build-better"
+   ]
+  },
+  "zoom-alt": {},
+  "limesurvey": {},
+  "copyparty": {},
+  "hoobs": {},
+  "hi-anime": {
+   "a": [
+    "hianime.to"
+   ],
+   "k": [
+    "Streaming"
+   ]
+  },
+  "cabernet": {
+   "k": [
+    "Streaming"
+   ]
+  },
+  "karakeep": {
+   "w": [
+    "karakeep-dark",
+    "karakeep"
+   ]
+  },
+  "pydio": {},
+  "bab-technologie": {
+   "w": [
+    "bab-technologie-dark",
+    "bab-technologie"
+   ]
+  },
+  "saltcorn": {},
+  "atlassian-jira": {
+   "a": [
+    "Issue Tracker"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Office-Suites"
+   ]
+  },
+  "caddy": {},
+  "vuetorrent": {},
+  "docker-volume-backup": {
+   "a": [
+    "Volume Backup"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools"
+   ]
+  },
+  "airtable": {},
+  "stormkit": {},
+  "metabrainz": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "arduino": {},
+  "redis": {
+   "a": [
+    "In-Memory Database"
+   ],
+   "k": [
+    "Databases",
+    "Developer-Tools"
+   ]
+  },
+  "revolt": {
+   "a": [
+    "discord-alternative",
+    "voice-chat-app"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Communication"
+   ],
+   "w": [
+    "revolt",
+    "revolt-light"
+   ]
+  },
+  "vault": {
+   "w": [
+    "vault",
+    "vault-light"
+   ]
+  },
+  "dalibo": {
+   "a": [
+    "postgresql-support"
+   ],
+   "k": [
+    "Databases",
+    "Organization"
+   ]
+  },
+  "web-check": {
+   "a": [
+    "website-monitor",
+    "url-checker"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ],
+   "w": [
+    "web-check-dark",
+    "web-check"
+   ]
+  },
+  "selenium": {},
+  "openchangelog": {
+   "w": [
+    "openchangelog",
+    "openchangelog-light"
+   ]
+  },
+  "opentalk": {
+   "a": [
+    "VoIP Server"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Communication"
+   ]
+  },
+  "azure": {},
+  "lichess": {
+   "k": [
+    "Gaming"
+   ],
+   "w": [
+    "lichess-dark",
+    "lichess"
+   ]
+  },
+  "lnbits": {},
+  "warpgate": {},
+  "postgres": {},
+  "canonical": {
+   "a": [
+    "Ubuntu Company"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Linux-Distributions"
+   ]
+  },
+  "openziti": {},
+  "auto-cad": {
+   "a": [
+    "autocad",
+    "autodesk"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "rclone": {},
+  "entergy": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "pikapods": {},
+  "grav": {
+   "a": [
+    "flat-file-cms",
+    "content-management-system"
+   ],
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "grav",
+    "grav-light"
+   ]
+  },
+  "rhasspy": {
+   "a": [
+    "offline-voice-assistant",
+    "privacy-voice-assistant"
+   ],
+   "k": [
+    "Home-Automation",
+    "AI-&-LLM-Platforms"
+   ],
+   "w": [
+    "rhasspy-dark",
+    "rhasspy"
+   ]
+  },
+  "waze": {},
+  "lyrion": {
+   "w": [
+    "lyrion-dark",
+    "lyrion"
+   ]
+  },
+  "transmission": {
+   "a": [
+    "Torrent Client"
+   ],
+   "k": [
+    "Download-Managers",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "openstack": {},
+  "chibisafe": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "ups": {
+   "a": [
+    "shipping-company",
+    "package-delivery"
+   ],
+   "k": [
+    "E-commerce-Platforms",
+    "Logistics"
+   ]
+  },
+  "pluralsight": {
+   "a": [
+    "Learning Platform"
+   ],
+   "k": [
+    "Education",
+    "Developer-Tools"
+   ]
+  },
+  "leanote": {
+   "a": [
+    "markdown-notes",
+    "cloud-notes"
+   ],
+   "k": [
+    "Note-taking-Apps"
+   ]
+  },
+  "fmd": {},
+  "teamtailor": {},
+  "microsoft-windows": {},
+  "hastypaste": {
+   "a": [
+    "code-sharing",
+    "text-paste-service"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "radarr-4k": {
+   "a": [
+    "radarr-4k",
+    "radarr4k"
+   ],
+   "k": [
+    "Media"
+   ]
+  },
+  "reactive-resume": {
+   "w": [
+    "reactive-resume",
+    "reactive-resume-light"
+   ]
+  },
+  "sqlitebrowser": {},
+  "open-source-initiative": {},
+  "locals": {
+   "a": [
+    "Local Services Dashboard"
+   ],
+   "k": [
+    "Home-Automation",
+    "Monitoring-Tools",
+    "Web-Browsers"
+   ],
+   "w": [
+    "locals",
+    "locals-light"
+   ]
+  },
+  "mattermost": {},
+  "runonflux": {},
+  "book-lore": {
+   "k": [
+    "Media"
+   ]
+  },
+  "13ft": {
+   "a": [
+    "paywall-remover",
+    "article-unblocker"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "yt-dlp": {},
+  "enbizcard": {
+   "a": [
+    "business-card-ocr",
+    "contact-scanner"
+   ],
+   "k": [
+    "Office-Suites"
+   ]
+  },
+  "huginn": {},
+  "youtube": {
+   "a": [
+    "video-sharing-site",
+    "google-video"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "nextcloud-calendar": {},
+  "shellngn": {},
+  "kapowarr": {},
+  "nomie": {
+   "a": [
+    "Personal Data Journal"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Monitoring-Tools"
+   ]
+  },
+  "windows-10": {
+   "a": [
+    "windows-os",
+    "win10"
+   ],
+   "k": [
+    "Operating-Systems"
+   ]
+  },
+  "obsidian": {},
+  "deployarr": {},
+  "fedora-alt": {},
+  "haptic": {
+   "w": [
+    "haptic",
+    "haptic-light"
+   ]
+  },
+  "cloudreve": {
+   "k": [
+    "File"
+   ]
+  },
+  "home-assistant-alt": {
+   "a": [
+    "home-automation-icon"
+   ],
+   "k": [
+    "Home-Automation"
+   ]
+  },
+  "microsoft-power-automate": {
+   "k": [
+    "Development"
+   ]
+  },
+  "apc": {},
+  "github-copilot": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "github-copilot-dark",
+    "github-copilot"
+   ]
+  },
+  "zomro": {},
+  "pangolin": {
+   "a": [
+    "pangolin",
+    "pangolin-newt"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "cert-warden": {
+   "w": [
+    "cert-warden",
+    "cert-warden-light"
+   ]
+  },
+  "patchmon": {},
+  "arch-linux": {},
+  "opera": {},
+  "ryot": {
+   "a": [
+    "mastodon-app",
+    "federated-social-client"
+   ],
+   "k": [
+    "Social-Media"
+   ],
+   "w": [
+    "ryot",
+    "ryot-light"
+   ]
+  },
+  "harvester": {},
+  "freenom": {},
+  "musicbrainz": {
+   "a": [
+    "music-database",
+    "audio-metadata"
+   ],
+   "k": [
+    "Databases",
+    "Music-Streaming"
+   ]
+  },
+  "forgejo": {
+   "a": [
+    "gitea-fork",
+    "code-repository"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ]
+  },
+  "teslamate": {
+   "a": [
+    "Tesla Data Logger"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Smart-Home"
+   ],
+   "w": [
+    "teslamate",
+    "teslamate-light"
+   ]
+  },
+  "opera-touch": {},
+  "ovirt": {
+   "w": [
+    "ovirt",
+    "ovirt-light"
+   ]
+  },
+  "fedora": {},
+  "valkey": {
+   "a": [
+    "redis-compatible",
+    "in-memory-database"
+   ],
+   "k": [
+    "Databases"
+   ]
+  },
+  "friendica": {},
+  "fortinet": {},
+  "fnos": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "rancher": {},
+  "peppermint": {
+   "a": [
+    "peppermint-os",
+    "lightweight-linux"
+   ],
+   "k": [
+    "Linux-Distributions",
+    "Operating-Systems"
+   ]
+  },
+  "vitest": {
+   "k": [
+    "Development"
+   ]
+  },
+  "checkmate": {},
+  "morphos": {
+   "a": [
+    "Operating System"
+   ],
+   "k": [
+    "Operating-Systems"
+   ]
+  },
+  "lynx": {
+   "w": [
+    "lynx",
+    "lynx-light"
+   ]
+  },
+  "plantuml": {},
+  "tacticalrmm": {},
+  "google-chrome": {
+   "a": [
+    "Web Browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "bottom": {
+   "a": [
+    "btm"
+   ],
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "bottom-dark",
+    "bottom"
+   ]
+  },
+  "proton-calendar": {},
+  "wordpress": {},
+  "bitwarden": {
+   "a": [
+    "Password Manager"
+   ],
+   "k": [
+    "Password-Managers",
+    "Security"
+   ]
+  },
+  "truenas-scale": {},
+  "elysian": {},
+  "deepseek": {
+   "k": [
+    "Development"
+   ]
+  },
+  "cryptomator": {},
+  "hubitat": {
+   "a": [
+    "home-automation-controller",
+    "smart-device-hub"
+   ],
+   "k": [
+    "Smart-Home",
+    "Home-Automation"
+   ]
+  },
+  "gonic": {},
+  "bright-move": {
+   "a": [
+    "brightmove",
+    "bright-move-ats",
+    "brightmove-ats"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "docspell": {
+   "a": [
+    "Document Indexer"
+   ],
+   "k": [
+    "Office-Suites",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "omnidb": {},
+  "google-fonts": {},
+  "pinterest": {},
+  "edge": {
+   "a": [
+    "microsoft-edge-browser",
+    "chromium-browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "fronius": {},
+  "notion-mail": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "nixos": {},
+  "z-wave-js-ui": {},
+  "nextcloud-news": {
+   "a": [
+    "nextcloud-feed-reader",
+    "feed-aggregator"
+   ],
+   "k": [
+    "News"
+   ]
+  },
+  "etcd": {},
+  "filebot": {
+   "a": [
+    "Media Renamer"
+   ],
+   "k": [
+    "Media-Servers",
+    "Download-Managers"
+   ]
+  },
+  "victorialogs": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "shoko": {},
+  "geckoview": {},
+  "audacity": {
+   "a": [
+    "audio-editing-software",
+    "sound-editor"
+   ],
+   "k": [
+    "Graphics-Editors"
+   ]
+  },
+  "palo-alto": {},
+  "subatic": {},
+  "omnivore": {},
+  "apple-podcasts": {
+   "a": [
+    "podcast"
+   ],
+   "k": [
+    "Media"
+   ]
+  },
+  "elgato-wave-link": {
+   "a": [
+    "wavelink",
+    "elgato wavelink",
+    "wave link",
+    "elgato Wave link"
+   ],
+   "k": [
+    "Communication"
+   ]
+  },
+  "go": {},
+  "tunnelix": {
+   "a": [
+    "ssh",
+    "tunnels",
+    "port-forwarding"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "debian-linux": {},
+  "nextcloud-files": {},
+  "kanidm": {
+   "k": [
+    "security"
+   ]
+  },
+  "facebook": {
+   "a": [
+    "social-network",
+    "meta-platform"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "alist": {},
+  "tracearr": {
+   "k": [
+    "Media"
+   ]
+  },
+  "photostructure": {
+   "w": [
+    "photostructure-dark",
+    "photostructure"
+   ]
+  },
+  "riot": {
+   "a": [
+    "matrix-chat-client",
+    "element-client"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Communication"
+   ]
+  },
+  "openldap": {
+   "a": [
+    "LDAP Server"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels"
+   ]
+  },
+  "jamf": {
+   "a": [
+    "jamf pro"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "heimdall": {
+   "w": [
+    "heimdall",
+    "heimdall-light"
+   ]
+  },
+  "google-earth": {},
+  "digikey": {
+   "k": [
+    "E-Commerce"
+   ]
+  },
+  "home-assistant": {},
+  "pterodactyl": {},
+  "postiz": {
+   "w": [
+    "postiz-dark",
+    "postiz"
+   ]
+  },
+  "frigate": {
+   "a": [
+    "NVR"
+   ],
+   "k": [
+    "Home-Automation",
+    "Monitoring-Tools"
+   ],
+   "w": [
+    "frigate",
+    "frigate-light"
+   ]
+  },
+  "mediathekview": {
+   "a": [
+    "german-tv-replay",
+    "public-broadcasting-archive"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "centos": {
+   "a": [
+    "centos-linux",
+    "enterprise-linux"
+   ],
+   "k": [
+    "Linux-Distributions",
+    "Operating-Systems"
+   ]
+  },
+  "tianji": {
+   "w": [
+    "tianji",
+    "tianji-light"
+   ]
+  },
+  "fluffychat": {
+   "w": [
+    "fluffychat-dark",
+    "fluffychat"
+   ]
+  },
+  "cacti": {
+   "a": [
+    "network-graphing",
+    "performance-monitoring"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "chrome": {},
+  "netalertx": {
+   "a": [
+    "network-monitor",
+    "alerting-system"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ],
+   "w": [
+    "netalertx",
+    "netalertx-light"
+   ]
+  },
+  "icinga": {
+   "w": [
+    "icinga",
+    "icinga-light"
+   ]
+  },
+  "alertmanager": {
+   "w": [
+    "alertmanager-dark"
+   ]
+  },
+  "google-sheets": {},
+  "biblioreads": {
+   "w": [
+    "biblioreads",
+    "biblioreads-light"
+   ]
+  },
+  "webhookd": {},
+  "unbound": {},
+  "jupyter": {},
+  "sendgrid": {},
+  "uc-browser": {
+   "a": [
+    "mobile-browser",
+    "china-browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "mail-in-a-box": {},
+  "cpanel": {},
+  "kyoo": {},
+  "yarr": {
+   "a": [
+    "rss-feed-reader",
+    "news-aggregator"
+   ],
+   "k": [
+    "News"
+   ],
+   "w": [
+    "yarr",
+    "yarr-light"
+   ]
+  },
+  "xbrowsersync": {},
+  "virgin-media": {},
+  "firefly-iii": {
+   "a": [
+    "Finance Manager"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "webhook": {},
+  "gimp": {},
+  "viewtube": {
+   "a": [
+    "youtube-alternative",
+    "privacy-youtube"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "hacker-news": {},
+  "glitchtip": {
+   "k": [
+    "Development"
+   ]
+  },
+  "aboard": {
+   "a": [
+    "aboardhr"
+   ]
+  },
+  "advanzia": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "upvote-rss": {
+   "k": [
+    "News"
+   ]
+  },
+  "authman": {},
+  "kinto": {},
+  "unraid": {},
+  "crunchyroll": {},
+  "google-drive": {},
+  "opnsense": {
+   "a": [
+    "Firewall",
+    "Router OS"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Networking-Tools",
+    "Security",
+    "Linux-Distributions"
+   ]
+  },
+  "prime-video": {
+   "k": [
+    "Video-Streaming"
+   ],
+   "w": [
+    "prime-video",
+    "prime-video-light"
+   ]
+  },
+  "asus-rog": {},
+  "adguard-home-sync": {},
+  "alpine-linux": {},
+  "librenms": {},
+  "specifically-clementines": {},
+  "obtainium": {
+   "a": [
+    "App Updater"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Smart-Home"
+   ]
+  },
+  "audiobookshelf": {},
+  "librum": {},
+  "pleroma": {},
+  "atlassian-bamboo": {
+   "a": [
+    "continuous-integration",
+    "build-server"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Version-Control-Systems"
+   ]
+  },
+  "nexus": {
+   "a": [
+    "nexus3"
+   ],
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "nexus-dark",
+    "nexus"
+   ]
+  },
+  "trailarr": {},
+  "chaptarr": {},
+  "vinchin-backup": {
+   "a": [
+    "vinchin-backup",
+    "vinchin",
+    "vinchin-logo"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "tweakers": {
+   "a": [
+    "dutch-tech-news",
+    "hardware-reviews"
+   ],
+   "k": [
+    "News",
+    "Technology-News"
+   ]
+  },
+  "helium-token": {},
+  "fladder": {
+   "k": [
+    "entertainment",
+    "media"
+   ]
+  },
+  "many-notes": {},
+  "google-pay": {},
+  "smartfox": {
+   "k": [
+    "Gaming-Platforms",
+    "Developer-Tools"
+   ]
+  },
+  "traefik": {
+   "a": [
+    "Reverse Proxy"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels"
+   ]
+  },
+  "contabo": {},
+  "angular": {
+   "k": [
+    "Development"
+   ]
+  },
+  "ugreen": {
+   "a": [
+    "ugreen"
+   ]
+  },
+  "searxng": {},
+  "couchdb": {},
+  "jira": {},
+  "logitech-legacy": {},
+  "ubiquiti-unifi": {},
+  "kasten-k10": {
+   "a": [
+    "Kubernetes Backup"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools"
+   ]
+  },
+  "ticky": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "proton-vpn": {},
+  "sipeed": {
+   "a": [
+    "sipeed-kvm",
+    "sipeed-nanokvm"
+   ],
+   "k": [
+    "Hardware"
+   ]
+  },
+  "godaddy-alt": {},
+  "qinglong": {
+   "a": [
+    "Automation Platform"
+   ],
+   "k": [
+    "Home-Automation",
+    "Developer-Tools"
+   ]
+  },
+  "flowtunes": {
+   "k": [
+    "Music"
+   ]
+  },
+  "podify": {},
+  "emqx": {
+   "a": [
+    "mqtt-server",
+    "iot-broker"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Home-Automation"
+   ]
+  },
+  "wikipedia": {
+   "a": [
+    "Online Encyclopedia"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Education"
+   ],
+   "w": [
+    "wikipedia",
+    "wikipedia-light"
+   ]
+  },
+  "proton-mail": {},
+  "awwesome": {},
+  "skype": {},
+  "honda-jet": {
+   "a": [
+    "aircraft-manufacturer",
+    "private-jet"
+   ],
+   "k": [
+    "Travel",
+    "Organization"
+   ]
+  },
+  "chrome-canary": {},
+  "nordvpn": {},
+  "lastpass": {},
+  "willow": {},
+  "opentofu": {
+   "a": [
+    "terraform-fork",
+    "iac-tool"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "dokemon": {
+   "a": [
+    "container-monitor",
+    "docker-stats"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Containerization-&-Orchestration"
+   ]
+  },
+  "tsd-proxy": {},
+  "hugo": {
+   "a": [
+    "website-generator",
+    "jamstack-tool"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "flux-cd": {},
+  "infomaniak-k": {
+   "a": [
+    "Cloud Storage"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "google-gemini": {},
+  "wikidocs": {},
+  "pinkary": {},
+  "packetfence-full": {
+   "w": [
+    "packetfence-full-dark",
+    "packetfence-full"
+   ]
+  },
+  "ansible": {
+   "a": [
+    "Automation Tool"
+   ],
+   "k": [
+    "Developer-Tools",
+    "DevOps"
+   ],
+   "w": [
+    "ansible",
+    "ansible-light"
+   ]
+  },
+  "volumio": {
+   "a": [
+    "Music Player OS"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Media-Servers",
+    "Linux-Distributions"
+   ],
+   "w": [
+    "volumio",
+    "volumio-light"
+   ]
+  },
+  "nintendo-switch": {
+   "a": [
+    "switch-console",
+    "video-game-system"
+   ],
+   "k": [
+    "Gaming-Platforms",
+    "Hardware"
+   ]
+  },
+  "neko": {
+   "w": [
+    "neko",
+    "neko-light"
+   ]
+  },
+  "influxdb": {},
+  "docassemble": {
+   "w": [
+    "docassemble",
+    "docassemble-light"
+   ]
+  },
+  "synology-dsm": {
+   "a": [
+    "synology-os",
+    "nas-software"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Server-Panels"
+   ]
+  },
+  "oculus": {
+   "w": [
+    "oculus",
+    "oculus-light"
+   ]
+  },
+  "yahoo": {},
+  "google-slides": {},
+  "pia": {},
+  "astral": {},
+  "tinyauth": {
+   "k": [
+    "Security"
+   ]
+  },
+  "sabnzbd": {
+   "w": [
+    "sabnzbd",
+    "sabnzbd-light"
+   ]
+  },
+  "cyberchef": {
+   "a": [
+    "magic-recipe",
+    "the-cyber-chef"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "komga": {},
+  "title-card-maker": {
+   "a": [
+    "tcm"
+   ],
+   "k": [
+    "Media"
+   ],
+   "w": [
+    "title-card-maker-dark",
+    "title-card-maker"
+   ]
+  },
+  "google-admin": {
+   "a": [
+    "Google Workspace Admin"
+   ],
+   "k": [
+    "Office-Suites",
+    "Cloud-Computing",
+    "Server-Panels"
+   ]
+  },
+  "jetkvm-full": {},
+  "apple-alt": {},
+  "sourcegraph": {
+   "a": [
+    "Code Search"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Web-Browsers"
+   ]
+  },
+  "jitsi-meet": {},
+  "nomad": {},
+  "clam-av": {
+   "k": [
+    "Security"
+   ]
+  },
+  "erste": {},
+  "sun-panel": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "firebase": {
+   "a": [
+    "Backend as a Service"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "Developer-Tools"
+   ]
+  },
+  "google-domains": {
+   "a": [
+    "domain-name-service",
+    "dns-management"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "Networking-Tools"
+   ]
+  },
+  "zenarmor": {
+   "k": [
+    "Security"
+   ]
+  },
+  "google-wifi": {},
+  "grocy": {},
+  "3cx": {
+   "w": [
+    "3cx",
+    "3cx-light"
+   ]
+  },
+  "adguard-home": {},
+  "nexterm": {
+   "a": [
+    "Terminal Emulator"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "matrix": {
+   "w": [
+    "matrix",
+    "matrix-light"
+   ]
+  },
+  "kubernetes": {
+   "a": [
+    "K8s"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "axis": {
+   "a": [
+    "security-camera-company",
+    "video-surveillance"
+   ],
+   "k": [
+    "Smart-Home",
+    "Hardware"
+   ]
+  },
+  "canvas-lms": {
+   "a": [
+    "instructure-canvas"
+   ],
+   "k": [
+    "Education"
+   ]
+  },
+  "google-one": {},
+  "google-maps": {},
+  "ubiquiti-networks": {},
+  "actual-budget": {},
+  "purelymail": {},
+  "pepperbox-tv": {
+   "a": [
+    "pepperbox"
+   ],
+   "w": [
+    "pepperbox-tv-dark",
+    "pepperbox-tv"
+   ]
+  },
+  "lexmark": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "tiny-media-manager": {
+   "a": [
+    "tmm"
+   ],
+   "k": [
+    "Video",
+    "Media"
+   ]
+  },
+  "netbootxyz": {
+   "a": [
+    "netboot.xyz",
+    "netboot"
+   ],
+   "k": [
+    "network"
+   ]
+  },
+  "tenda": {},
+  "backblaze": {
+   "a": [
+    "Cloud Backup"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "klipper": {},
+  "cilium": {
+   "w": [
+    "cilium",
+    "cilium-light"
+   ]
+  },
+  "rust": {
+   "a": [
+    "system-programming-language",
+    "modern-language"
+   ],
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ],
+   "w": [
+    "rust-dark",
+    "rust"
+   ]
+  },
+  "newshosting": {
+   "w": [
+    "newshosting-dark",
+    "newshosting"
+   ]
+  },
+  "embraer": {
+   "a": [
+    "Aircraft Manufacturer"
+   ],
+   "k": [
+    "Travel"
+   ]
+  },
+  "privatebin": {},
+  "plesk": {
+   "a": [
+    "hosting-control-panel",
+    "website-management"
+   ],
+   "k": [
+    "Server-Panels"
+   ]
+  },
+  "freepbx": {},
+  "teamspeak": {},
+  "owncast": {},
+  "nextcloud-contacts": {},
+  "atlassian-bitbucket": {},
+  "artifactory": {},
+  "confluence": {},
+  "julia": {},
+  "security-onion": {
+   "a": [
+    "onion",
+    "sos"
+   ],
+   "k": [
+    "Security"
+   ],
+   "w": [
+    "security-onion-dark",
+    "security-onion"
+   ]
+  },
+  "nextcloud-cookbook": {},
+  "freeipa": {},
+  "lite-speed": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "immich-public-proxy": {
+   "k": [
+    "Media"
+   ]
+  },
+  "it-tools": {
+   "w": [
+    "it-tools",
+    "it-tools-light"
+   ]
+  },
+  "code": {
+   "a": [
+    "text-editor",
+    "ide"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "redhat-linux": {},
+  "quetre": {},
+  "mitra": {},
+  "olivetin": {
+   "w": [
+    "olivetin",
+    "olivetin-light"
+   ]
+  },
+  "dc-os": {
+   "a": [
+    "Container Platform"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "papra": {
+   "k": [
+    "File"
+   ]
+  },
+  "beaver-habit-tracker": {
+   "a": [
+    "Habit Tracker"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Office-Suites"
+   ],
+   "w": [
+    "beaver-habit-tracker",
+    "beaver-habit-tracker-light"
+   ]
+  },
+  "hifiberry": {},
+  "western-digital": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "autobangumi": {
+   "k": [
+    "Media"
+   ],
+   "w": [
+    "autobangumi-dark",
+    "autobangumi"
+   ]
+  },
+  "dart": {},
+  "vitalpbx": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "series-troxide": {
+   "k": [
+    "Media"
+   ]
+  },
+  "ai-on-the-edge-device": {},
+  "hugging-face": {
+   "a": [
+    "machine-learning-platform",
+    "nlp-library"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms",
+    "Developer-Tools"
+   ]
+  },
+  "chirpy": {},
+  "xpipe": {},
+  "open-cloud": {
+   "k": [
+    "File"
+   ],
+   "w": [
+    "open-cloud-dark",
+    "open-cloud"
+   ]
+  },
+  "openproject": {
+   "a": [
+    "task-management",
+    "project-planning"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "twingate": {
+   "w": [
+    "twingate",
+    "twingate-light"
+   ]
+  },
+  "paymenter": {
+   "k": [
+    "E-Commerce"
+   ]
+  },
+  "kick": {
+   "w": [
+    "kick",
+    "kick-light"
+   ]
+  },
+  "bitcoin": {
+   "a": [
+    "btc",
+    "digital-currency"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "teleport": {},
+  "tiktok": {
+   "w": [
+    "tiktok",
+    "tiktok-light"
+   ]
+  },
+  "flatpak": {},
+  "radicale": {},
+  "open-wb": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "glances": {
+   "w": [
+    "glances",
+    "glances-light"
+   ]
+  },
+  "google-jules": {
+   "a": [
+    "jules",
+    "google-jules"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "beef": {
+   "a": [
+    "php-web-framework"
+   ],
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "beef",
+    "beef-light"
+   ]
+  },
+  "godot": {
+   "a": [
+    "godot-engine"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "keenetic": {},
+  "ubiquiti": {},
+  "spoolman": {
+   "a": [
+    "printer-server",
+    "cups-alternative"
+   ],
+   "k": [
+    "Home-Automation"
+   ]
+  },
+  "asrock-rack-ipmi": {
+   "a": [
+    "ipmi-tool",
+    "server-remote-management"
+   ],
+   "k": [
+    "Server-Panels",
+    "Hardware"
+   ]
+  },
+  "bigcapital": {
+   "a": [
+    "Finance Tracker"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "pagerduty": {
+   "a": [
+    "incident-alerting",
+    "on-call-management"
+   ],
+   "k": [
+    "Monitoring-Tools"
+   ]
+  },
+  "voip-ms": {},
+  "roundcube": {},
+  "bazarr": {
+   "w": [
+    "bazarr-dark",
+    "bazarr"
+   ]
+  },
+  "owntracks": {
+   "a": [
+    "Location Tracking"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Smart-Home"
+   ]
+  },
+  "robinhood": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "gerrit": {
+   "k": [
+    "Development"
+   ]
+  },
+  "rustdesk": {},
+  "bookstack": {},
+  "infinite-craft": {
+   "k": [
+    "Gaming"
+   ]
+  },
+  "authentik": {},
+  "kavita": {},
+  "browsh": {},
+  "nitter": {},
+  "bytestash": {
+   "a": [
+    "File Uploader"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Developer-Tools"
+   ]
+  },
+  "seelf": {
+   "a": [
+    "Social Network"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "tangerine-ui": {},
+  "nextcloud-notes": {},
+  "kanboard": {
+   "w": [
+    "kanboard",
+    "kanboard-light"
+   ]
+  },
+  "cc": {
+   "w": [
+    "cc",
+    "cc-light"
+   ]
+  },
+  "elastic-beats": {},
+  "microsoft-365-admin-center": {
+   "k": [
+    "cloud"
+   ]
+  },
+  "vscode": {},
+  "netsurf": {
+   "w": [
+    "netsurf",
+    "netsurf-light"
+   ]
+  },
+  "our-shopping-list": {
+   "a": [
+    "osl"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "requestly": {},
+  "cockpit": {
+   "w": [
+    "cockpit",
+    "cockpit-light"
+   ]
+  },
+  "stump-alt": {},
+  "goodreads": {
+   "a": [
+    "Book Social Network"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "n8n": {},
+  "logitech-gaming": {},
+  "hivedav": {},
+  "ideco": {
+   "a": [
+    "ideco-ngfw"
+   ],
+   "k": [
+    "Security"
+   ]
+  },
+  "excalidraw": {},
+  "tryhackme": {},
+  "electronic-arts": {},
+  "healthchecks": {
+   "k": [
+    "monitoring"
+   ],
+   "w": [
+    "healthchecks-dark",
+    "healthchecks-light"
+   ]
+  },
+  "scrcpy": {
+   "a": [
+    "android-screen-mirroring",
+    "phone-screen-on-pc"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Hardware"
+   ]
+  },
+  "eleventy": {
+   "w": [
+    "eleventy",
+    "eleventy-light"
+   ]
+  },
+  "harbor": {},
+  "lighttpd": {
+   "a": [
+    "Web Server"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Server-Panels",
+    "Networking-Tools"
+   ]
+  },
+  "kotlin": {},
+  "questdb": {},
+  "google-play-books": {},
+  "brocade": {},
+  "google-scholar": {},
+  "ethereum": {
+   "a": [
+    "crypto-platform",
+    "decentralized-apps"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Finance-&-Banking"
+   ]
+  },
+  "notebook-lm": {
+   "k": [
+    "Cloud"
+   ],
+   "w": [
+    "notebook-lm-dark",
+    "notebook-lm"
+   ]
+  },
+  "buildium": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "telegraf": {},
+  "stalwart-mail-server": {},
+  "music-assistant": {
+   "k": [
+    "entertainment"
+   ]
+  },
+  "feedlynx": {
+   "w": [
+    "feedlynx",
+    "feedlynx-light"
+   ]
+  },
+  "voltaserve": {
+   "w": [
+    "voltaserve",
+    "voltaserve-light"
+   ]
+  },
+  "meraki": {},
+  "xiaomi-global": {
+   "a": [
+    "mi-global",
+    "redmi-global"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "cloud66": {
+   "a": [
+    "cloud-paas",
+    "deployment-service"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "Developer-Tools"
+   ]
+  },
+  "fluent-reader": {
+   "a": [
+    "RSS Reader"
+   ],
+   "k": [
+    "News",
+    "Web-Browsers"
+   ]
+  },
+  "phorge": {
+   "w": [
+    "phorge",
+    "phorge-light"
+   ]
+  },
+  "confix": {
+   "a": [
+    "config",
+    "text-editor"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "alma-linux": {},
+  "lockheed-martin": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "anonaddy": {
+   "a": [
+    "Email Aliases"
+   ],
+   "k": [
+    "Email-Providers",
+    "Security"
+   ]
+  },
+  "jotty": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "godaddy": {},
+  "session": {
+   "a": [
+    "Messaging App"
+   ],
+   "k": [
+    "Communication",
+    "Security"
+   ]
+  },
+  "lemmy": {
+   "w": [
+    "lemmy",
+    "lemmy-light"
+   ]
+  },
+  "dillinger": {
+   "w": [
+    "dillinger",
+    "dillinger-light"
+   ]
+  },
+  "networking-toolbox": {
+   "w": [
+    "networking-toolbox-dark",
+    "networking-toolbox"
+   ]
+  },
+  "phpmyadmin": {},
+  "franz": {},
+  "microsoft-sql-server": {
+   "w": [
+    "microsoft-sql-server",
+    "microsoft-sql-server-light"
+   ]
+  },
+  "notion-calendar": {},
+  "cessna": {},
+  "peacock": {
+   "w": [
+    "peacock",
+    "peacock-light"
+   ]
+  },
+  "asus-router": {
+   "a": [
+    "Router"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Smart-Home"
+   ]
+  },
+  "endel": {
+   "k": [
+    "Health"
+   ],
+   "w": [
+    "endel-dark",
+    "endel"
+   ]
+  },
+  "sshwifty": {},
+  "5etools": {
+   "w": [
+    "5etools-dark",
+    "5etools"
+   ]
+  },
+  "forte": {
+   "w": [
+    "forte",
+    "forte-light"
+   ]
+  },
+  "dokuwiki": {},
+  "argo-cd": {
+   "a": [
+    "GitOps Tool"
+   ],
+   "k": [
+    "Developer-Tools",
+    "DevOps",
+    "Containerization-&-Orchestration"
+   ]
+  },
+  "endless": {
+   "w": [
+    "endless",
+    "endless-light"
+   ]
+  },
+  "traefik-proxy": {
+   "a": [
+    "Reverse Proxy"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels"
+   ]
+  },
+  "elastic-logstash": {},
+  "shopify": {},
+  "maybe": {},
+  "boeing": {},
+  "eblocker": {
+   "a": [
+    "adblocker",
+    "privacy-browser-extension"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Security"
+   ]
+  },
+  "hostinger": {},
+  "commento": {
+   "a": [
+    "website-comments",
+    "embeddable-comments"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Developer-Tools"
+   ],
+   "w": [
+    "commento",
+    "commento-light"
+   ]
+  },
+  "atlassian-trello": {},
+  "servarr": {
+   "w": [
+    "servarr",
+    "servarr-light"
+   ]
+  },
+  "vertiv": {
+   "w": [
+    "vertiv-dark",
+    "vertiv"
+   ]
+  },
+  "sonarqube": {},
+  "arcane": {
+   "k": [
+    "Development"
+   ]
+  },
+  "qbittorrent": {},
+  "cloud9": {
+   "a": [
+    "aws-cloud9",
+    "online-ide"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Cloud-Computing"
+   ],
+   "w": [
+    "cloud9",
+    "cloud9-light"
+   ]
+  },
+  "zalo": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "peertube": {
+   "a": [
+    "Video Platform"
+   ],
+   "k": [
+    "Video-Streaming",
+    "Media-Servers",
+    "Social-Media"
+   ]
+  },
+  "xubuntu-linux": {},
+  "pushover": {},
+  "google-shopping": {},
+  "android-robot": {
+   "a": [
+    "android-logo",
+    "mobile-os-icon"
+   ],
+   "k": [
+    "Operating-Systems"
+   ]
+  },
+  "photopea": {},
+  "jenkins": {
+   "a": [
+    "CI/CD"
+   ],
+   "k": [
+    "Developer-Tools",
+    "DevOps"
+   ]
+  },
+  "lobe-chat": {
+   "a": [
+    "lobe-ai",
+    "chatgpt-ui"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms"
+   ]
+  },
+  "mailjet": {
+   "a": [
+    "Email Service"
+   ],
+   "k": [
+    "Email-Providers"
+   ]
+  },
+  "instagram": {},
+  "check-cle": {
+   "k": [
+    "Development"
+   ]
+  },
+  "perlite": {},
+  "figma": {
+   "k": [
+    "Design"
+   ]
+  },
+  "digital-ocean": {},
+  "jujutsu-vcs": {
+   "k": [
+    "Development"
+   ]
+  },
+  "sparkleshare": {
+   "a": [
+    "File Sync"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Cloud-Computing"
+   ]
+  },
+  "yourls": {},
+  "blender": {
+   "k": [
+    "Development"
+   ]
+  },
+  "firefox-developer-edition": {},
+  "flatnotes": {
+   "a": [
+    "markdown-notes",
+    "plain-text-notes"
+   ],
+   "k": [
+    "Note-taking-Apps"
+   ]
+  },
+  "xcp-ng": {},
+  "zipline-diced": {
+   "a": [
+    "diced-zipline",
+    "zipline-file"
+   ],
+   "k": [
+    "Media",
+    "File"
+   ]
+  },
+  "meshtastic": {},
+  "typesense": {
+   "k": [
+    "Search"
+   ]
+  },
+  "whats-up-docker": {},
+  "omnic-forge": {
+   "k": [
+    "Gaming"
+   ],
+   "w": [
+    "omnic-forge-dark",
+    "omnic-forge"
+   ]
+  },
+  "evernote": {
+   "a": [
+    "evernote"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "filecloud": {},
+  "cryptpad": {
+   "a": [
+    "encrypted-office-suite",
+    "private-document-editor"
+   ],
+   "k": [
+    "Office-Suites",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "mastodon": {},
+  "runson": {
+   "w": [
+    "runson",
+    "runson-light"
+   ]
+  },
+  "sst-dev": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "sst-dev-dark",
+    "sst-dev"
+   ]
+  },
+  "bilibili": {
+   "k": [
+    "Video"
+   ]
+  },
+  "hashicorp-boundary": {},
+  "jwt-io": {
+   "w": [
+    "jwt-io",
+    "jwt-io-light"
+   ]
+  },
+  "crafty-controller": {},
+  "zulip": {
+   "a": [
+    "Team Chat"
+   ],
+   "k": [
+    "Communication",
+    "Office-Suites"
+   ]
+  },
+  "telekom": {},
+  "linkedin": {},
+  "chromium": {},
+  "python": {},
+  "zerotier": {
+   "w": [
+    "zerotier",
+    "zerotier-light"
+   ]
+  },
+  "kamatera": {
+   "a": [
+    "vps-provider",
+    "cloud-server"
+   ],
+   "k": [
+    "Cloud-Computing"
+   ]
+  },
+  "portainer-alt": {},
+  "aws": {
+   "w": [
+    "aws",
+    "aws-light"
+   ]
+  },
+  "wekan": {},
+  "apple": {
+   "w": [
+    "apple-light",
+    "apple"
+   ]
+  },
+  "thanos": {},
+  "gerbera": {
+   "a": [
+    "upnp-server",
+    "dlna-server"
+   ],
+   "k": [
+    "Media-Servers",
+    "Home-Automation"
+   ]
+  },
+  "dilg": {
+   "a": [
+    "dilg-2025"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "icloud": {},
+  "storm": {},
+  "double-commander": {
+   "a": [
+    "File Manager"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Office-Suites"
+   ]
+  },
+  "android": {
+   "a": [
+    "android-os",
+    "mobile-os"
+   ],
+   "k": [
+    "Operating-Systems"
+   ]
+  },
+  "hdhomerun": {
+   "w": [
+    "hdhomerun",
+    "hdhomerun-light"
+   ]
+  },
+  "appflowy": {},
+  "platzi": {
+   "k": [
+    "Education"
+   ]
+  },
+  "docker-mailserver": {
+   "w": [
+    "docker-mailserver",
+    "docker-mailserver-light"
+   ]
+  },
+  "directadmin": {},
+  "microsoft-sharepoint": {
+   "a": [
+    "Collaboration Platform"
+   ],
+   "k": [
+    "Office-Suites",
+    "Cloud-Computing",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "bunny": {
+   "a": [
+    "bunny-net",
+    "bunny-cdn"
+   ],
+   "k": [
+    "Animal"
+   ]
+  },
+  "oauth2-proxy": {
+   "a": [
+    "Authentication Proxy"
+   ],
+   "k": [
+    "Security",
+    "Networking-Tools",
+    "Developer-Tools"
+   ]
+  },
+  "vikunja": {
+   "a": [
+    "Task Management"
+   ],
+   "k": [
+    "Office-Suites",
+    "Note-taking-Apps"
+   ]
+  },
+  "asana": {},
+  "mautic": {},
+  "netgear": {
+   "w": [
+    "netgear",
+    "netgear-light"
+   ]
+  },
+  "nextcloud-cospend": {
+   "a": [
+    "Expense Tracker"
+   ],
+   "k": [
+    "Finance-&-Banking",
+    "Office-Suites"
+   ]
+  },
+  "microsoft-office": {},
+  "mullvad-vpn": {},
+  "nicotine-plus": {
+   "a": [
+    "Soulseek Client"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Download-Managers"
+   ]
+  },
+  "plume": {},
+  "budgetbee": {
+   "a": [
+    "budget-manager",
+    "personal-finance"
+   ],
+   "k": [
+    "Finance-&-Banking",
+    "Note-taking-Apps"
+   ],
+   "w": [
+    "budgetbee",
+    "budgetbee-light"
+   ]
+  },
+  "google-lens": {},
+  "fusionauth": {
+   "w": [
+    "fusionauth",
+    "fusionauth-light"
+   ]
+  },
+  "twitter": {
+   "a": [
+    "x-platform",
+    "microblogging"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "handbrake": {},
+  "posthog": {
+   "a": [
+    "product-analytics-tool",
+    "user-analytics"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Monitoring-Tools"
+   ],
+   "w": [
+    "posthog",
+    "posthog-light"
+   ]
+  },
+  "stb-proxy": {},
+  "price-buddy": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "atlassian-confluence": {},
+  "powerdns": {
+   "a": [
+    "DNS Server"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels"
+   ]
+  },
+  "tooljet": {
+   "w": [
+    "tooljet-dark",
+    "tooljet"
+   ]
+  },
+  "neonlink": {},
+  "librespeed": {
+   "w": [
+    "librespeed",
+    "librespeed-light"
+   ]
+  },
+  "hetzner-h": {
+   "a": [
+    "hetzner",
+    "hetzner-min"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "gpt4free": {
+   "a": [
+    "free-chatgpt",
+    "unlimited-ai-chat"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms"
+   ]
+  },
+  "livebook": {
+   "k": [
+    "Development"
+   ]
+  },
+  "pingvin-share": {
+   "a": [
+    "File Sharing"
+   ],
+   "k": [
+    "File-Sharing-&-Sync"
+   ],
+   "w": [
+    "pingvin-share-dark",
+    "pingvin-share"
+   ]
+  },
+  "hammond": {
+   "w": [
+    "hammond",
+    "hammond-light"
+   ]
+  },
+  "donetick": {},
+  "tumblr": {
+   "a": [
+    "microblogging-platform"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "ruby": {
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ]
+  },
+  "profilarr": {
+   "k": [
+    "media",
+    "home-automation"
+   ]
+  },
+  "hotio": {},
+  "vue-js": {
+   "a": [
+    "vue",
+    "vuejs"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "crowdin": {
+   "w": [
+    "crowdin-dark",
+    "crowdin"
+   ]
+  },
+  "google-assistant": {
+   "a": [
+    "Voice Assistant"
+   ],
+   "k": [
+    "Smart-Home",
+    "AI-&-LLM-Platforms"
+   ]
+  },
+  "pioneer": {
+   "k": [
+    "Hardware"
+   ],
+   "w": [
+    "pioneer",
+    "pioneer-light"
+   ]
+  },
+  "microsoft-onedrive": {
+   "k": [
+    "cloud"
+   ]
+  },
+  "navidrome": {
+   "k": [
+    "entertainment"
+   ]
+  },
+  "pushfish": {
+   "a": [
+    "Push Notification"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "x": {},
+  "hashicorp-waypoint": {},
+  "i-librarian": {
+   "a": [
+    "ilibrarian",
+    "i-lib"
+   ],
+   "k": [
+    "Education"
+   ]
+  },
+  "filestash": {
+   "a": [
+    "Web File Manager"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Web-Browsers"
+   ]
+  },
+  "fritzbox": {
+   "w": [
+    "fritzbox",
+    "fritzbox-light"
+   ]
+  },
+  "librechat": {
+   "a": [
+    "libre-chat"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "mega-nz": {
+   "a": [
+    "Cloud Storage"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "File-Sharing-&-Sync"
+   ],
+   "w": [
+    "mega-nz-dark",
+    "mega-nz"
+   ]
+  },
+  "immich-power-tools": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "prusa-research": {},
+  "wazuh": {},
+  "remnote": {
+   "a": [
+    "remnote",
+    "rem-note"
+   ],
+   "k": [
+    "Education"
+   ]
+  },
+  "cachyos-linux": {
+   "a": [
+    "cachyos"
+   ]
+  },
+  "proxmenu": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "nagios": {},
+  "hilook": {},
+  "tux": {
+   "a": [
+    "linux-penguin",
+    "os-mascot"
+   ],
+   "k": [
+    "Operating-Systems"
+   ]
+  },
+  "blogger": {},
+  "firefox-nightly": {},
+  "mail-archiver": {},
+  "dell": {
+   "w": [
+    "dell-light"
+   ]
+  },
+  "graylog": {},
+  "rstudioserver": {
+   "a": [
+    "R IDE"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Programming-Languages"
+   ]
+  },
+  "kagi": {},
+  "iobroker": {},
+  "photonix": {
+   "w": [
+    "photonix",
+    "photonix-light"
+   ]
+  },
+  "veeam": {
+   "a": [
+    "vm-backup",
+    "data-backup"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "readeck": {},
+  "qnap": {},
+  "chatwoot": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "fenrus": {
+   "w": [
+    "fenrus",
+    "fenrus-light"
+   ]
+  },
+  "bunkerweb": {
+   "a": [
+    "Reverse Proxy"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels",
+    "Security"
+   ]
+  },
+  "gladys-assistant": {
+   "a": [
+    "voice-controlled-home",
+    "smart-home-platform"
+   ],
+   "k": [
+    "Smart-Home",
+    "Home-Automation"
+   ]
+  },
+  "osu": {
+   "a": [
+    "osu lazer",
+    "osu!"
+   ],
+   "k": [
+    "Gaming"
+   ]
+  },
+  "concourse": {},
+  "terraform": {},
+  "defguard": {},
+  "hulu": {
+   "a": [
+    "Streaming Service"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "avigilon": {},
+  "gotosocial": {},
+  "google-tv": {},
+  "open-router": {
+   "a": [
+    "openrouter"
+   ],
+   "k": [
+    "Cloud"
+   ],
+   "w": [
+    "open-router-dark",
+    "open-router"
+   ]
+  },
+  "deluge": {
+   "a": [
+    "bittorrent-client",
+    "torrenting-app"
+   ],
+   "k": [
+    "Download-Managers"
+   ]
+  },
+  "logstash": {},
+  "feedbase": {
+   "w": [
+    "feedbase",
+    "feedbase-light"
+   ]
+  },
+  "webmin": {},
+  "zyxel-communications": {
+   "w": [
+    "zyxel-communications",
+    "zyxel-communications-light"
+   ]
+  },
+  "floorp": {},
+  "enclosed": {
+   "w": [
+    "enclosed",
+    "enclosed-light"
+   ]
+  },
+  "asus": {},
+  "zigbee2mqtt": {
+   "w": [
+    "zigbee2mqtt",
+    "zigbee2mqtt-light"
+   ]
+  },
+  "newegg": {},
+  "richy": {},
+  "diners-club": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "memories": {
+   "w": [
+    "memories",
+    "memories-light"
+   ]
+  },
+  "the-onion": {
+   "a": [
+    "theonion",
+    "onion"
+   ]
+  },
+  "undb": {},
+  "matter": {
+   "w": [
+    "matter",
+    "matter-light"
+   ]
+  },
+  "swingmusic": {},
+  "mosquitto": {
+   "a": [
+    "mqtt-server",
+    "iot-broker"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Home-Automation"
+   ]
+  },
+  "apache-subversion": {},
+  "syncplay": {
+   "k": [
+    "Media"
+   ]
+  },
+  "frp": {
+   "k": [
+    "Networking-Tools"
+   ]
+  },
+  "ko-insight": {
+   "k": [
+    "Media"
+   ]
+  },
+  "borgmatic": {
+   "w": [
+    "borgmatic",
+    "borgmatic-light"
+   ]
+  },
+  "nginx": {
+   "a": [
+    "Web Server"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Server-Panels",
+    "Networking-Tools"
+   ]
+  },
+  "mergeable": {
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "mergeable-dark",
+    "mergeable"
+   ]
+  },
+  "lancommander": {
+   "w": [
+    "lancommander",
+    "lancommander-light"
+   ]
+  },
+  "monkeytype": {
+   "a": [
+    "monkeytype",
+    "monkey type"
+   ]
+  },
+  "readarr": {},
+  "directus": {},
+  "komodo": {
+   "a": [
+    "ide",
+    "text-editor"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "f-droid": {},
+  "trmnl": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "google-fi": {},
+  "sigstore": {
+   "a": [
+    "digital-signatures",
+    "software-verification"
+   ],
+   "k": [
+    "Security",
+    "Developer-Tools"
+   ]
+  },
+  "nginx-proxy-manager": {
+   "a": [
+    "Reverse Proxy UI"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels"
+   ]
+  },
+  "albert-heijn": {},
+  "checkmk": {},
+  "icecast": {
+   "a": [
+    "audio-streaming-server",
+    "internet-radio-server"
+   ],
+   "k": [
+    "Media-Servers",
+    "Music-Streaming"
+   ]
+  },
+  "remmina": {},
+  "vite": {
+   "a": [
+    "vite-js vite-ts"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "channels-dvr": {
+   "a": [
+    "digital-video-recorder",
+    "tv-recording"
+   ],
+   "k": [
+    "Media-Servers",
+    "Home-Automation"
+   ]
+  },
+  "1password": {
+   "w": [
+    "1password-dark",
+    "1password"
+   ]
+  },
+  "mubi": {
+   "k": [
+    "Media"
+   ],
+   "w": [
+    "mubi-dark",
+    "mubi"
+   ]
+  },
+  "mousehole": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "mousehole-dark",
+    "mousehole"
+   ]
+  },
+  "emsesp": {
+   "a": [
+    "ems-esp"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "google-colab": {},
+  "google-alerts": {},
+  "microsoft-edge": {},
+  "discord": {},
+  "eitaa": {
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "mtlynch-picoshare": {
+   "k": [
+    "File"
+   ]
+  },
+  "lidarr": {
+   "a": [
+    "music-library-manager",
+    "audio-downloader"
+   ],
+   "k": [
+    "Music-Streaming",
+    "Media-Servers"
+   ]
+  },
+  "joomla": {
+   "a": [
+    "content-management-system",
+    "website-builder"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "microsoft-copilot": {
+   "a": [
+    "ai-chatbot",
+    "productivity-assistant"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms",
+    "Office-Suites"
+   ]
+  },
+  "zabka": {},
+  "vmware-workstation": {},
+  "penpot": {
+   "w": [
+    "penpot",
+    "penpot-light"
+   ]
+  },
+  "duo": {
+   "a": [
+    "Two-Factor Authentication"
+   ],
+   "k": [
+    "Password-Managers",
+    "Security"
+   ]
+  },
+  "uptimerobot": {
+   "a": [
+    "uptime-robot"
+   ],
+   "k": [
+    "Monitoring-Tools"
+   ]
+  },
+  "openai": {
+   "a": [
+    "gpt-api",
+    "artificial-intelligence-api"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms"
+   ],
+   "w": [
+    "openai",
+    "openai-light"
+   ]
+  },
+  "immich-frame": {
+   "a": [
+    "ImmichFrame",
+    "Immich Frame"
+   ],
+   "k": [
+    "media",
+    "entertainment"
+   ]
+  },
+  "akaunting": {
+   "k": [
+    "Finance"
+   ]
+  },
+  "terminal": {
+   "a": [
+    "command-line",
+    "shell-interface"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Operating-Systems"
+   ]
+  },
+  "google-calendar": {},
+  "flood": {},
+  "denon": {
+   "w": [
+    "denon",
+    "denon-light"
+   ]
+  },
+  "sphinx": {},
+  "espressif": {},
+  "focalboard": {
+   "a": [
+    "mattermost-boards"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "synology": {
+   "k": [
+    "Hardware",
+    "Smart-Home",
+    "File-Sharing-&-Sync",
+    "Media-Servers"
+   ],
+   "w": [
+    "synology",
+    "synology-light"
+   ]
+  },
+  "authelia": {
+   "a": [
+    "reverse-proxy-auth",
+    "identity-provider"
+   ],
+   "k": [
+    "Security",
+    "Networking-Tools"
+   ]
+  },
+  "microsoft-outlook": {},
+  "open-regex": {},
+  "send": {},
+  "woocommerce": {},
+  "ciphermail": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "piwigo": {},
+  "opencode": {
+   "a": [
+    "open code"
+   ],
+   "k": [
+    "tools",
+    "development",
+    "utility"
+   ],
+   "w": [
+    "opencode-dark",
+    "opencode-light"
+   ]
+  },
+  "nextcloud-white": {},
+  "mysterium": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "lodestone": {
+   "a": [
+    "Knowledge Base"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Office-Suites"
+   ]
+  },
+  "d-link": {
+   "a": [
+    "Network Devices"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Hardware"
+   ]
+  },
+  "your-spotify": {},
+  "cloudflare-zero-trust": {
+   "a": [
+    "zero-trust-network",
+    "secure-access-service"
+   ],
+   "k": [
+    "cloud"
+   ]
+  },
+  "maker-world": {
+   "k": [
+    "Design"
+   ],
+   "w": [
+    "maker-world-dark",
+    "maker-world"
+   ]
+  },
+  "proton-pass": {},
+  "cooler-control": {
+   "a": [
+    "Fan Control"
+   ],
+   "k": [
+    "Hardware",
+    "Monitoring-Tools"
+   ]
+  },
+  "google-sites": {},
+  "zipcaptions": {
+   "a": [
+    "Subtitle Tool"
+   ],
+   "k": [
+    "Media-Servers",
+    "Developer-Tools"
+   ]
+  },
+  "codestats": {
+   "a": [
+    "Code Analytics"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Monitoring-Tools"
+   ],
+   "w": [
+    "codestats",
+    "codestats-light"
+   ]
+  },
+  "boundary": {},
+  "costco": {},
+  "vmware-esxi": {},
+  "mediux": {},
+  "unity": {
+   "a": [
+    "unity-3d"
+   ],
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "unity-dark",
+    "unity"
+   ]
+  },
+  "webkit": {},
+  "chevereto": {},
+  "modrinth": {},
+  "apple-maps": {
+   "a": [
+    "apple",
+    "maps",
+    "apple-maps",
+    "applemaps",
+    "mapsapple",
+    "maps-apple"
+   ],
+   "k": [
+    "Location"
+   ]
+  },
+  "kibana": {
+   "a": [
+    "dashboarding-tool",
+    "log-analyzer"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Developer-Tools"
+   ]
+  },
+  "xen-orchestra": {},
+  "consul": {
+   "a": [
+    "Service Discovery"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Developer-Tools"
+   ]
+  },
+  "homelabids": {
+   "k": [
+    "Security"
+   ]
+  },
+  "hikvision": {},
+  "inoreader": {
+   "a": [
+    "online-rss-reader",
+    "feed-aggregator"
+   ],
+   "k": [
+    "News"
+   ]
+  },
+  "netboot": {},
+  "ycombinator": {
+   "w": [
+    "ycombinator-dark",
+    "ycombinator"
+   ]
+  },
+  "onlyfans": {
+   "a": [
+    "only-fans",
+    "of"
+   ],
+   "k": [
+    "Social-Media"
+   ],
+   "w": [
+    "onlyfans-dark",
+    "onlyfans"
+   ]
+  },
+  "gotify": {},
+  "prtg": {},
+  "tvheadend": {},
+  "plex-alt": {
+   "w": [
+    "plex-alt",
+    "plex-alt-light"
+   ]
+  },
+  "kubuntu-linux": {},
+  "invidious": {
+   "a": [
+    "youtube-privacy-frontend",
+    "privacy-youtube"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "neo4j": {},
+  "wooting": {
+   "a": [
+    "keyboard",
+    "wootility"
+   ],
+   "k": [
+    "Hardware"
+   ],
+   "w": [
+    "wooting-dark",
+    "wooting"
+   ]
+  },
+  "shiori": {},
+  "pelican-panel": {},
+  "rook": {
+   "a": [
+    "kubernetes-storage",
+    "cloud-native-storage"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Cloud-Computing"
+   ]
+  },
+  "pingvin": {
+   "a": [
+    "Monitoring Tool"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ],
+   "w": [
+    "pingvin-dark",
+    "pingvin"
+   ]
+  },
+  "atlassian": {},
+  "listenbrainz": {
+   "k": [
+    "Music"
+   ]
+  },
+  "xmrig": {},
+  "duplicati": {},
+  "recyclarr": {},
+  "slidev": {},
+  "alexandrie": {
+   "w": [
+    "alexandrie-dark",
+    "alexandrie"
+   ]
+  },
+  "at-t": {},
+  "wanderer": {
+   "w": [
+    "wanderer",
+    "wanderer-light"
+   ]
+  },
+  "rybbit": {
+   "w": [
+    "rybbit-dark",
+    "rybbit"
+   ]
+  },
+  "asciinema": {},
+  "7zip": {
+   "a": [
+    "7-zip"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "rdt-client": {},
+  "funkwhale": {
+   "a": [
+    "podcasting-platform",
+    "audio-server"
+   ],
+   "k": [
+    "Media-Servers",
+    "Music-Streaming"
+   ],
+   "w": [
+    "funkwhale",
+    "funkwhale-light"
+   ]
+  },
+  "ocular": {},
+  "neon-tech": {
+   "a": [
+    "neon"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "sendinblue": {},
+  "nut-webgui": {
+   "k": [
+    "Development"
+   ]
+  },
+  "seznam": {
+   "a": [
+    "Seznam - najdu tam",
+    "co neznam"
+   ],
+   "k": [
+    "Search"
+   ]
+  },
+  "git": {
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ]
+  },
+  "oreilly": {
+   "k": [
+    "Education"
+   ],
+   "w": [
+    "oreilly-dark",
+    "oreilly"
+   ]
+  },
+  "mstream": {
+   "a": [
+    "personal-music-server",
+    "audio-streaming"
+   ],
+   "k": [
+    "Media-Servers",
+    "Music-Streaming"
+   ]
+  },
+  "zipline": {
+   "a": [
+    "youtube-privacy-frontend",
+    "ad-free-youtube-player"
+   ],
+   "k": [
+    "Video-Streaming",
+    "Web-Browsers"
+   ],
+   "w": [
+    "zipline",
+    "zipline-light"
+   ]
+  },
+  "coredns": {
+   "a": [
+    "DNS Server"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Server-Panels"
+   ]
+  },
+  "copyq": {},
+  "metallb": {
+   "a": [
+    "kubernetes-load-balancer",
+    "service-lb"
+   ],
+   "k": [
+    "Cloud",
+    "Hardware",
+    "Development",
+    "Containerization-&-Orchestration",
+    "Networking-Tools"
+   ]
+  },
+  "microsoft-word": {},
+  "gitee": {
+   "a": [
+    "china-github",
+    "code-repository"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ]
+  },
+  "proton-lumo": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "haproxy": {},
+  "myspeed": {
+   "a": [
+    "Speed Test"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Monitoring-Tools",
+    "Web-Browsers"
+   ]
+  },
+  "box": {},
+  "invoice-ninja": {
+   "k": [
+    "E-commerce-Platforms",
+    "Finance-&-Banking"
+   ],
+   "w": [
+    "invoice-ninja",
+    "invoice-ninja-light"
+   ]
+  },
+  "teamcity": {
+   "w": [
+    "teamcity",
+    "teamcity-light"
+   ]
+  },
+  "opensuse": {},
+  "google": {},
+  "sonarr": {
+   "w": [
+    "sonarr-dark",
+    "sonarr"
+   ]
+  },
+  "falcon-player": {
+   "w": [
+    "falcon-player-dark",
+    "falcon-player"
+   ]
+  },
+  "quay": {
+   "k": [
+    "Development"
+   ]
+  },
+  "ente-auth": {
+   "k": [
+    "Security"
+   ]
+  },
+  "mongodb": {},
+  "salt-project": {
+   "a": [
+    "saltstack",
+    "salt"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "paperless-ngx": {},
+  "gitsign": {
+   "a": [
+    "Code Signing"
+   ],
+   "k": [
+    "Security",
+    "Developer-Tools",
+    "Version-Control-Systems"
+   ]
+  },
+  "postgresql": {},
+  "wevr-labs": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "diagrams-net": {},
+  "manjaro-linux": {},
+  "google-home": {
+   "a": [
+    "smart-speaker",
+    "voice-assistant-device"
+   ],
+   "k": [
+    "Smart-Home",
+    "Home-Automation"
+   ]
+  },
+  "cleanuperr": {
+   "w": [
+    "cleanuperr-dark",
+    "cleanuperr-light"
+   ]
+  },
+  "typo3": {},
+  "theia": {
+   "w": [
+    "theia",
+    "theia-light"
+   ]
+  },
+  "apache-cassandra": {
+   "a": [
+    "NoSQL Database"
+   ],
+   "k": [
+    "Databases"
+   ]
+  },
+  "kasm": {
+   "a": [
+    "Workspace Streaming"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "fider": {
+   "a": [
+    "feature-requests",
+    "idea-voting"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Office-Suites"
+   ]
+  },
+  "google-contacts": {
+   "a": [
+    "address-book",
+    "people-management"
+   ],
+   "k": [
+    "Office-Suites"
+   ]
+  },
+  "mantrae": {
+   "k": [
+    "cloud",
+    "network",
+    "tools"
+   ],
+   "w": [
+    "mantrae-dark",
+    "mantrae-light"
+   ]
+  },
+  "lostack": {
+   "k": [
+    "Development"
+   ]
+  },
+  "public-pool": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "emq": {
+   "a": [
+    "MQTT Broker"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Smart-Home",
+    "Developer-Tools"
+   ],
+   "w": [
+    "emq",
+    "emq-light"
+   ]
+  },
+  "redict": {
+   "a": [
+    "redis-admin",
+    "database-management-tool"
+   ],
+   "k": [
+    "Databases",
+    "Developer-Tools"
+   ]
+  },
+  "zen-browser": {
+   "a": [
+    "zen"
+   ],
+   "w": [
+    "zen-browser-dark",
+    "zen-browser"
+   ]
+  },
+  "pritunl": {
+   "a": [
+    "VPN Server"
+   ],
+   "k": [
+    "VPN",
+    "Networking-Tools",
+    "Security"
+   ]
+  },
+  "atlassian-opsgenie": {},
+  "shell-tips": {
+   "a": [
+    "Command Line Tips"
+   ],
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "shell-tips",
+    "shell-tips-light"
+   ]
+  },
+  "whisparr": {},
+  "aura": {
+   "k": [
+    "Media"
+   ]
+  },
+  "freshrss": {
+   "a": [
+    "RSS Reader",
+    "Feed Reader"
+   ],
+   "k": [
+    "Web-Browsers",
+    "News"
+   ]
+  },
+  "esphome": {
+   "w": [
+    "esphome",
+    "esphome-light"
+   ]
+  },
+  "mympd": {
+   "k": [
+    "Media"
+   ]
+  },
+  "wd-mycloud": {
+   "a": [
+    "network-attached-storage",
+    "personal-cloud"
+   ],
+   "k": [
+    "Cloud",
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "qutebrowser": {},
+  "yac-reader": {
+   "a": [
+    "yacreader"
+   ],
+   "k": [
+    "File",
+    "Education"
+   ]
+  },
+  "jellystat": {
+   "w": [
+    "jellystat-dark",
+    "jellystat"
+   ]
+  },
+  "nextcloud-tables": {},
+  "ctfreak": {},
+  "fios": {
+   "a": [
+    "ISP"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Communication"
+   ],
+   "w": [
+    "fios",
+    "fios-light"
+   ]
+  },
+  "casaos": {},
+  "qwen": {},
+  "czkawka": {
+   "a": [
+    "Duplicate File Finder"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Office-Suites"
+   ]
+  },
+  "dia": {},
+  "okta": {
+   "k": [
+    "Security"
+   ],
+   "w": [
+    "okta-dark",
+    "okta"
+   ]
+  },
+  "linkding": {},
+  "tuta": {
+   "a": [
+    "tutanota"
+   ],
+   "k": [
+    "Communication"
+   ]
+  },
+  "passbolt": {},
+  "microsoft": {},
+  "telegram": {},
+  "pulse": {
+   "k": [
+    "monitoring",
+    "network",
+    "tools"
+   ]
+  },
+  "google-classroom": {},
+  "etherpad": {
+   "a": [
+    "Collaborative Editor"
+   ],
+   "k": [
+    "Office-Suites",
+    "Web-Browsers"
+   ]
+  },
+  "endurain": {},
+  "ruby-on-rails": {
+   "a": [
+    "rails"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "surveymonkey": {
+   "a": [
+    "online-survey",
+    "questionnaire-tool"
+   ],
+   "k": [
+    "Office-Suites"
+   ]
+  },
+  "infoblox": {},
+  "freenas": {},
+  "amd": {
+   "a": [
+    "processor-company",
+    "computer-chips"
+   ],
+   "k": [
+    "Hardware",
+    "Organization"
+   ],
+   "w": [
+    "amd",
+    "amd-light"
+   ]
+  },
+  "jackett": {
+   "w": [
+    "jackett",
+    "jackett-light"
+   ]
+  },
+  "jetbrains-toolbox": {
+   "k": [
+    "Development"
+   ]
+  },
+  "victron-energy": {
+   "k": [
+    "Logistics"
+   ]
+  },
+  "pfsense": {
+   "a": [
+    "Firewall",
+    "Router OS"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Networking-Tools",
+    "Security",
+    "Linux-Distributions"
+   ],
+   "w": [
+    "pfsense",
+    "pfsense-light"
+   ]
+  },
+  "pyload": {},
+  "paypal": {},
+  "bazecor": {},
+  "omada": {},
+  "openmediavault": {},
+  "filegator": {},
+  "baserow": {},
+  "quizlet": {},
+  "homebox": {},
+  "strava": {
+   "k": [
+    "Health",
+    "Location"
+   ]
+  },
+  "snapchat": {
+   "a": [
+    "photo-sharing-app",
+    "messaging-app"
+   ],
+   "k": [
+    "Social-Media"
+   ],
+   "w": [
+    "snapchat-dark",
+    "snapchat"
+   ]
+  },
+  "mikrotik": {
+   "a": [
+    "router-manufacturer",
+    "network-devices"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Hardware"
+   ],
+   "w": [
+    "mikrotik",
+    "mikrotik-light"
+   ]
+  },
+  "windows-retro": {
+   "a": [
+    "windows-classic-theme",
+    "windows-95-theme"
+   ],
+   "k": [
+    "Operating-Systems"
+   ],
+   "w": [
+    "windows-retro",
+    "windows-retro-light"
+   ]
+  },
+  "lidl": {},
+  "unifi-drive": {
+   "k": [
+    "File"
+   ]
+  },
+  "paperless": {
+   "w": [
+    "paperless-dark",
+    "paperless-light"
+   ]
+  },
+  "nutanix": {},
+  "office-365": {
+   "a": [
+    "Microsoft 365"
+   ],
+   "k": [
+    "Office-Suites",
+    "Cloud-Computing"
+   ]
+  },
+  "fleetdm": {},
+  "ferretdb": {
+   "a": [
+    "mongodb-alternative",
+    "document-database"
+   ],
+   "k": [
+    "Databases"
+   ]
+  },
+  "infisical": {
+   "k": [
+    "Development"
+   ]
+  },
+  "hp": {},
+  "findroid": {},
+  "nvidia": {},
+  "nu-nl": {
+   "a": [
+    "News Website"
+   ],
+   "k": [
+    "News",
+    "Web-Browsers"
+   ]
+  },
+  "amazon": {
+   "a": [
+    "online-marketplace",
+    "shopping-website"
+   ],
+   "k": [
+    "E-commerce-Platforms"
+   ],
+   "w": [
+    "amazon",
+    "amazon-light"
+   ]
+  },
+  "gmail": {
+   "a": [
+    "google-mail",
+    "webmail-service"
+   ],
+   "k": [
+    "Email-Providers"
+   ]
+  },
+  "mailgun": {},
+  "android-auto": {
+   "k": [
+    "Smart-Home"
+   ],
+   "w": [
+    "android-auto-dark",
+    "android-auto"
+   ]
+  },
+  "stirling-pdf": {},
+  "privacyidea": {
+   "a": [
+    "2FA"
+   ],
+   "k": [
+    "Password-Managers",
+    "Security"
+   ]
+  },
+  "linuxgsm": {},
+  "hasheous": {},
+  "ripe": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "pg-back-web": {
+   "a": [
+    "postgres-backup-manager",
+    "database-backup-ui"
+   ],
+   "k": [
+    "Databases",
+    "Developer-Tools"
+   ]
+  },
+  "lms-mixtape": {
+   "k": [
+    "Music"
+   ]
+  },
+  "youtube-kids": {},
+  "portainer": {
+   "w": [
+    "portainer-dark",
+    "portainer"
+   ]
+  },
+  "ubuntu-linux": {
+   "a": [
+    "Linux Distribution"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Linux-Distributions"
+   ]
+  },
+  "datadog": {},
+  "cosign": {},
+  "oneuptime": {
+   "w": [
+    "oneuptime",
+    "oneuptime-light"
+   ]
+  },
+  "github": {
+   "a": [
+    "git-hosting",
+    "code-repository"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ],
+   "w": [
+    "github",
+    "github-light"
+   ]
+  },
+  "the-pirate-bay": {},
+  "ultimate-guitar": {
+   "a": [
+    "Tabs Website"
+   ],
+   "k": [
+    "Music-Streaming",
+    "Web-Browsers"
+   ],
+   "w": [
+    "ultimate-guitar",
+    "ultimate-guitar-light"
+   ]
+  },
+  "youtube-music": {},
+  "npm": {
+   "k": [
+    "Development"
+   ]
+  },
+  "sentry": {
+   "w": [
+    "sentry",
+    "sentry-light"
+   ]
+  },
+  "watchtower": {
+   "a": [
+    "Container Updater"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools",
+    "DevOps"
+   ]
+  },
+  "jekyll": {
+   "a": [
+    "Static Site Generator"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Web-Browsers"
+   ]
+  },
+  "restreamer": {},
+  "plausible": {
+   "a": [
+    "privacy-analytics",
+    "website-statistics"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "odoo": {},
+  "typescript": {},
+  "rport": {},
+  "spree": {
+   "k": [
+    "E-Commerce"
+   ],
+   "w": [
+    "spree-dark",
+    "spree"
+   ]
+  },
+  "apache-solr": {},
+  "oh-my-posh": {
+   "w": [
+    "oh-my-posh-dark",
+    "oh-my-posh"
+   ]
+  },
+  "kitchenowl": {},
+  "opensearch": {},
+  "vaultwarden": {
+   "w": [
+    "vaultwarden",
+    "vaultwarden-light"
+   ]
+  },
+  "mailfence": {},
+  "open-webui": {
+   "a": [
+    "llama-ui",
+    "ollama-webui"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms"
+   ],
+   "w": [
+    "open-webui",
+    "open-webui-light"
+   ]
+  },
+  "swift": {
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ]
+  },
+  "dixa": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "cyber-power-full": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "headscale": {},
+  "mariadb": {
+   "a": [
+    "Database"
+   ],
+   "k": [
+    "Databases"
+   ]
+  },
+  "aws-ecs": {},
+  "worklenz": {
+   "a": [
+    "job-search-website",
+    "recruitment-platform"
+   ],
+   "k": [
+    "E-commerce-Platforms"
+   ]
+  },
+  "qui": {},
+  "wotdle": {
+   "w": [
+    "wotdle",
+    "wotdle-light"
+   ]
+  },
+  "cinny": {
+   "a": [
+    "Matrix Client"
+   ],
+   "k": [
+    "Communication",
+    "Social-Media"
+   ],
+   "w": [
+    "cinny",
+    "cinny-light"
+   ]
+  },
+  "apache-tomcat": {
+   "w": [
+    "apache-tomcat",
+    "apache-tomcat-light"
+   ]
+  },
+  "humhub": {},
+  "leantime": {},
+  "metube": {
+   "a": [
+    "youtube-dl-gui",
+    "video-downloader"
+   ],
+   "k": [
+    "Download-Managers"
+   ]
+  },
+  "helm": {},
+  "raspberry-pi": {
+   "w": [
+    "raspberry-pi",
+    "raspberry-pi-light"
+   ]
+  },
+  "azure-devops": {},
+  "auracast": {},
+  "oxker": {
+   "a": [
+    "Container Management"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools"
+   ],
+   "w": [
+    "oxker",
+    "oxker-light"
+   ]
+  },
+  "chhoto-url": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "google-forms": {},
+  "fly-io": {},
+  "macmon": {
+   "k": [
+    "Security"
+   ]
+  },
+  "chroma": {
+   "k": [
+    "Development"
+   ]
+  },
+  "rhodecode": {
+   "a": [
+    "code-repository",
+    "git-hosting"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ]
+  },
+  "plane-finder": {},
+  "balena-cloud": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "ara-records-ansible": {},
+  "minio": {
+   "w": [
+    "minio",
+    "minio-light"
+   ]
+  },
+  "safari-ios": {
+   "a": [
+    "ios-safari",
+    "mobile-safari"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "strapi": {},
+  "toggl": {
+   "w": [
+    "toggl-dark",
+    "toggl"
+   ]
+  },
+  "gentoo-linux": {},
+  "jeedom": {},
+  "natwest": {
+   "a": [
+    "natwest",
+    "natwest-banking"
+   ],
+   "k": [
+    "Finance"
+   ]
+  },
+  "trading-view": {
+   "a": [
+    "trading",
+    "view",
+    "charts"
+   ],
+   "k": [
+    "Finance"
+   ],
+   "w": [
+    "trading-view-dark",
+    "trading-view"
+   ]
+  },
+  "morss": {},
+  "codellm": {
+   "k": [
+    "Development"
+   ]
+  },
+  "bale": {
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "php": {
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ],
+   "w": [
+    "php",
+    "php-light"
+   ]
+  },
+  "remnawave": {
+   "a": [
+    "remna",
+    "remnawave"
+   ],
+   "k": [
+    "Development",
+    "Security"
+   ]
+  },
+  "google-docs": {},
+  "voron": {},
+  "mayan-edms": {
+   "a": [
+    "EDMS"
+   ],
+   "k": [
+    "Office-Suites",
+    "File-Sharing-&-Sync"
+   ],
+   "w": [
+    "mayan-edms",
+    "mayan-edms-light"
+   ]
+  },
+  "mealie": {
+   "a": [
+    "Recipe Manager"
+   ],
+   "k": [
+    "Home-Automation"
+   ]
+  },
+  "autobrr": {},
+  "quickwit": {
+   "a": [
+    "Search Engine"
+   ],
+   "k": [
+    "Search-Engines",
+    "Developer-Tools"
+   ]
+  },
+  "doplarr": {
+   "k": [
+    "Media"
+   ]
+  },
+  "homer": {
+   "a": [
+    "server-dashboard",
+    "application-launcher"
+   ],
+   "k": [
+    "Home-Automation",
+    "Server-Panels"
+   ]
+  },
+  "ghostfolio": {},
+  "windows-95": {
+   "w": [
+    "windows-95",
+    "windows-95-light"
+   ]
+  },
+  "podfetch": {
+   "w": [
+    "podfetch",
+    "podfetch-light"
+   ]
+  },
+  "opencost": {
+   "a": [
+    "opencost"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "schedulearn": {
+   "k": [
+    "Education"
+   ],
+   "w": [
+    "schedulearn-dark",
+    "schedulearn"
+   ]
+  },
+  "azure-container-service": {},
+  "topdesk": {},
+  "rss-translator": {},
+  "revanced-manager": {},
+  "vito-deploy": {
+   "a": [
+    "vito-deploy"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "portainer-be": {
+   "w": [
+    "portainer-be-dark",
+    "portainer-be"
+   ]
+  },
+  "webtorrent": {},
+  "umbrel": {
+   "a": [
+    "umbrel-os"
+   ],
+   "k": [
+    "network",
+    "storage"
+   ]
+  },
+  "yunohost": {},
+  "erste-george": {},
+  "adventure-log": {},
+  "librewolf": {
+   "a": [
+    "Web Browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "planka": {
+   "w": [
+    "planka-dark",
+    "planka"
+   ]
+  },
+  "unreal-engine": {
+   "k": [
+    "Gaming"
+   ],
+   "w": [
+    "unreal-engine-dark",
+    "unreal-engine"
+   ]
+  },
+  "keila": {
+   "k": [
+    "Home-Automation"
+   ]
+  },
+  "filebrowser": {},
+  "radarr": {},
+  "akamai": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "proton-docs": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "hexos": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "webdb": {
+   "a": [
+    "online-database-editor",
+    "database-gui"
+   ],
+   "k": [
+    "Development",
+    "Databases"
+   ]
+  },
+  "taskcafe": {},
+  "rallly": {},
+  "asustor": {},
+  "rocket-chat": {},
+  "cozy": {},
+  "calibre-web": {},
+  "endeavouros-linux": {
+   "a": [
+    "endeavouros"
+   ]
+  },
+  "glpi": {
+   "a": [
+    "IT Asset Management"
+   ],
+   "k": [
+    "Office-Suites",
+    "Developer-Tools"
+   ]
+  },
+  "team-viewer": {},
+  "openoffice": {},
+  "openreads": {},
+  "dumbassets": {
+   "k": [
+    "Logistics"
+   ]
+  },
+  "resiliosync-full": {
+   "a": [
+    "resilio-sync",
+    "btsync"
+   ],
+   "k": [
+    "File-Sharing-&-Sync"
+   ],
+   "w": [
+    "resiliosync-full-dark",
+    "resiliosync-full"
+   ]
+  },
+  "firefly": {
+   "a": [
+    "Finance Manager"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "tmdb": {},
+  "kimai": {},
+  "idrive": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "matomo": {},
+  "cisco": {},
+  "jelu": {},
+  "bewcloud": {
+   "a": [
+    "Hosting Provider"
+   ],
+   "k": [
+    "Cloud-Computing"
+   ]
+  },
+  "p1ib": {},
+  "overseerr": {
+   "a": [
+    "Media Request"
+   ],
+   "k": [
+    "Media-Servers",
+    "Home-Automation"
+   ]
+  },
+  "timetagger": {
+   "w": [
+    "timetagger",
+    "timetagger-light"
+   ]
+  },
+  "r": {
+   "a": [
+    "R programming language"
+   ],
+   "k": [
+    "development"
+   ]
+  },
+  "files": {},
+  "microsoft-365": {},
+  "spark": {},
+  "cloudbeaver": {},
+  "readwise-reader": {
+   "a": [
+    "reader",
+    "readwise"
+   ],
+   "k": [
+    "Media"
+   ],
+   "w": [
+    "readwise-reader-dark",
+    "readwise-reader"
+   ]
+  },
+  "libreddit": {
+   "w": [
+    "libreddit",
+    "libreddit-light"
+   ]
+  },
+  "eliza-os": {},
+  "laracasts": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "laracasts-dark",
+    "laracasts"
+   ]
+  },
+  "trakt": {
+   "a": [
+    "Media Tracking"
+   ],
+   "k": [
+    "Media-Servers",
+    "Social-Media"
+   ]
+  },
+  "akkoma": {
+   "w": [
+    "akkoma",
+    "akkoma-light"
+   ]
+  },
+  "linkstack": {
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "netatmo": {},
+  "microsoft-exchange": {
+   "a": [
+    "Email Server"
+   ],
+   "k": [
+    "Email-Providers",
+    "Server-Panels",
+    "Office-Suites"
+   ]
+  },
+  "photoview": {},
+  "nextcloud-ncdownloader": {},
+  "compreface": {},
+  "ovh": {},
+  "matrix-synapse": {
+   "w": [
+    "matrix-synapse",
+    "matrix-synapse-light"
+   ]
+  },
+  "knx": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "aliyun": {
+   "a": [
+    "ali-yun",
+    "alibaba",
+    "cloud"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "wikijs": {},
+  "turbopack": {
+   "a": [
+    "webpack-alternative",
+    "javascript-bundler"
+   ],
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "turbopack",
+    "turbopack-light"
+   ]
+  },
+  "snapdrop": {},
+  "tubesync": {
+   "w": [
+    "tubesync",
+    "tubesync-light"
+   ]
+  },
+  "google-compute-engine": {},
+  "mistral-ai": {
+   "a": [
+    "mistral"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "simplex-chat": {
+   "a": [
+    "Messaging App"
+   ],
+   "k": [
+    "Communication",
+    "Security"
+   ]
+  },
+  "littlelink-custom": {},
+  "invoke-ai": {},
+  "hasura": {},
+  "meshping": {
+   "w": [
+    "meshping",
+    "meshping-light"
+   ]
+  },
+  "microsoft-onenote": {},
+  "homebridge": {
+   "a": [
+    "Smart Home Bridge"
+   ],
+   "k": [
+    "Home-Automation",
+    "Smart-Home"
+   ]
+  },
+  "octoprint": {
+   "a": [
+    "3d-printer-server",
+    "printer-interface"
+   ],
+   "k": [
+    "Home-Automation",
+    "Hardware"
+   ]
+  },
+  "pocket-casts": {
+   "w": [
+    "pocket-casts-dark",
+    "pocket-casts"
+   ]
+  },
+  "microsoft-defender": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "truenas-core": {},
+  "shaarli": {},
+  "openeats": {
+   "a": [
+    "restaurant-app",
+    "food-ordering-app"
+   ],
+   "k": [
+    "Home-Automation"
+   ],
+   "w": [
+    "openeats",
+    "openeats-light"
+   ]
+  },
+  "2fauth": {
+   "a": [
+    "2FA Authenticator"
+   ],
+   "k": [
+    "Password-Managers",
+    "Security"
+   ],
+   "w": [
+    "2fauth",
+    "2fauth-light"
+   ]
+  },
+  "podman": {
+   "a": [
+    "Container Engine"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Developer-Tools"
+   ]
+  },
+  "bluesky": {},
+  "denodo": {
+   "k": [
+    "Development"
+   ]
+  },
+  "cloudstream": {
+   "k": [
+    "Streaming"
+   ]
+  },
+  "linear": {
+   "a": [
+    "linear-app"
+   ],
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "linear-dark",
+    "linear"
+   ]
+  },
+  "docker-engine": {},
+  "google-tasks": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "uncomplicated-alert-receiver": {
+   "a": [
+    "uncomplicated-alert-receiver",
+    "uar"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "fossil": {
+   "a": [
+    "Version Control"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools"
+   ]
+  },
+  "semaphore": {
+   "w": [
+    "semaphore-dark",
+    "semaphore"
+   ]
+  },
+  "cronicle": {
+   "k": [
+    "Development"
+   ]
+  },
+  "outline": {
+   "w": [
+    "outline",
+    "outline-light"
+   ]
+  },
+  "cap-cut": {
+   "w": [
+    "cap-cut-dark",
+    "cap-cut"
+   ]
+  },
+  "netbox-full": {
+   "a": [
+    "Network Management"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Developer-Tools",
+    "Monitoring-Tools"
+   ],
+   "w": [
+    "netbox-full-dark",
+    "netbox-full"
+   ]
+  },
+  "open-resume": {},
+  "sickbeard": {},
+  "huawei": {},
+  "tvdb": {},
+  "any-listen": {
+   "k": [
+    "Music"
+   ]
+  },
+  "tp-link": {},
+  "google-cloud-print": {
+   "a": [
+    "Print Service"
+   ],
+   "k": [
+    "Office-Suites",
+    "Cloud-Computing"
+   ]
+  },
+  "svelte": {
+   "a": [
+    "sveltejs",
+    "sveltekit"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "vidzy": {},
+  "windmill": {
+   "a": [
+    "automation-platform",
+    "workflow-engine"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "firefox-beta": {
+   "a": [
+    "firefox-beta-channel",
+    "beta-browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "lets-encrypt": {},
+  "rimgo": {
+   "w": [
+    "rimgo",
+    "rimgo-light"
+   ]
+  },
+  "proton-wallet": {},
+  "simplelogin": {},
+  "node-red": {},
+  "yamtrack": {
+   "w": [
+    "yamtrack",
+    "yamtrack-light"
+   ]
+  },
+  "redlib": {
+   "w": [
+    "redlib",
+    "redlib-light"
+   ]
+  },
+  "openvas": {
+   "a": [
+    "Vulnerability Scanner"
+   ],
+   "k": [
+    "Security",
+    "Monitoring-Tools"
+   ]
+  },
+  "dispatcharr": {
+   "k": [
+    "Media"
+   ]
+  },
+  "startpage": {
+   "a": [
+    "startpage-search"
+   ],
+   "w": [
+    "startpage-dark"
+   ]
+  },
+  "thunderbird": {},
+  "keycloak": {},
+  "slack": {
+   "a": [
+    "Team Communication"
+   ],
+   "k": [
+    "Communication",
+    "Office-Suites"
+   ]
+  },
+  "hashicorp-consul": {
+   "a": [
+    "service-discovery",
+    "configuration-management"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Cloud-Computing"
+   ]
+  },
+  "orange": {},
+  "google-street-view": {
+   "a": [
+    "street-view",
+    "map-imagery"
+   ],
+   "k": [
+    "Search-Engines"
+   ]
+  },
+  "google-admob": {
+   "a": [
+    "mobile-ads",
+    "app-monetization"
+   ],
+   "k": [
+    "Developer-Tools",
+    "E-commerce-Platforms"
+   ]
+  },
+  "quickshare": {},
+  "google-play-games": {},
+  "nextcloud": {},
+  "openshift": {
+   "k": [
+    "Cloud"
+   ],
+   "w": [
+    "openshift-dark",
+    "openshift"
+   ]
+  },
+  "kontoj": {
+   "a": [
+    "Finance Tracker"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "enhance": {},
+  "html": {
+   "w": [
+    "html",
+    "html-light"
+   ]
+  },
+  "reddit": {},
+  "formbricks": {},
+  "wakapi": {},
+  "kestra": {
+   "a": [
+    "Workflow Orchestration"
+   ],
+   "k": [
+    "Developer-Tools",
+    "DevOps"
+   ]
+  },
+  "flathub": {
+   "w": [
+    "flathub-dark",
+    "flathub"
+   ]
+  },
+  "safari": {},
+  "gitea": {},
+  "cpp": {},
+  "headlamp": {
+   "k": [
+    "Cloud"
+   ],
+   "w": [
+    "headlamp-dark",
+    "headlamp"
+   ]
+  },
+  "action1": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "gitlab": {
+   "a": [
+    "Code Hosting"
+   ],
+   "k": [
+    "Version-Control-Systems",
+    "Developer-Tools",
+    "DevOps"
+   ]
+  },
+  "capacities": {
+   "k": [
+    "Media"
+   ],
+   "w": [
+    "capacities-dark",
+    "capacities"
+   ]
+  },
+  "dovecot": {},
+  "photoprism": {
+   "a": [
+    "Photo Management"
+   ],
+   "k": [
+    "Media-Servers",
+    "File-Sharing-&-Sync"
+   ],
+   "w": [
+    "photoprism",
+    "photoprism-light"
+   ]
+  },
+  "odysee": {
+   "a": [
+    "lbry-platform",
+    "decentralized-video"
+   ],
+   "k": [
+    "Video-Streaming"
+   ]
+  },
+  "zorin-linux": {
+   "a": [
+    "zorin-os",
+    "zorin"
+   ]
+  },
+  "rekor": {},
+  "meta": {
+   "a": [
+    "facebook-company"
+   ],
+   "k": [
+    "Social-Media",
+    "Organization"
+   ]
+  },
+  "brave": {},
+  "rss-bridge": {},
+  "samba-server": {
+   "a": [
+    "samba",
+    "samba-server",
+    "smb",
+    "smb-server"
+   ],
+   "k": [
+    "Communication"
+   ]
+  },
+  "nextcloud-blue": {
+   "a": [
+    "nextcloud-skin"
+   ],
+   "k": [
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "grandstream": {},
+  "loki": {},
+  "elasticsearch": {},
+  "astuto": {
+   "a": [
+    "Help Desk"
+   ],
+   "k": [
+    "Office-Suites",
+    "Developer-Tools"
+   ],
+   "w": [
+    "astuto",
+    "astuto-light"
+   ]
+  },
+  "polywork": {
+   "a": [
+    "Professional Network"
+   ],
+   "k": [
+    "Social-Media",
+    "Web-Browsers"
+   ]
+  },
+  "kutt": {
+   "a": [
+    "link-shortening-service",
+    "custom-url-generator"
+   ],
+   "k": [
+    "Networking-Tools"
+   ]
+  },
+  "apache-cloudstack": {},
+  "fastmail": {
+   "a": [
+    "paid-email-service",
+    "privacy-email"
+   ],
+   "k": [
+    "Email-Providers"
+   ]
+  },
+  "koel": {
+   "a": [
+    "Web Music Player"
+   ],
+   "k": [
+    "Music-Streaming",
+    "Media-Servers",
+    "Web-Browsers"
+   ]
+  },
+  "pgadmin": {},
+  "rundeck": {},
+  "open-observe": {
+   "a": [
+    "openobserve"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "fittrackee": {},
+  "open-classrooms": {
+   "k": [
+    "Education"
+   ]
+  },
+  "ombi": {},
+  "router": {},
+  "supermicro": {},
+  "hubzilla": {
+   "a": [
+    "federated-social-network",
+    "decentralized-social-media"
+   ],
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "xbackbone": {},
+  "stremio": {},
+  "dashwise": {
+   "a": [
+    "homelab-dashboard",
+    "server-dashboard",
+    "application-launcher"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "phoscon": {
+   "w": [
+    "phoscon",
+    "phoscon-light"
+   ]
+  },
+  "onedev": {
+   "a": [
+    "DevOps Platform"
+   ],
+   "k": [
+    "Developer-Tools",
+    "DevOps",
+    "Version-Control-Systems"
+   ],
+   "w": [
+    "onedev",
+    "onedev-light"
+   ]
+  },
+  "gigaset": {},
+  "snikket": {
+   "a": [
+    "xmpp-chat",
+    "instant-messaging-server"
+   ],
+   "k": [
+    "Networking-Tools"
+   ]
+  },
+  "premiumize": {},
+  "azure-dns": {},
+  "laravel": {
+   "k": [
+    "Development"
+   ]
+  },
+  "firefox-send": {},
+  "microsoft-powerpoint": {},
+  "sphinx-doc": {
+   "a": [
+    "documentation-tool",
+    "docs-builder"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "chatpad-ai": {
+   "a": [
+    "AI Chatbot"
+   ],
+   "k": [
+    "AI-&-LLM-Platforms"
+   ]
+  },
+  "packetfence": {
+   "a": [
+    "NAC"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Security"
+   ],
+   "w": [
+    "packetfence-dark",
+    "packetfence"
+   ]
+  },
+  "thingsboard": {},
+  "linuxdo": {},
+  "avg": {},
+  "counter-analytics": {},
+  "myheats": {
+   "w": [
+    "myheats",
+    "myheats-light"
+   ]
+  },
+  "sensu": {
+   "a": [
+    "infrastructure-monitoring",
+    "server-monitoring"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "finamp": {
+   "a": [
+    "finamp-music-player",
+    "android-music-player"
+   ],
+   "k": [
+    "Music-Streaming"
+   ]
+  },
+  "orb": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "vera-crypt": {},
+  "invisioncommunity": {},
+  "vivaldi": {},
+  "hyprland": {
+   "a": [
+    "hyprwm"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "netflix": {},
+  "mullvad-browser": {},
+  "dawarich": {},
+  "jellyfin-vue": {},
+  "trellix": {
+   "k": [
+    "Security"
+   ],
+   "w": [
+    "trellix-dark",
+    "trellix"
+   ]
+  },
+  "microsoft-teams": {
+   "a": [
+    "Teams2025",
+    "Teams2026",
+    "MicrosoftTeams2025",
+    "MicrosoftTeams2026",
+    "microsoftteams",
+    "teams"
+   ]
+  },
+  "drop": {
+   "k": [
+    "Media"
+   ]
+  },
+  "taiga": {},
+  "fast-com": {
+   "w": [
+    "fast-com",
+    "fast-com-light"
+   ]
+  },
+  "openhab": {
+   "a": [
+    "Home Automation"
+   ],
+   "k": [
+    "Home-Automation",
+    "Smart-Home"
+   ]
+  },
+  "tasmocompiler": {},
+  "thelounge": {},
+  "valetudo": {},
+  "hatsh": {
+   "a": [
+    "link-shortener",
+    "custom-url-generator"
+   ],
+   "k": [
+    "Networking-Tools"
+   ],
+   "w": [
+    "hatsh",
+    "hatsh-light"
+   ]
+  },
+  "notesnook": {
+   "w": [
+    "notesnook",
+    "notesnook-light"
+   ]
+  },
+  "zashboard": {
+   "k": [
+    "Communication"
+   ],
+   "w": [
+    "zashboard-dark",
+    "zashboard"
+   ]
+  },
+  "etesync": {},
+  "glinet": {
+   "k": [
+    "Hardware"
+   ],
+   "w": [
+    "glinet-dark",
+    "glinet"
+   ]
+  },
+  "scrutiny": {
+   "w": [
+    "scrutiny",
+    "scrutiny-light"
+   ]
+  },
+  "webtrees": {},
+  "motioneye": {
+   "w": [
+    "motioneye-dark",
+    "motioneye"
+   ]
+  },
+  "koillection": {
+   "w": [
+    "koillection",
+    "koillection-light"
+   ]
+  },
+  "flarum": {},
+  "noisedash": {
+   "k": [
+    "Media"
+   ]
+  },
+  "free-sas": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "calibre": {
+   "a": [
+    "ebook-library",
+    "book-converter"
+   ],
+   "k": [
+    "Media-Servers"
+   ]
+  },
+  "grafana": {},
+  "searx": {},
+  "exercism": {
+   "k": [
+    "Education"
+   ],
+   "w": [
+    "exercism-dark",
+    "exercism"
+   ]
+  },
+  "ludus": {
+   "a": [
+    "ludus-cloud",
+    "ludus-goad"
+   ],
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "ludus-dark",
+    "ludus"
+   ]
+  },
+  "idealo": {},
+  "kerberos": {
+   "a": [
+    "authentication-protocol",
+    "network-security"
+   ],
+   "k": [
+    "Security",
+    "Networking-Tools"
+   ]
+  },
+  "movie-pilot": {
+   "k": [
+    "Media"
+   ]
+  },
+  "selfh-st": {
+   "a": [
+    "Static Site Hosting"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Developer-Tools"
+   ],
+   "w": [
+    "selfh-st",
+    "selfh-st-light"
+   ]
+  },
+  "shlink": {},
+  "owntone": {
+   "a": [
+    "airplay-receiver",
+    "audio-streaming-server"
+   ],
+   "k": [
+    "Media-Servers",
+    "Home-Automation"
+   ]
+  },
+  "google-meet": {
+   "a": [
+    "Video Conferencing"
+   ],
+   "k": [
+    "Communication",
+    "Office-Suites"
+   ]
+  },
+  "zyxel-networks": {
+   "a": [
+    "zyxel-green",
+    "zyxel-device"
+   ],
+   "k": [
+    "network"
+   ],
+   "w": [
+    "zyxel-networks-dark",
+    "zyxel-networks-light"
+   ]
+  },
+  "act": {},
+  "the-proxy-bay": {},
+  "pocketbase": {
+   "w": [
+    "pocketbase-dark",
+    "pocketbase"
+   ]
+  },
+  "youtube-tv": {
+   "k": [
+    "Streaming",
+    "Video"
+   ]
+  },
+  "reactjs": {
+   "a": [
+    "react-js"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "claude-ai": {
+   "w": [
+    "claude-ai-dark",
+    "claude-ai-light"
+   ]
+  },
+  "flightradar24": {
+   "w": [
+    "flightradar24",
+    "flightradar24-light"
+   ]
+  },
+  "converse": {
+   "a": [
+    "xmpp-chat-client",
+    "instant-messaging-app"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Communication"
+   ],
+   "w": [
+    "converse",
+    "converse-light"
+   ]
+  },
+  "backrest": {
+   "k": [
+    "storage",
+    "tools"
+   ],
+   "w": [
+    "backrest-dark",
+    "backrest-light"
+   ]
+  },
+  "codex": {
+   "w": [
+    "codex",
+    "codex-light"
+   ]
+  },
+  "get-iplayer": {},
+  "voilib": {},
+  "onshape": {
+   "k": [
+    "Design"
+   ],
+   "w": [
+    "onshape-dark",
+    "onshape"
+   ]
+  },
+  "portracker": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "portracker-dark",
+    "portracker"
+   ]
+  },
+  "snappymail": {
+   "a": [
+    "webmail-app",
+    "browser-based-email"
+   ],
+   "k": [
+    "Email-Providers",
+    "Web-Browsers"
+   ],
+   "w": [
+    "snappymail",
+    "snappymail-light"
+   ]
+  },
+  "phase": {
+   "k": [
+    "Development",
+    "Security"
+   ],
+   "w": [
+    "phase-dark",
+    "phase"
+   ]
+  },
+  "opengist": {
+   "a": [
+    "code-sharing",
+    "snippet-hosting"
+   ],
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "opengist",
+    "opengist-light"
+   ]
+  },
+  "mercusys": {},
+  "sogo": {},
+  "standard-notes": {
+   "a": [
+    "encrypted-notes",
+    "secure-notes"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Password-Managers"
+   ]
+  },
+  "liremdb": {},
+  "hashicorp-vagrant": {},
+  "mojeek": {},
+  "emulatorjs": {},
+  "elastic": {},
+  "linux-mint": {},
+  "pastebin": {
+   "w": [
+    "pastebin-dark",
+    "pastebin"
+   ]
+  },
+  "gollum": {
+   "a": [
+    "Wiki"
+   ],
+   "k": [
+    "Note-taking-Apps",
+    "Developer-Tools"
+   ]
+  },
+  "glance": {},
+  "xbox": {},
+  "part-db": {
+   "w": [
+    "part-db",
+    "part-db-light"
+   ]
+  },
+  "logitech": {
+   "w": [
+    "logitech",
+    "logitech-light"
+   ]
+  },
+  "pulsarr": {
+   "k": [
+    "Media"
+   ]
+  },
+  "libretranslate": {
+   "w": [
+    "libretranslate-dark",
+    "libretranslate"
+   ]
+  },
+  "cal-com": {
+   "w": [
+    "cal-com",
+    "cal-com-light"
+   ]
+  },
+  "jellyseerr": {},
+  "mqtt": {},
+  "garage": {},
+  "browserless": {
+   "w": [
+    "browserless",
+    "browserless-light"
+   ]
+  },
+  "grimoire": {
+   "a": [
+    "wiki-software",
+    "knowledge-management"
+   ],
+   "k": [
+    "Note-taking-Apps"
+   ]
+  },
+  "tenable": {
+   "a": [
+    "nessus",
+    "tenable-nessus",
+    "tenable-one",
+    "tenable-io",
+    "tenable-was",
+    "tenable-vm"
+   ],
+   "k": [
+    "Security"
+   ],
+   "w": [
+    "tenable-dark",
+    "tenable"
+   ]
+  },
+  "lark": {},
+  "stump": {
+   "a": [
+    "comic-book-reader",
+    "cbr-server"
+   ],
+   "k": [
+    "Media-Servers"
+   ]
+  },
+  "keenetic-alt": {},
+  "gboard": {},
+  "threads": {
+   "w": [
+    "threads",
+    "threads-light"
+   ]
+  },
+  "seafile": {
+   "a": [
+    "Cloud Storage",
+    "File Sync"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Cloud-Computing"
+   ]
+  },
+  "linguacafe": {},
+  "notifiarr": {},
+  "ookla-speedtest": {
+   "a": [
+    "speedtest",
+    "ookla",
+    "ooklaspeedtest"
+   ]
+  },
+  "upsnap": {},
+  "apache-answer": {},
+  "udemy": {
+   "a": [
+    "online-courses",
+    "e-learning-platform"
+   ],
+   "k": [
+    "Education"
+   ],
+   "w": [
+    "udemy",
+    "udemy-light"
+   ]
+  },
+  "screenconnect": {
+   "a": [
+    "Remote Support"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Developer-Tools"
+   ]
+  },
+  "dozzle": {},
+  "greenbone": {
+   "a": [
+    "Vulnerability Scanner"
+   ],
+   "k": [
+    "Security",
+    "Monitoring-Tools"
+   ],
+   "w": [
+    "greenbone",
+    "greenbone-light"
+   ]
+  },
+  "20i": {
+   "a": [
+    "twenty",
+    "twenty-i"
+   ],
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "20i-dark",
+    "20i"
+   ]
+  },
+  "asus-full": {},
+  "dashboard-icons": {
+   "w": [
+    "dashboard-icons-dark",
+    "dashboard-icons"
+   ]
+  },
+  "luxriot": {
+   "k": [
+    "Security",
+    "Video"
+   ]
+  },
+  "yacd-blue": {},
+  "deno": {
+   "a": [
+    "node-js-alternative",
+    "javascript-environment"
+   ],
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ],
+   "w": [
+    "deno",
+    "deno-light"
+   ]
+  },
+  "agregarr": {
+   "k": [
+    "Media"
+   ]
+  },
+  "unimus": {},
+  "atuin": {
+   "a": [
+    "atuin-sh"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "plex": {
+   "w": [
+    "plex",
+    "plex-light"
+   ]
+  },
+  "umami": {
+   "a": [
+    "privacy-focused-analytics",
+    "website-statistics"
+   ],
+   "k": [
+    "Developer-Tools"
+   ],
+   "w": [
+    "umami",
+    "umami-light"
+   ]
+  },
+  "kubernetes-dashboard": {
+   "a": [
+    "k8s-dashboard",
+    "container-management-ui"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Server-Panels"
+   ]
+  },
+  "ting-isp": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "collabora-online": {},
+  "a-mule": {},
+  "grist": {},
+  "f1-dash": {
+   "a": [
+    "f1 dash"
+   ]
+  },
+  "java": {
+   "k": [
+    "Programming-Languages",
+    "Developer-Tools"
+   ]
+  },
+  "chrome-devtools": {
+   "a": [
+    "developer-tools",
+    "browser-inspector"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Web-Browsers"
+   ]
+  },
+  "apple-music": {
+   "a": [
+    "itunes-music",
+    "apple-music-service"
+   ],
+   "k": [
+    "Music-Streaming"
+   ]
+  },
+  "primal": {
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "pocket-id": {
+   "w": [
+    "pocket-id",
+    "pocket-id-light"
+   ]
+  },
+  "docuseal": {},
+  "app-store": {},
+  "pikvm": {
+   "w": [
+    "pikvm",
+    "pikvm-light"
+   ]
+  },
+  "google-cloud-platform": {},
+  "fontawesome": {},
+  "alexa": {
+   "k": [
+    "Media"
+   ]
+  },
+  "icinga-full": {
+   "w": [
+    "icinga-full",
+    "icinga-full-light"
+   ]
+  },
+  "tandoor-recipes": {
+   "a": [
+    "Recipe Manager"
+   ],
+   "k": [
+    "Home-Automation"
+   ]
+  },
+  "fileflows": {
+   "a": [
+    "media-processing",
+    "video-automation"
+   ],
+   "k": [
+    "Media-Servers",
+    "Developer-Tools"
+   ]
+  },
+  "c": {},
+  "microsoft-access": {},
+  "docking-station": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "kleinanzeigen": {
+   "k": [
+    "E-Commerce"
+   ]
+  },
+  "vultr": {},
+  "adminer": {
+   "a": [
+    "Database Management"
+   ],
+   "k": [
+    "Databases",
+    "Developer-Tools"
+   ]
+  },
+  "signoz": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "gose": {},
+  "soundcloud": {
+   "k": [
+    "Music"
+   ],
+   "w": [
+    "soundcloud-dark",
+    "soundcloud"
+   ]
+  },
+  "supabase": {
+   "a": [
+    "supabase-io",
+    "firebase-alternative"
+   ],
+   "k": [
+    "Cloud-Computing",
+    "Developer-Tools"
+   ]
+  },
+  "1panel": {
+   "k": [
+    "Development"
+   ]
+  },
+  "krakend": {
+   "a": [
+    "reverse-proxy",
+    "api-management"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "otter-wiki": {
+   "k": [
+    "Organization"
+   ],
+   "w": [
+    "otter-wiki-dark",
+    "otter-wiki"
+   ]
+  },
+  "patreon": {
+   "a": [
+    "Content Creator Platform"
+   ],
+   "k": [
+    "Social-Media",
+    "E-commerce-Platforms"
+   ],
+   "w": [
+    "patreon",
+    "patreon-light"
+   ]
+  },
+  "mobotix": {
+   "w": [
+    "mobotix",
+    "mobotix-light"
+   ]
+  },
+  "documenso": {},
+  "ballerina": {
+   "k": [
+    "Development"
+   ]
+  },
+  "chess": {},
+  "dropbox": {},
+  "dockpeek": {
+   "k": [
+    "Development"
+   ],
+   "w": [
+    "dockpeek-dark",
+    "dockpeek"
+   ]
+  },
+  "clickup": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "bechtle": {
+   "k": [
+    "E-Commerce"
+   ]
+  },
+  "avm-fritzbox": {
+   "w": [
+    "avm-fritzbox",
+    "avm-fritzbox-light"
+   ]
+  },
+  "asrock-rack": {},
+  "ntfy": {},
+  "i2p": {
+   "w": [
+    "i2p",
+    "i2p-light"
+   ]
+  },
+  "ilo": {
+   "a": [
+    "ProLiant",
+    "Density Line (DL)"
+   ],
+   "k": [
+    "automation",
+    "monitoring",
+    "network",
+    "cloud",
+    "development",
+    "security",
+    "social",
+    "storage",
+    "tools",
+    "utility"
+   ],
+   "w": [
+    "ilo-dark"
+   ]
+  },
+  "zoraxy": {},
+  "lunasea": {},
+  "google-fit": {},
+  "local-xpose": {
+   "a": [
+    "localxpose"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "cup": {},
+  "chrome-dev": {
+   "a": [
+    "chrome-developer",
+    "dev-browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "deepl": {
+   "w": [
+    "deepl-dark",
+    "deepl"
+   ]
+  },
+  "poste": {
+   "a": [
+    "mail-server",
+    "smtp-server"
+   ],
+   "k": [
+    "Email-Providers",
+    "Networking-Tools"
+   ]
+  },
+  "moodist": {
+   "a": [
+    "music-app",
+    "android-music-player"
+   ],
+   "k": [
+    "Music-Streaming"
+   ],
+   "w": [
+    "moodist-dark",
+    "moodist"
+   ]
+  },
+  "cups": {
+   "w": [
+    "cups",
+    "cups-light"
+   ]
+  },
+  "dockge": {},
+  "emby": {},
+  "silae": {},
+  "printer": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "pingdom": {
+   "w": [
+    "pingdom",
+    "pingdom-light"
+   ]
+  },
+  "swagger": {
+   "a": [
+    "swag"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "microsoft-excel": {
+   "a": [
+    "excel",
+    "spreadsheet-editor"
+   ],
+   "k": [
+    "Office-Suites"
+   ]
+  },
+  "mixpost": {},
+  "nzbget": {
+   "a": [
+    "usenet-client",
+    "nzb-downloader"
+   ],
+   "k": [
+    "Download-Managers"
+   ]
+  },
+  "rocky-linux": {
+   "a": [
+    "Linux Distribution"
+   ],
+   "k": [
+    "Operating-Systems",
+    "Linux-Distributions"
+   ]
+  },
+  "evcc": {},
+  "qd-today": {
+   "a": [
+    "qd"
+   ]
+  },
+  "sinusbot": {},
+  "rainloop": {},
+  "carrefour": {},
+  "zabbix": {
+   "a": [
+    "it-infrastructure-monitoring",
+    "server-monitor"
+   ],
+   "k": [
+    "Monitoring-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "fluidd": {},
+  "jellyfin": {},
+  "jetbrains-youtrack": {},
+  "kpn": {},
+  "linkace": {},
+  "google-wallet": {
+   "a": [
+    "mobile-wallet",
+    "payment-app"
+   ],
+   "k": [
+    "Finance-&-Banking"
+   ]
+  },
+  "gatsby": {},
+  "plex-rewind": {
+   "a": [
+    "plex-year-in-review",
+    "media-stats"
+   ],
+   "k": [
+    "Media-Servers"
+   ]
+  },
+  "dumbpad": {},
+  "spamassassin": {},
+  "yts": {},
+  "airtel": {},
+  "zohomail": {},
+  "samsung-internet": {
+   "a": [
+    "Web Browser"
+   ],
+   "k": [
+    "Web-Browsers"
+   ]
+  },
+  "unifi-voucher-site": {
+   "a": [
+    "Voucher System"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Web-Browsers"
+   ]
+  },
+  "nextcloudpi": {},
+  "pigallery2": {
+   "w": [
+    "pigallery2-dark",
+    "pigallery2"
+   ]
+  },
+  "ubuntu-linux-alt": {},
+  "artifacthub": {},
+  "openspeedtest": {},
+  "immich-kiosk": {
+   "a": [
+    "photo-display",
+    "digital-photo-frame"
+   ],
+   "k": [
+    "Home-Automation",
+    "Media-Servers"
+   ],
+   "w": [
+    "immich-kiosk",
+    "immich-kiosk-light"
+   ]
+  },
+  "redmine": {
+   "k": [
+    "Development"
+   ]
+  },
+  "brother": {
+   "a": [
+    "printer-company",
+    "office-equipment"
+   ],
+   "k": [
+    "Hardware",
+    "Office-Suites"
+   ]
+  },
+  "fulcio": {},
+  "proxmox": {
+   "a": [
+    "Virtualization Platform"
+   ],
+   "k": [
+    "Server-Panels",
+    "Operating-Systems",
+    "Cloud-Computing"
+   ],
+   "w": [
+    "proxmox",
+    "proxmox-light"
+   ]
+  },
+  "google-play": {
+   "a": [
+    "android-app-store",
+    "play-store"
+   ],
+   "k": [
+    "Gaming-Platforms",
+    "E-commerce-Platforms"
+   ]
+  },
+  "readthedocs": {
+   "w": [
+    "readthedocs",
+    "readthedocs-light"
+   ]
+  },
+  "activepieces": {},
+  "watcharr": {
+   "k": [
+    "entertainment",
+    "media"
+   ],
+   "w": [
+    "watcharr-dark"
+   ]
+  },
+  "osticket": {
+   "a": [
+    "Help Desk"
+   ],
+   "k": [
+    "Office-Suites",
+    "Developer-Tools"
+   ]
+  },
+  "wizarr": {
+   "a": [
+    "Setup Wizard"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "wownero": {},
+  "slash": {
+   "a": [
+    "Link Shortener"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Networking-Tools"
+   ],
+   "w": [
+    "slash",
+    "slash-light"
+   ]
+  },
+  "cura": {},
+  "romm": {},
+  "palemoon": {},
+  "receipt-wrangler": {},
+  "verizon": {},
+  "brick-tracker": {},
+  "1337x": {
+   "k": [
+    "Media"
+   ]
+  },
+  "broadcastchannel": {
+   "w": [
+    "broadcastchannel",
+    "broadcastchannel-light"
+   ]
+  },
+  "touitomamout": {},
+  "openpanel": {
+   "a": [
+    "Server Control Panel"
+   ],
+   "k": [
+    "Server-Panels"
+   ],
+   "w": [
+    "openpanel",
+    "openpanel-light"
+   ]
+  },
+  "neodb": {},
+  "ferdium": {
+   "a": [
+    "Messaging App"
+   ],
+   "k": [
+    "Communication",
+    "Office-Suites"
+   ]
+  },
+  "unifi": {
+   "a": [
+    "Network Devices"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Smart-Home",
+    "Hardware"
+   ],
+   "w": [
+    "unifi-dark",
+    "unifi"
+   ]
+  },
+  "meilisearch": {
+   "a": [
+    "open-source-search",
+    "fast-search-engine"
+   ],
+   "k": [
+    "Search-Engines",
+    "Databases"
+   ]
+  },
+  "oscarr": {
+   "w": [
+    "oscarr",
+    "oscarr-light"
+   ]
+  },
+  "maptiler": {},
+  "grok": {
+   "w": [
+    "grok-dark",
+    "grok"
+   ]
+  },
+  "recalbox": {},
+  "code-cademy": {
+   "k": [
+    "Education"
+   ],
+   "w": [
+    "code-cademy-dark",
+    "code-cademy"
+   ]
+  },
+  "chatgpt": {},
+  "esphome-alt": {
+   "w": [
+    "esphome-alt",
+    "esphome-alt-light"
+   ]
+  },
+  "hyperpipe": {
+   "w": [
+    "hyperpipe",
+    "hyperpipe-light"
+   ]
+  },
+  "gomft": {
+   "k": [
+    "File",
+    "Cloud"
+   ]
+  },
+  "freedombox": {},
+  "release-argus": {},
+  "syncthing": {
+   "w": [
+    "syncthing-dark",
+    "syncthing"
+   ]
+  },
+  "microsoft-azure": {},
+  "sub-store": {},
+  "postgresus": {
+   "k": [
+    "Cloud"
+   ]
+  },
+  "nextcloud-timemanager": {},
+  "heyform": {},
+  "electron": {},
+  "obico": {
+   "a": [
+    "3D Printing Monitor"
+   ],
+   "k": [
+    "Hardware",
+    "Home-Automation"
+   ]
+  },
+  "kaufland": {},
+  "pinia": {
+   "k": [
+    "Development"
+   ]
+  },
+  "cert-manager": {},
+  "putty": {},
+  "css": {
+   "w": [
+    "css",
+    "css-light"
+   ]
+  },
+  "homey": {},
+  "vodafone": {
+   "a": [
+    "vodafone"
+   ]
+  },
+  "oracle-cloud": {},
+  "mbin": {},
+  "firefox-lite": {},
+  "kbin": {},
+  "google-voice": {},
+  "chrome-remote-desktop": {},
+  "linux": {
+   "k": [
+    "Operating-Systems",
+    "Linux-Distributions"
+   ]
+  },
+  "ddclient": {},
+  "passwork": {
+   "a": [
+    "Password Manager"
+   ],
+   "k": [
+    "Password-Managers",
+    "Security"
+   ]
+  },
+  "tolgee": {},
+  "traccar": {
+   "w": [
+    "traccar-dark",
+    "traccar"
+   ]
+  },
+  "pufferpanel": {},
+  "pretix": {
+   "k": [
+    "E-Commerce"
+   ]
+  },
+  "zimbra": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "coreos": {},
+  "dropout": {
+   "a": [
+    "Streaming Service"
+   ],
+   "k": [
+    "Video-Streaming",
+    "Gaming-Platforms"
+   ],
+   "w": [
+    "dropout",
+    "dropout-light"
+   ]
+  },
+  "victoriametrics": {
+   "w": [
+    "victoriametrics",
+    "victoriametrics-light"
+   ]
+  },
+  "triliumnext": {},
+  "lunalytics": {
+   "a": [
+    "status-page",
+    "website-monitor"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "airsonic": {},
+  "projectsend": {
+   "a": [
+    "large-file-transfer",
+    "client-portal"
+   ],
+   "k": [
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "symmetricom": {
+   "w": [
+    "symmetricom",
+    "symmetricom-light"
+   ]
+  },
+  "dlna": {},
+  "namecheap": {},
+  "google-chat": {},
+  "vi": {
+   "a": [
+    "Text Editor"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "yacht": {
+   "a": [
+    "docker-dashboard",
+    "container-manager"
+   ],
+   "k": [
+    "Containerization-&-Orchestration",
+    "Server-Panels"
+   ]
+  },
+  "apiscp": {},
+  "electrum": {
+   "a": [
+    "bitcoin-electrum"
+   ],
+   "k": [
+    "Finance"
+   ]
+  },
+  "docusaurus": {},
+  "vercel": {
+   "w": [
+    "vercel",
+    "vercel-light"
+   ]
+  },
+  "payload": {
+   "w": [
+    "payload",
+    "payload-light"
+   ]
+  },
+  "requestrr": {
+   "a": [
+    "plex-requests",
+    "jellyfin-requests"
+   ],
+   "k": [
+    "Media-Servers"
+   ]
+  },
+  "vector": {},
+  "stalwart": {},
+  "fasten-health": {},
+  "hydra": {},
+  "idrac": {
+   "a": [
+    "Remote Access"
+   ],
+   "k": [
+    "Server-Panels",
+    "Networking-Tools"
+   ]
+  },
+  "firewalla": {},
+  "mailcow": {},
+  "plexrequests": {
+   "w": [
+    "plexrequests",
+    "plexrequests-light"
+   ]
+  },
+  "miniflux": {
+   "a": [
+    "minimalist-rss-reader",
+    "feed-aggregator"
+   ],
+   "k": [
+    "News"
+   ],
+   "w": [
+    "miniflux",
+    "miniflux-light"
+   ]
+  },
+  "gramps-web": {
+   "k": [
+    "Organization"
+   ]
+  },
+  "real-debrid": {},
+  "partkeepr": {},
+  "multi-scrobbler": {
+   "a": [
+    "lastfm-scrobbler",
+    "music-activity-tracker"
+   ],
+   "k": [
+    "Music-Streaming"
+   ]
+  },
+  "nasa": {},
+  "tiddlywiki": {
+   "w": [
+    "tiddlywiki",
+    "tiddlywiki-light"
+   ]
+  },
+  "jitsi": {
+   "a": [
+    "video-meeting",
+    "web-conferencing"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Communication"
+   ]
+  },
+  "ipfs": {
+   "a": [
+    "Decentralized Storage"
+   ],
+   "k": [
+    "File-Sharing-&-Sync",
+    "Cloud-Computing",
+    "Networking-Tools"
+   ],
+   "w": [
+    "ipfs",
+    "ipfs-light"
+   ]
+  },
+  "hashicorp-vault": {
+   "a": [
+    "secret-storage",
+    "password-vault"
+   ],
+   "k": [
+    "Security",
+    "Developer-Tools"
+   ]
+  },
+  "nextcloud-deck": {},
+  "bentopdf": {
+   "k": [
+    "Development"
+   ]
+  },
+  "4chan": {
+   "a": [
+    "chan",
+    "luck"
+   ],
+   "k": [
+    "Communication"
+   ]
+  },
+  "dub": {
+   "k": [
+    "Web-Browsers"
+   ],
+   "w": [
+    "dub",
+    "dub-light"
+   ]
+  },
+  "espocrm": {
+   "a": [
+    "espo-crm"
+   ],
+   "k": [
+    "Cloud"
+   ]
+  },
+  "clickhouse": {},
+  "garuda-linux": {},
+  "digi-kam": {
+   "k": [
+    "Media"
+   ]
+  },
+  "linuxserver-io": {},
+  "bootstrap": {},
+  "cockpit-cms": {
+   "w": [
+    "cockpit-cms",
+    "cockpit-cms-light"
+   ]
+  },
+  "p-cal": {
+   "a": [
+    "calendar",
+    "cal",
+    "private calendar",
+    "personal calendar",
+    "agenda",
+    "personal agenda",
+    "private agenda"
+   ],
+   "k": [
+    "Organization"
+   ]
+  },
+  "overleaf": {
+   "a": [
+    "online-latex",
+    "collaborative-latex"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Office-Suites"
+   ]
+  },
+  "rabbitmq": {
+   "a": [
+    "Message Broker"
+   ],
+   "k": [
+    "Developer-Tools",
+    "Networking-Tools"
+   ]
+  },
+  "picsur": {
+   "w": [
+    "picsur",
+    "picsur-light"
+   ]
+  },
+  "metabase": {},
+  "secureai-tools": {
+   "w": [
+    "secureai-tools",
+    "secureai-tools-light"
+   ]
+  },
+  "misskey": {
+   "a": [
+    "federated-microblogging",
+    "mastodon-alternative"
+   ],
+   "k": [
+    "Social-Media"
+   ],
+   "w": [
+    "misskey",
+    "misskey-light"
+   ]
+  },
+  "cobalt": {
+   "a": [
+    "youtube-downloader",
+    "video-downloader"
+   ],
+   "k": [
+    "Social-Media",
+    "File",
+    "Cloud",
+    "Video",
+    "Download-Managers"
+   ],
+   "w": [
+    "cobalt-dark",
+    "cobalt"
+   ]
+  },
+  "filerun": {
+   "a": [
+    "web-file-manager",
+    "online-file-browser"
+   ],
+   "k": [
+    "File-Sharing-&-Sync"
+   ]
+  },
+  "castopod": {},
+  "twitch": {},
+  "diamond-aircraft": {
+   "k": [
+    "Travel"
+   ]
+  },
+  "openvpn": {
+   "k": [
+    "VPN",
+    "Networking-Tools",
+    "Security"
+   ]
+  },
+  "keyoxide-alt": {},
+  "doppler": {
+   "a": [
+    "doppler-secrets"
+   ],
+   "k": [
+    "Development"
+   ]
+  },
+  "filebrowser-quantum": {},
+  "qdrant": {
+   "k": [
+    "Search"
+   ]
+  },
+  "theodinproject": {},
+  "z-ai": {
+   "a": [
+    "zai"
+   ]
+  },
+  "nut": {},
+  "kasm-workspaces": {},
+  "visual-studio-code": {},
+  "hashicorp-nomad": {},
+  "ispconfig": {},
+  "zapier": {
+   "a": [
+    "zap"
+   ],
+   "w": [
+    "zapier-dark",
+    "zapier"
+   ]
+  },
+  "lua": {},
+  "commafeed": {
+   "w": [
+    "commafeed",
+    "commafeed-light"
+   ]
+  },
+  "openlist": {
+   "k": [
+    "File"
+   ]
+  },
+  "siyuan": {},
+  "mkdocs": {
+   "w": [
+    "mkdocs",
+    "mkdocs-light"
+   ]
+  },
+  "adobe": {},
+  "tasmota": {
+   "w": [
+    "tasmota",
+    "tasmota-light"
+   ]
+  },
+  "wero": {
+   "a": [
+    "epi",
+    "giropay",
+    "paylib",
+    "payconiq",
+    "ideal"
+   ],
+   "k": [
+    "Finance"
+   ],
+   "w": [
+    "wero-dark",
+    "wero"
+   ]
+  },
+  "postal": {},
+  "bitmagnet": {
+   "k": [
+    "Communication"
+   ]
+  },
+  "loxone-full": {
+   "k": [
+    "Hardware"
+   ]
+  },
+  "tunarr": {
+   "k": [
+    "Streaming"
+   ]
+  },
+  "golink": {
+   "w": [
+    "golink-dark",
+    "golink"
+   ]
+  },
+  "nightscout": {
+   "w": [
+    "nightscout",
+    "nightscout-light"
+   ]
+  },
+  "ionos": {},
+  "pirate-proxy": {
+   "a": [
+    "Proxy Service"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Security",
+    "VPN"
+   ]
+  },
+  "caprover": {},
+  "ddns-updater": {},
+  "openstreetmap": {
+   "a": [
+    "OSM"
+   ],
+   "k": [
+    "Web-Browsers",
+    "Networking-Tools"
+   ]
+  },
+  "sunshine": {},
+  "logseq": {},
+  "plane": {},
+  "piped": {},
+  "kitana": {},
+  "automad": {
+   "w": [
+    "automad",
+    "automad-light"
+   ]
+  },
+  "zendesk": {},
+  "vn-stat": {
+   "k": [
+    "Logistics"
+   ]
+  },
+  "microsoft-bing": {
+   "a": [
+    "Search Engine"
+   ],
+   "k": [
+    "Search-Engines",
+    "Web-Browsers"
+   ]
+  },
+  "root-me": {
+   "a": [
+    "rm-icon"
+   ],
+   "w": [
+    "root-me-dark",
+    "root-me"
+   ]
+  },
+  "openwrt": {
+   "a": [
+    "custom-router-firmware",
+    "linux-based-router"
+   ],
+   "k": [
+    "Networking-Tools",
+    "Operating-Systems"
+   ]
+  },
+  "google-tag-manager": {
+   "a": [
+    "tag-manager",
+    "analytics-tool"
+   ],
+   "k": [
+    "Developer-Tools"
+   ]
+  },
+  "resiliosync": {},
+  "local-content-share": {},
+  "be-quiet": {
+   "a": [
+    "bequiet"
+   ]
+  },
+  "vtvgo": {
+   "k": [
+    "Social-Media"
+   ]
+  },
+  "hermes": {
+   "a": [
+    "hermes-agent",
+    "hermes-icon"
+   ]
+  },
+  "serviio-light": {
+   "w": [
+    "serviio"
+   ]
+  },
+  "shell-light": {
+   "w": [
+    "shell"
+   ]
+  },
+  "medusa-light": {
+   "w": [
+    "medusa"
+   ]
+  },
+  "ml-flow-wordmark-dark": {
+   "w": [
+    "ml-flow-wordmark"
+   ]
+  },
+  "viseron-light": {
+   "w": [
+    "viseron"
+   ]
+  },
+  "control-d-dark": {
+   "w": [
+    "control-d"
+   ]
+  },
+  "hollo-light": {
+   "w": [
+    "hollo"
+   ]
+  },
+  "foreflight-dark": {
+   "w": [
+    "foreflight"
+   ]
+  },
+  "suwayomi-light": {
+   "w": [
+    "suwayomi"
+   ]
+  },
+  "discourse-light": {
+   "w": [
+    "discourse"
+   ]
+  },
+  "habitica-dark": {
+   "w": [
+    "habitica"
+   ]
+  },
+  "hbo-light": {
+   "w": [
+    "hbo"
+   ]
+  },
+  "lldap-dark": {
+   "w": [
+    "lldap"
+   ]
+  },
+  "monica-light": {
+   "w": [
+    "monica"
+   ]
+  },
+  "easy-gate-light": {
+   "w": [
+    "easy-gate"
+   ]
+  },
+  "ollama-dark": {
+   "w": [
+    "ollama"
+   ]
+  },
+  "ramp-dark": {
+   "w": [
+    "ramp"
+   ]
+  },
+  "mailchimp-light": {
+   "w": [
+    "mailchimp"
+   ]
+  },
+  "booklogr-light": {
+   "w": [
+    "booklogr"
+   ]
+  },
+  "javascript-light": {
+   "w": [
+    "javascript"
+   ]
+  },
+  "notion-light": {
+   "w": [
+    "notion"
+   ]
+  },
+  "prime-video-alt-dark": {
+   "w": [
+    "prime-video-alt"
+   ]
+  },
+  "beszel-light": {
+   "w": [
+    "beszel"
+   ]
+  },
+  "nextjs-light": {
+   "w": [
+    "nextjs"
+   ]
+  },
+  "duckdns-light": {
+   "w": [
+    "duckdns"
+   ]
+  },
+  "freshping-dark": {
+   "w": [
+    "freshping"
+   ]
+  },
+  "typemill-light": {
+   "w": [
+    "typemill"
+   ]
+  },
+  "synapse-light": {
+   "w": [
+    "synapse"
+   ]
+  },
+  "tailscale-light": {
+   "w": [
+    "tailscale"
+   ]
+  },
+  "todoist-dark": {
+   "w": [
+    "todoist"
+   ]
+  },
+  "libreoffice-light": {
+   "w": [
+    "libreoffice"
+   ]
+  },
+  "nzbhydra2-light": {
+   "w": [
+    "nzbhydra2"
+   ]
+  },
+  "wallabag-light": {
+   "w": [
+    "wallabag"
+   ]
+  },
+  "droppy-dark": {
+   "w": [
+    "droppy"
+   ]
+  },
+  "openemr-light": {
+   "w": [
+    "openemr"
+   ]
+  },
+  "moodle-light": {
+   "w": [
+    "moodle"
+   ]
+  },
+  "mumble-light": {
+   "w": [
+    "mumble"
+   ]
+  },
+  "epic-games-light": {
+   "w": [
+    "epic-games"
+   ]
+  },
+  "verdaccio-dark": {
+   "w": [
+    "verdaccio"
+   ]
+  },
+  "papermark-light": {
+   "w": [
+    "papermark"
+   ]
+  },
+  "dream-host-dark": {
+   "w": [
+    "dream-host"
+   ]
+  },
+  "kiwix-light": {
+   "w": [
+    "kiwix"
+   ]
+  },
+  "guacamole-light": {
+   "w": [
+    "guacamole"
+   ]
+  },
+  "issabel-pbx-dark": {
+   "w": [
+    "issabel-pbx"
+   ]
+  },
+  "netapp-light": {
+   "w": [
+    "netapp"
+   ]
+  },
+  "pdfding-light": {
+   "w": [
+    "pdfding"
+   ]
+  },
+  "writefreely-light": {
+   "w": [
+    "writefreely"
+   ]
+  },
+  "coder-light": {
+   "w": [
+    "coder"
+   ]
+  },
+  "feedbin-light": {
+   "w": [
+    "feedbin"
+   ]
+  },
+  "wolfi-light": {
+   "w": [
+    "wolfi"
+   ]
+  },
+  "wakatime-light": {
+   "w": [
+    "wakatime"
+   ]
+  },
+  "riverside-fm-light": {
+   "w": [
+    "riverside-fm"
+   ]
+  },
+  "netbox-dark": {
+   "w": [
+    "netbox"
+   ]
+  },
+  "anything-llm-light": {
+   "w": [
+    "anything-llm"
+   ]
+  },
+  "hoarder-light": {
+   "w": [
+    "hoarder"
+   ]
+  },
+  "tidal-dark": {
+   "w": [
+    "tidal"
+   ]
+  },
+  "double-take-dark": {
+   "w": [
+    "double-take"
+   ]
+  },
+  "apple-tv-plus-light": {
+   "w": [
+    "apple-tv-plus"
+   ]
+  },
+  "openwebrx-plus-dark": {
+   "w": [
+    "openwebrx-plus"
+   ]
+  },
+  "solidtime-light": {
+   "w": [
+    "solidtime"
+   ]
+  },
+  "sophos-dark": {
+   "w": [
+    "sophos"
+   ]
+  },
+  "phoneinfoga-light": {
+   "w": [
+    "phoneinfoga"
+   ]
+  },
+  "papermerge-light": {
+   "w": [
+    "papermerge"
+   ]
+  },
+  "amazon-web-services-light": {
+   "w": [
+    "amazon-web-services"
+   ]
+  },
+  "affine-light": {
+   "w": [
+    "affine"
+   ]
+  },
+  "peanut-light": {
+   "w": [
+    "peanut"
+   ]
+  },
+  "binner-dark": {
+   "w": [
+    "binner"
+   ]
+  },
+  "hemmelig-light": {
+   "w": [
+    "hemmelig"
+   ]
+  },
+  "dokploy-dark": {
+   "w": [
+    "dokploy"
+   ]
+  },
+  "zitadel-light": {
+   "w": [
+    "zitadel"
+   ]
+  },
+  "leetcode-dark": {
+   "w": [
+    "leetcode"
+   ]
+  },
+  "goaccess-light": {
+   "w": [
+    "goaccess"
+   ]
+  },
+  "build-better-dark": {
+   "w": [
+    "build-better"
+   ]
+  },
+  "karakeep-dark": {
+   "w": [
+    "karakeep"
+   ]
+  },
+  "bab-technologie-dark": {
+   "w": [
+    "bab-technologie"
+   ]
+  },
+  "revolt-light": {
+   "w": [
+    "revolt"
+   ]
+  },
+  "vault-light": {
+   "w": [
+    "vault"
+   ]
+  },
+  "web-check-dark": {
+   "w": [
+    "web-check"
+   ]
+  },
+  "openchangelog-light": {
+   "w": [
+    "openchangelog"
+   ]
+  },
+  "lichess-dark": {
+   "w": [
+    "lichess"
+   ]
+  },
+  "grav-light": {
+   "w": [
+    "grav"
+   ]
+  },
+  "rhasspy-dark": {
+   "w": [
+    "rhasspy"
+   ]
+  },
+  "lyrion-dark": {
+   "w": [
+    "lyrion"
+   ]
+  },
+  "reactive-resume-light": {
+   "w": [
+    "reactive-resume"
+   ]
+  },
+  "locals-light": {
+   "w": [
+    "locals"
+   ]
+  },
+  "haptic-light": {
+   "w": [
+    "haptic"
+   ]
+  },
+  "github-copilot-dark": {
+   "w": [
+    "github-copilot"
+   ]
+  },
+  "cert-warden-light": {
+   "w": [
+    "cert-warden"
+   ]
+  },
+  "ryot-light": {
+   "w": [
+    "ryot"
+   ]
+  },
+  "teslamate-light": {
+   "w": [
+    "teslamate"
+   ]
+  },
+  "ovirt-light": {
+   "w": [
+    "ovirt"
+   ]
+  },
+  "lynx-light": {
+   "w": [
+    "lynx"
+   ]
+  },
+  "bottom-dark": {
+   "w": [
+    "bottom"
+   ]
+  },
+  "photostructure-dark": {
+   "w": [
+    "photostructure"
+   ]
+  },
+  "heimdall-light": {
+   "w": [
+    "heimdall"
+   ]
+  },
+  "postiz-dark": {
+   "w": [
+    "postiz"
+   ]
+  },
+  "frigate-light": {
+   "w": [
+    "frigate"
+   ]
+  },
+  "tianji-light": {
+   "w": [
+    "tianji"
+   ]
+  },
+  "fluffychat-dark": {
+   "w": [
+    "fluffychat"
+   ]
+  },
+  "netalertx-light": {
+   "w": [
+    "netalertx"
+   ]
+  },
+  "icinga-light": {
+   "w": [
+    "icinga"
+   ]
+  },
+  "biblioreads-light": {
+   "w": [
+    "biblioreads"
+   ]
+  },
+  "yarr-light": {
+   "w": [
+    "yarr"
+   ]
+  },
+  "prime-video-light": {
+   "w": [
+    "prime-video"
+   ]
+  },
+  "nexus-dark": {
+   "w": [
+    "nexus"
+   ]
+  },
+  "wikipedia-light": {
+   "w": [
+    "wikipedia"
+   ]
+  },
+  "packetfence-full-dark": {
+   "w": [
+    "packetfence-full"
+   ]
+  },
+  "ansible-light": {
+   "w": [
+    "ansible"
+   ]
+  },
+  "volumio-light": {
+   "w": [
+    "volumio"
+   ]
+  },
+  "neko-light": {
+   "w": [
+    "neko"
+   ]
+  },
+  "docassemble-light": {
+   "w": [
+    "docassemble"
+   ]
+  },
+  "oculus-light": {
+   "w": [
+    "oculus"
+   ]
+  },
+  "sabnzbd-light": {
+   "w": [
+    "sabnzbd"
+   ]
+  },
+  "title-card-maker-dark": {
+   "w": [
+    "title-card-maker"
+   ]
+  },
+  "3cx-light": {
+   "w": [
+    "3cx"
+   ]
+  },
+  "matrix-light": {
+   "w": [
+    "matrix"
+   ]
+  },
+  "pepperbox-tv-dark": {
+   "w": [
+    "pepperbox-tv"
+   ]
+  },
+  "cilium-light": {
+   "w": [
+    "cilium"
+   ]
+  },
+  "rust-dark": {
+   "w": [
+    "rust"
+   ]
+  },
+  "newshosting-dark": {
+   "w": [
+    "newshosting"
+   ]
+  },
+  "security-onion-dark": {
+   "w": [
+    "security-onion"
+   ]
+  },
+  "it-tools-light": {
+   "w": [
+    "it-tools"
+   ]
+  },
+  "olivetin-light": {
+   "w": [
+    "olivetin"
+   ]
+  },
+  "beaver-habit-tracker-light": {
+   "w": [
+    "beaver-habit-tracker"
+   ]
+  },
+  "autobangumi-dark": {
+   "w": [
+    "autobangumi"
+   ]
+  },
+  "open-cloud-dark": {
+   "w": [
+    "open-cloud"
+   ]
+  },
+  "twingate-light": {
+   "w": [
+    "twingate"
+   ]
+  },
+  "kick-light": {
+   "w": [
+    "kick"
+   ]
+  },
+  "tiktok-light": {
+   "w": [
+    "tiktok"
+   ]
+  },
+  "glances-light": {
+   "w": [
+    "glances"
+   ]
+  },
+  "beef-light": {
+   "w": [
+    "beef"
+   ]
+  },
+  "bazarr-dark": {
+   "w": [
+    "bazarr"
+   ]
+  },
+  "kanboard-light": {
+   "w": [
+    "kanboard"
+   ]
+  },
+  "cc-light": {
+   "w": [
+    "cc"
+   ]
+  },
+  "netsurf-light": {
+   "w": [
+    "netsurf"
+   ]
+  },
+  "cockpit-light": {
+   "w": [
+    "cockpit"
+   ]
+  },
+  "eleventy-light": {
+   "w": [
+    "eleventy"
+   ]
+  },
+  "notebook-lm-dark": {
+   "w": [
+    "notebook-lm"
+   ]
+  },
+  "feedlynx-light": {
+   "w": [
+    "feedlynx"
+   ]
+  },
+  "voltaserve-light": {
+   "w": [
+    "voltaserve"
+   ]
+  },
+  "phorge-light": {
+   "w": [
+    "phorge"
+   ]
+  },
+  "lemmy-light": {
+   "w": [
+    "lemmy"
+   ]
+  },
+  "dillinger-light": {
+   "w": [
+    "dillinger"
+   ]
+  },
+  "networking-toolbox-dark": {
+   "w": [
+    "networking-toolbox"
+   ]
+  },
+  "microsoft-sql-server-light": {
+   "w": [
+    "microsoft-sql-server"
+   ]
+  },
+  "peacock-light": {
+   "w": [
+    "peacock"
+   ]
+  },
+  "endel-dark": {
+   "w": [
+    "endel"
+   ]
+  },
+  "5etools-dark": {
+   "w": [
+    "5etools"
+   ]
+  },
+  "forte-light": {
+   "w": [
+    "forte"
+   ]
+  },
+  "endless-light": {
+   "w": [
+    "endless"
+   ]
+  },
+  "commento-light": {
+   "w": [
+    "commento"
+   ]
+  },
+  "servarr-light": {
+   "w": [
+    "servarr"
+   ]
+  },
+  "vertiv-dark": {
+   "w": [
+    "vertiv"
+   ]
+  },
+  "cloud9-light": {
+   "w": [
+    "cloud9"
+   ]
+  },
+  "omnic-forge-dark": {
+   "w": [
+    "omnic-forge"
+   ]
+  },
+  "runson-light": {
+   "w": [
+    "runson"
+   ]
+  },
+  "sst-dev-dark": {
+   "w": [
+    "sst-dev"
+   ]
+  },
+  "jwt-io-light": {
+   "w": [
+    "jwt-io"
+   ]
+  },
+  "zerotier-light": {
+   "w": [
+    "zerotier"
+   ]
+  },
+  "aws-light": {
+   "w": [
+    "aws"
+   ]
+  },
+  "apple-light": {
+   "w": [
+    "apple"
+   ]
+  },
+  "hdhomerun-light": {
+   "w": [
+    "hdhomerun"
+   ]
+  },
+  "docker-mailserver-light": {
+   "w": [
+    "docker-mailserver"
+   ]
+  },
+  "netgear-light": {
+   "w": [
+    "netgear"
+   ]
+  },
+  "budgetbee-light": {
+   "w": [
+    "budgetbee"
+   ]
+  },
+  "fusionauth-light": {
+   "w": [
+    "fusionauth"
+   ]
+  },
+  "posthog-light": {
+   "w": [
+    "posthog"
+   ]
+  },
+  "tooljet-dark": {
+   "w": [
+    "tooljet"
+   ]
+  },
+  "librespeed-light": {
+   "w": [
+    "librespeed"
+   ]
+  },
+  "pingvin-share-dark": {
+   "w": [
+    "pingvin-share"
+   ]
+  },
+  "hammond-light": {
+   "w": [
+    "hammond"
+   ]
+  },
+  "crowdin-dark": {
+   "w": [
+    "crowdin"
+   ]
+  },
+  "pioneer-light": {
+   "w": [
+    "pioneer"
+   ]
+  },
+  "fritzbox-light": {
+   "w": [
+    "fritzbox"
+   ]
+  },
+  "mega-nz-dark": {
+   "w": [
+    "mega-nz"
+   ]
+  },
+  "photonix-light": {
+   "w": [
+    "photonix"
+   ]
+  },
+  "fenrus-light": {
+   "w": [
+    "fenrus"
+   ]
+  },
+  "open-router-dark": {
+   "w": [
+    "open-router"
+   ]
+  },
+  "feedbase-light": {
+   "w": [
+    "feedbase"
+   ]
+  },
+  "zyxel-communications-light": {
+   "w": [
+    "zyxel-communications"
+   ]
+  },
+  "enclosed-light": {
+   "w": [
+    "enclosed"
+   ]
+  },
+  "zigbee2mqtt-light": {
+   "w": [
+    "zigbee2mqtt"
+   ]
+  },
+  "memories-light": {
+   "w": [
+    "memories"
+   ]
+  },
+  "matter-light": {
+   "w": [
+    "matter"
+   ]
+  },
+  "borgmatic-light": {
+   "w": [
+    "borgmatic"
+   ]
+  },
+  "mergeable-dark": {
+   "w": [
+    "mergeable"
+   ]
+  },
+  "lancommander-light": {
+   "w": [
+    "lancommander"
+   ]
+  },
+  "1password-dark": {
+   "w": [
+    "1password"
+   ]
+  },
+  "mubi-dark": {
+   "w": [
+    "mubi"
+   ]
+  },
+  "mousehole-dark": {
+   "w": [
+    "mousehole"
+   ]
+  },
+  "penpot-light": {
+   "w": [
+    "penpot"
+   ]
+  },
+  "openai-light": {
+   "w": [
+    "openai"
+   ]
+  },
+  "denon-light": {
+   "w": [
+    "denon"
+   ]
+  },
+  "synology-light": {
+   "w": [
+    "synology"
+   ]
+  },
+  "opencode-dark": {
+   "w": [
+    "opencode"
+   ]
+  },
+  "maker-world-dark": {
+   "w": [
+    "maker-world"
+   ]
+  },
+  "codestats-light": {
+   "w": [
+    "codestats"
+   ]
+  },
+  "unity-dark": {
+   "w": [
+    "unity"
+   ]
+  },
+  "ycombinator-dark": {
+   "w": [
+    "ycombinator"
+   ]
+  },
+  "onlyfans-dark": {
+   "w": [
+    "onlyfans"
+   ]
+  },
+  "plex-alt-light": {
+   "w": [
+    "plex-alt"
+   ]
+  },
+  "wooting-dark": {
+   "w": [
+    "wooting"
+   ]
+  },
+  "pingvin-dark": {
+   "w": [
+    "pingvin"
+   ]
+  },
+  "alexandrie-dark": {
+   "w": [
+    "alexandrie"
+   ]
+  },
+  "wanderer-light": {
+   "w": [
+    "wanderer"
+   ]
+  },
+  "rybbit-dark": {
+   "w": [
+    "rybbit"
+   ]
+  },
+  "funkwhale-light": {
+   "w": [
+    "funkwhale"
+   ]
+  },
+  "oreilly-dark": {
+   "w": [
+    "oreilly"
+   ]
+  },
+  "zipline-light": {
+   "w": [
+    "zipline"
+   ]
+  },
+  "invoice-ninja-light": {
+   "w": [
+    "invoice-ninja"
+   ]
+  },
+  "teamcity-light": {
+   "w": [
+    "teamcity"
+   ]
+  },
+  "sonarr-dark": {
+   "w": [
+    "sonarr"
+   ]
+  },
+  "falcon-player-dark": {
+   "w": [
+    "falcon-player"
+   ]
+  },
+  "theia-light": {
+   "w": [
+    "theia"
+   ]
+  },
+  "emq-light": {
+   "w": [
+    "emq"
+   ]
+  },
+  "zen-browser-dark": {
+   "w": [
+    "zen-browser"
+   ]
+  },
+  "shell-tips-light": {
+   "w": [
+    "shell-tips"
+   ]
+  },
+  "esphome-light": {
+   "w": [
+    "esphome"
+   ]
+  },
+  "jellystat-dark": {
+   "w": [
+    "jellystat"
+   ]
+  },
+  "fios-light": {
+   "w": [
+    "fios"
+   ]
+  },
+  "okta-dark": {
+   "w": [
+    "okta"
+   ]
+  },
+  "amd-light": {
+   "w": [
+    "amd"
+   ]
+  },
+  "jackett-light": {
+   "w": [
+    "jackett"
+   ]
+  },
+  "pfsense-light": {
+   "w": [
+    "pfsense"
+   ]
+  },
+  "snapchat-dark": {
+   "w": [
+    "snapchat"
+   ]
+  },
+  "mikrotik-light": {
+   "w": [
+    "mikrotik"
+   ]
+  },
+  "windows-retro-light": {
+   "w": [
+    "windows-retro"
+   ]
+  },
+  "amazon-light": {
+   "w": [
+    "amazon"
+   ]
+  },
+  "android-auto-dark": {
+   "w": [
+    "android-auto"
+   ]
+  },
+  "portainer-dark": {
+   "w": [
+    "portainer"
+   ]
+  },
+  "oneuptime-light": {
+   "w": [
+    "oneuptime"
+   ]
+  },
+  "github-light": {
+   "w": [
+    "github"
+   ]
+  },
+  "ultimate-guitar-light": {
+   "w": [
+    "ultimate-guitar"
+   ]
+  },
+  "sentry-light": {
+   "w": [
+    "sentry"
+   ]
+  },
+  "spree-dark": {
+   "w": [
+    "spree"
+   ]
+  },
+  "oh-my-posh-dark": {
+   "w": [
+    "oh-my-posh"
+   ]
+  },
+  "vaultwarden-light": {
+   "w": [
+    "vaultwarden"
+   ]
+  },
+  "open-webui-light": {
+   "w": [
+    "open-webui"
+   ]
+  },
+  "wotdle-light": {
+   "w": [
+    "wotdle"
+   ]
+  },
+  "cinny-light": {
+   "w": [
+    "cinny"
+   ]
+  },
+  "apache-tomcat-light": {
+   "w": [
+    "apache-tomcat"
+   ]
+  },
+  "raspberry-pi-light": {
+   "w": [
+    "raspberry-pi"
+   ]
+  },
+  "oxker-light": {
+   "w": [
+    "oxker"
+   ]
+  },
+  "minio-light": {
+   "w": [
+    "minio"
+   ]
+  },
+  "toggl-dark": {
+   "w": [
+    "toggl"
+   ]
+  },
+  "trading-view-dark": {
+   "w": [
+    "trading-view"
+   ]
+  },
+  "php-light": {
+   "w": [
+    "php"
+   ]
+  },
+  "mayan-edms-light": {
+   "w": [
+    "mayan-edms"
+   ]
+  },
+  "windows-95-light": {
+   "w": [
+    "windows-95"
+   ]
+  },
+  "podfetch-light": {
+   "w": [
+    "podfetch"
+   ]
+  },
+  "schedulearn-dark": {
+   "w": [
+    "schedulearn"
+   ]
+  },
+  "portainer-be-dark": {
+   "w": [
+    "portainer-be"
+   ]
+  },
+  "planka-dark": {
+   "w": [
+    "planka"
+   ]
+  },
+  "unreal-engine-dark": {
+   "w": [
+    "unreal-engine"
+   ]
+  },
+  "resiliosync-full-dark": {
+   "w": [
+    "resiliosync-full"
+   ]
+  },
+  "timetagger-light": {
+   "w": [
+    "timetagger"
+   ]
+  },
+  "readwise-reader-dark": {
+   "w": [
+    "readwise-reader"
+   ]
+  },
+  "libreddit-light": {
+   "w": [
+    "libreddit"
+   ]
+  },
+  "laracasts-dark": {
+   "w": [
+    "laracasts"
+   ]
+  },
+  "akkoma-light": {
+   "w": [
+    "akkoma"
+   ]
+  },
+  "matrix-synapse-light": {
+   "w": [
+    "matrix-synapse"
+   ]
+  },
+  "turbopack-light": {
+   "w": [
+    "turbopack"
+   ]
+  },
+  "tubesync-light": {
+   "w": [
+    "tubesync"
+   ]
+  },
+  "meshping-light": {
+   "w": [
+    "meshping"
+   ]
+  },
+  "pocket-casts-dark": {
+   "w": [
+    "pocket-casts"
+   ]
+  },
+  "openeats-light": {
+   "w": [
+    "openeats"
+   ]
+  },
+  "2fauth-light": {
+   "w": [
+    "2fauth"
+   ]
+  },
+  "linear-dark": {
+   "w": [
+    "linear"
+   ]
+  },
+  "semaphore-dark": {
+   "w": [
+    "semaphore"
+   ]
+  },
+  "outline-light": {
+   "w": [
+    "outline"
+   ]
+  },
+  "cap-cut-dark": {
+   "w": [
+    "cap-cut"
+   ]
+  },
+  "netbox-full-dark": {
+   "w": [
+    "netbox-full"
+   ]
+  },
+  "rimgo-light": {
+   "w": [
+    "rimgo"
+   ]
+  },
+  "yamtrack-light": {
+   "w": [
+    "yamtrack"
+   ]
+  },
+  "redlib-light": {
+   "w": [
+    "redlib"
+   ]
+  },
+  "openshift-dark": {
+   "w": [
+    "openshift"
+   ]
+  },
+  "html-light": {
+   "w": [
+    "html"
+   ]
+  },
+  "flathub-dark": {
+   "w": [
+    "flathub"
+   ]
+  },
+  "headlamp-dark": {
+   "w": [
+    "headlamp"
+   ]
+  },
+  "capacities-dark": {
+   "w": [
+    "capacities"
+   ]
+  },
+  "photoprism-light": {
+   "w": [
+    "photoprism"
+   ]
+  },
+  "astuto-light": {
+   "w": [
+    "astuto"
+   ]
+  },
+  "phoscon-light": {
+   "w": [
+    "phoscon"
+   ]
+  },
+  "onedev-light": {
+   "w": [
+    "onedev"
+   ]
+  },
+  "packetfence-dark": {
+   "w": [
+    "packetfence"
+   ]
+  },
+  "myheats-light": {
+   "w": [
+    "myheats"
+   ]
+  },
+  "trellix-dark": {
+   "w": [
+    "trellix"
+   ]
+  },
+  "fast-com-light": {
+   "w": [
+    "fast-com"
+   ]
+  },
+  "hatsh-light": {
+   "w": [
+    "hatsh"
+   ]
+  },
+  "notesnook-light": {
+   "w": [
+    "notesnook"
+   ]
+  },
+  "zashboard-dark": {
+   "w": [
+    "zashboard"
+   ]
+  },
+  "glinet-dark": {
+   "w": [
+    "glinet"
+   ]
+  },
+  "scrutiny-light": {
+   "w": [
+    "scrutiny"
+   ]
+  },
+  "motioneye-dark": {
+   "w": [
+    "motioneye"
+   ]
+  },
+  "koillection-light": {
+   "w": [
+    "koillection"
+   ]
+  },
+  "exercism-dark": {
+   "w": [
+    "exercism"
+   ]
+  },
+  "ludus-dark": {
+   "w": [
+    "ludus"
+   ]
+  },
+  "selfh-st-light": {
+   "w": [
+    "selfh-st"
+   ]
+  },
+  "zyxel-networks-light": {
+   "w": [
+    "zyxel-networks"
+   ]
+  },
+  "pocketbase-dark": {
+   "w": [
+    "pocketbase"
+   ]
+  },
+  "claude-ai-light": {
+   "w": [
+    "claude-ai"
+   ]
+  },
+  "flightradar24-light": {
+   "w": [
+    "flightradar24"
+   ]
+  },
+  "converse-light": {
+   "w": [
+    "converse"
+   ]
+  },
+  "backrest-light": {
+   "w": [
+    "backrest"
+   ]
+  },
+  "codex-light": {
+   "w": [
+    "codex"
+   ]
+  },
+  "onshape-dark": {
+   "w": [
+    "onshape"
+   ]
+  },
+  "portracker-dark": {
+   "w": [
+    "portracker"
+   ]
+  },
+  "snappymail-light": {
+   "w": [
+    "snappymail"
+   ]
+  },
+  "phase-dark": {
+   "w": [
+    "phase"
+   ]
+  },
+  "opengist-light": {
+   "w": [
+    "opengist"
+   ]
+  },
+  "pastebin-dark": {
+   "w": [
+    "pastebin"
+   ]
+  },
+  "part-db-light": {
+   "w": [
+    "part-db"
+   ]
+  },
+  "logitech-light": {
+   "w": [
+    "logitech"
+   ]
+  },
+  "libretranslate-dark": {
+   "w": [
+    "libretranslate"
+   ]
+  },
+  "cal-com-light": {
+   "w": [
+    "cal-com"
+   ]
+  },
+  "browserless-light": {
+   "w": [
+    "browserless"
+   ]
+  },
+  "tenable-dark": {
+   "w": [
+    "tenable"
+   ]
+  },
+  "threads-light": {
+   "w": [
+    "threads"
+   ]
+  },
+  "udemy-light": {
+   "w": [
+    "udemy"
+   ]
+  },
+  "greenbone-light": {
+   "w": [
+    "greenbone"
+   ]
+  },
+  "20i-dark": {
+   "w": [
+    "20i"
+   ]
+  },
+  "dashboard-icons-dark": {
+   "w": [
+    "dashboard-icons"
+   ]
+  },
+  "deno-light": {
+   "w": [
+    "deno"
+   ]
+  },
+  "plex-light": {
+   "w": [
+    "plex"
+   ]
+  },
+  "umami-light": {
+   "w": [
+    "umami"
+   ]
+  },
+  "pocket-id-light": {
+   "w": [
+    "pocket-id"
+   ]
+  },
+  "pikvm-light": {
+   "w": [
+    "pikvm"
+   ]
+  },
+  "icinga-full-light": {
+   "w": [
+    "icinga-full"
+   ]
+  },
+  "soundcloud-dark": {
+   "w": [
+    "soundcloud"
+   ]
+  },
+  "otter-wiki-dark": {
+   "w": [
+    "otter-wiki"
+   ]
+  },
+  "patreon-light": {
+   "w": [
+    "patreon"
+   ]
+  },
+  "mobotix-light": {
+   "w": [
+    "mobotix"
+   ]
+  },
+  "dockpeek-dark": {
+   "w": [
+    "dockpeek"
+   ]
+  },
+  "avm-fritzbox-light": {
+   "w": [
+    "avm-fritzbox"
+   ]
+  },
+  "i2p-light": {
+   "w": [
+    "i2p"
+   ]
+  },
+  "deepl-dark": {
+   "w": [
+    "deepl"
+   ]
+  },
+  "moodist-dark": {
+   "w": [
+    "moodist"
+   ]
+  },
+  "cups-light": {
+   "w": [
+    "cups"
+   ]
+  },
+  "pingdom-light": {
+   "w": [
+    "pingdom"
+   ]
+  },
+  "pigallery2-dark": {
+   "w": [
+    "pigallery2"
+   ]
+  },
+  "immich-kiosk-light": {
+   "w": [
+    "immich-kiosk"
+   ]
+  },
+  "proxmox-light": {
+   "w": [
+    "proxmox"
+   ]
+  },
+  "readthedocs-light": {
+   "w": [
+    "readthedocs"
+   ]
+  },
+  "slash-light": {
+   "w": [
+    "slash"
+   ]
+  },
+  "broadcastchannel-light": {
+   "w": [
+    "broadcastchannel"
+   ]
+  },
+  "openpanel-light": {
+   "w": [
+    "openpanel"
+   ]
+  },
+  "unifi-dark": {
+   "w": [
+    "unifi"
+   ]
+  },
+  "oscarr-light": {
+   "w": [
+    "oscarr"
+   ]
+  },
+  "grok-dark": {
+   "w": [
+    "grok"
+   ]
+  },
+  "code-cademy-dark": {
+   "w": [
+    "code-cademy"
+   ]
+  },
+  "esphome-alt-light": {
+   "w": [
+    "esphome-alt"
+   ]
+  },
+  "hyperpipe-light": {
+   "w": [
+    "hyperpipe"
+   ]
+  },
+  "syncthing-dark": {
+   "w": [
+    "syncthing"
+   ]
+  },
+  "css-light": {
+   "w": [
+    "css"
+   ]
+  },
+  "traccar-dark": {
+   "w": [
+    "traccar"
+   ]
+  },
+  "dropout-light": {
+   "w": [
+    "dropout"
+   ]
+  },
+  "victoriametrics-light": {
+   "w": [
+    "victoriametrics"
+   ]
+  },
+  "symmetricom-light": {
+   "w": [
+    "symmetricom"
+   ]
+  },
+  "vercel-light": {
+   "w": [
+    "vercel"
+   ]
+  },
+  "payload-light": {
+   "w": [
+    "payload"
+   ]
+  },
+  "plexrequests-light": {
+   "w": [
+    "plexrequests"
+   ]
+  },
+  "miniflux-light": {
+   "w": [
+    "miniflux"
+   ]
+  },
+  "tiddlywiki-light": {
+   "w": [
+    "tiddlywiki"
+   ]
+  },
+  "ipfs-light": {
+   "w": [
+    "ipfs"
+   ]
+  },
+  "dub-light": {
+   "w": [
+    "dub"
+   ]
+  },
+  "cockpit-cms-light": {
+   "w": [
+    "cockpit-cms"
+   ]
+  },
+  "picsur-light": {
+   "w": [
+    "picsur"
+   ]
+  },
+  "secureai-tools-light": {
+   "w": [
+    "secureai-tools"
+   ]
+  },
+  "misskey-light": {
+   "w": [
+    "misskey"
+   ]
+  },
+  "cobalt-dark": {
+   "w": [
+    "cobalt"
+   ]
+  },
+  "zapier-dark": {
+   "w": [
+    "zapier"
+   ]
+  },
+  "commafeed-light": {
+   "w": [
+    "commafeed"
+   ]
+  },
+  "mkdocs-light": {
+   "w": [
+    "mkdocs"
+   ]
+  },
+  "tasmota-light": {
+   "w": [
+    "tasmota"
+   ]
+  },
+  "wero-dark": {
+   "w": [
+    "wero"
+   ]
+  },
+  "golink-dark": {
+   "w": [
+    "golink"
+   ]
+  },
+  "nightscout-light": {
+   "w": [
+    "nightscout"
+   ]
+  },
+  "automad-light": {
+   "w": [
+    "automad"
+   ]
+  },
+  "root-me-dark": {
+   "w": [
+    "root-me"
+   ]
+  }
+ }
+}
