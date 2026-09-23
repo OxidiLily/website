@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LOGO } from '../lib/content';
+import { tautanAman } from '../lib/sanitasi';
 
 interface CardImageProps {
   src?: string;
@@ -28,7 +29,10 @@ export const CardImage: React.FC<CardImageProps> = ({
   logoClassName = 'w-24 h-24 object-contain',
 }) => {
   const [gagal, setGagal] = useState(false);
-  const pakaiLogo = gagal || !src || src === LOGO;
+  // `src` datang dari kolom isi di tabel, bukan dari kode. URL yang skemanya
+  // bukan gambar (`javascript:`, `data:text/html`) diperlakukan seperti URL
+  // rusak: jatuh ke logo, sama seperti berkas yang sudah terhapus.
+  const pakaiLogo = gagal || !src || src === LOGO || !tautanAman(src, { dataGambar: true });
 
   return (
     <img

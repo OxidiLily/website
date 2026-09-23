@@ -3,8 +3,11 @@
 ## Akun admin lewat Docker Compose
 
 Terapkan `supabase/schema.sql`, lalu `supabase/require-password-change.sql` pada
-Supabase tujuan sebelum deploy. Jika schema.sql diterapkan ulang, terapkan ulang
-migrasi password setelahnya karena keduanya mendefinisikan web.is_admin().
+Supabase tujuan sebelum deploy. Urutannya tidak perlu dijaga: ketiga berkas SQL
+(termasuk `migrate-public-to-web.sql`) memuat definisi `web.is_admin()` yang sama
+persis, dan kesamaannya diuji `node scripts/is-admin.check.mjs`. Sebelum itu
+urutannya penting — menerapkan `schema.sql` setelah migrasi mengembalikan versi
+yang tidak menuntut penggantian kata sandi awal.
 Isi `VITE_SUPABASE_URL`, `ADMIN_EMAIL`, `ADMIN_PASSWORD` (minimal 12 karakter),
 serta `SUPABASE_SERVICE_ROLE_KEY` pada berkas kredensial lokal yang dilindungi.
 Jangan gunakan awalan `VITE_` untuk kata sandi atau service_role.
@@ -27,6 +30,13 @@ dan tidak dicetak ke log. Akun lama tidak dipaksa mengganti ulang.
 Uji lokal tanpa koneksi Supabase:
 
     node scripts/create-admin.check.mjs
+    node scripts/is-admin.check.mjs           # definisi web.is_admin() di 3 berkas SQL
+    node scripts/runtime-manifest.check.mjs   # lockfile tahap runtime image
+
+- `runtime-manifest.mjs` — menyusun manifes + lockfile tahap runtime image
+  (dipakai Dockerfile). Pohonnya dipotong dari `package-lock.json` yang sudah
+  ada, jadi tidak ada permintaan jaringan saat build dan versi yang jalan di
+  container sama dengan yang diuji di host.
 
 - `ai-live-publik.mjs` — uji asisten AI di halaman PUBLIK lewat browser:
   jawabannya harus datang dari model, bukan teks cadangan panel. Penjaga

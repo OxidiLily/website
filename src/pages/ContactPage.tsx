@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { canRenderWebGL } from '../lib/device';
 import { insert, useSettings } from '../lib/content';
+import { tautanBersih } from '../lib/sanitasi';
 
 // GhostFibers (ogl) murni dekorasi — jangan diunduh di perangkat lemah.
 const GhostFibers = lazy(() => import('../components/GhostFibers'));
@@ -132,7 +133,7 @@ export const ContactPage: React.FC = () => {
             </a>
 
             <a 
-              href={t.site_website_url} 
+              href={tautanBersih(t.site_website_url) || undefined} 
               target="_blank" 
               rel="noopener noreferrer" 
               className="flex items-center gap-3.5 p-2 sm:p-0 rounded-xl active:bg-neutral-900/80 text-sm sm:text-base text-neutral-300 hover:text-white transition-colors group"
@@ -395,7 +396,7 @@ export const ContactPage: React.FC = () => {
               
               <div className="pt-2 flex items-center justify-between gap-3">
                 <a 
-                  href={t.contact_map_link} 
+                  href={tautanBersih(t.contact_map_link) || undefined} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-colors shadow-md cursor-pointer"

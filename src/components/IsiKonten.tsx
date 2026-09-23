@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { pecahArtikel, tampakHtml } from '../lib/blogWriter';
 import { markdownKeHtml } from '../lib/markdown';
+import { sanitasiArtikel } from '../lib/sanitasi';
 import { KodeBlok } from './KodeBlok';
 
 /**
@@ -16,12 +17,18 @@ export const keHtml = (isi: string): string => (tampakHtml(isi) ? isi : markdown
  * sebagai kartu. Dipakai halaman artikel dan modal proyek — satu tempat,
  * supaya keduanya tidak pernah berbeda cara menggambar kode.
  *
- * Penulisnya hanya admin (RLS menutup tulis untuk selain admin), dan HTML
- * hasil Markdown sudah meng-escape apa pun yang diketik — jadi sumber HTML
- * ini setingkat kepercayaan dengan CMS mana pun.
+ * Penyaringnya `sanitasiArtikel()`, dan ia dipasang DI SINI — satu-satunya
+ * tempat di seluruh aplikasi yang memanggil `dangerouslySetInnerHTML` — bukan
+ * di tiap pemanggil. Alasannya bukan kerapian: isi artikel tidak selalu
+ * ketikan manusia. Tombol "Generate dengan AI" mengisi kolom isi dari keluaran
+ * model, dan bahan prompt-nya diunduh dari halaman pihak ketiga (`/riset`).
+ * Halaman sumber bisa memerintahkan model menulis `<img src=x onerror=...>`,
+ * dan tanpa penyaring ini markup itu tersimpan di `web.blogs.content` lalu
+ * dieksekusi di browser setiap pengunjung. RLS hanya menjaga siapa yang boleh
+ * MENULIS; ia tidak menjaga apa yang boleh dijalankan.
  */
 export const IsiKonten: React.FC<{ html: string; className?: string }> = ({ html, className = '' }) => {
-  const bagian = useMemo(() => pecahArtikel(html), [html]);
+  const bagian = useMemo(() => pecahArtikel(sanitasiArtikel(html)), [html]);
   return (
     <div className={`isi-artikel ${className}`.trim()}>
       {bagian.map((b, i) =>

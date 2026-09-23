@@ -254,6 +254,14 @@ export function bahanDariSumber(sumber: SumberRujukan[]): string {
  * bersertifikat sah (mis. `tailscale serve`). Karena itu alamat hasil resolusi
  * DNS diperiksa sendiri sebelum satu byte pun dikirim.
  *
+ * Selain rentang privat yang jelas, ikut ditolak SEMUA rentang yang tidak bisa
+ * dijadikan rumah dokumentasi publik yang sah: 192.0.0.0/24, 192.0.2.0/24,
+ * 198.18.0.0/15, 198.51.100.0/24, 203.0.113.0/24, 240.0.0.0/4, multicast,
+ * 192.88.99.0/24 (relai 6to4), dan 2001:db8::/32. Nama host yang menuju ke
+ * salah satunya berarti permintaan ini sedang diarahkan ke infrastruktur —
+ * bukan ke halaman dokumentasi — dan daftar itu dipakai justru karena lengkap,
+ * bukan karena ada bukti penyalahgunaan salah satunya.
+ *
  * Termasuk 100.64.0.0/10: itu rentang CGNAT yang dipakai Tailscale, jadi
  * seluruh tailnet ikut tertutup.
  */
@@ -263,15 +271,25 @@ export function ipPrivat(ip: string): boolean {
   if (m) {
     const [a, b] = [Number(m[1]), Number(m[2])];
     return (
+      a === 0 ||
       a === 10 ||
       a === 127 ||
-      a === 0 ||
-      (a === 172 && b >= 16 && b <= 31) ||
-      (a === 192 && b === 168) ||
+      (a === 100 && b >= 64 && b <= 127) ||
       (a === 169 && b === 254) ||
-      (a === 100 && b >= 64 && b <= 127)
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && (b === 168 || b === 0 || b === 88)) ||
+      (a === 198 && (b === 18 || b === 19 || b === 51)) ||
+      (a === 203 && b === 0) ||
+      a >= 224 // multicast 224/4, cadangan 240/4, dan 255.255.255.255
     );
   }
   const v6 = ip.toLowerCase();
-  return v6 === '::1' || v6 === '::' || /^f[cd]/.test(v6) || /^fe[89ab]/.test(v6);
+  return (
+    v6 === '::1' ||
+    v6 === '::' ||
+    /^f[cd]/.test(v6) ||
+    /^fe[89ab]/.test(v6) ||
+    /^ff/.test(v6) || // multicast IPv6
+    /^2001:db8/.test(v6)
+  );
 }

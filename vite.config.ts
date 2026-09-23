@@ -100,12 +100,13 @@ export default defineConfig(({mode}) => {
   // memanggangnya ke dalam bundel membuat pengunjung dari luar LAN kehilangan
   // seluruh data tanpa pesan error apa pun. Lihat src/lib/apiBase.ts.
   //
-  // `/ai/*` diproksikan ke origin PERTAMA di VITE_AI_ORIGIN dengan alasan kedua
-  // yang sama pentingnya: 9router TIDAK menjawab preflight CORS di jalur /v1
-  // (`OPTIONS /v1/chat/completions` → 401 tanpa access-control-allow-origin),
-  // jadi fetch lintas-origin dari browser SELALU diblokir, berapa pun benarnya
-  // kunci dan endpointnya. Lewat proxy, panggilannya jadi se-origin: preflight
-  // tidak pernah terjadi dan CSP lolos lewat `'self'`.
+  // `/ai` TIDAK lagi ada di sini. Ia dulu diproksikan apa adanya ke origin
+  // PERTAMA di VITE_AI_ORIGIN, dengan kunci server disuntikkan ke setiap
+  // permintaan yang belum membawa auth — tapi tanpa batas jalur, batas body,
+  // maupun batas laju, jadi siapa pun yang bisa menjangkau situs ini bebas
+  // memakai kuota kunci itu, termasuk ke jalur lain di gateway yang sama.
+  // Sekarang ia ditangani sendiri oleh `aiProxy()` di bawah, yang memeriksa
+  // semuanya SEBELUM kuncinya disuntikkan.
   const proxy = {
     ...(env.VITE_SUPABASE_URL
       ? {
@@ -116,34 +117,252 @@ export default defineConfig(({mode}) => {
           },
         }
       : {}),
-    ...(aiOrigins[0]
-      ? {
-          '/ai': {
-            target: aiOrigins[0],
-            changeOrigin: true,
-            rewrite: (jalur: string) => jalur.replace(/^\/ai/, ''),
-            // Kunci untuk asisten AI di halaman PUBLIK. Namanya sengaja tanpa
-            // awalan `VITE_`: hanya variabel berawalan itu yang ikut ke dalam
-            // bundel, jadi kunci ini tidak pernah sampai ke browser pengunjung.
-            //
-            // Disuntikkan HANYA kalau permintaannya belum membawa auth sendiri.
-            // Itu yang memisahkan kedua pemakai jalur ini tanpa rute kedua:
-            // panel admin mengirim kunci dari tabel `settings` dan lewat apa
-            // adanya, pengunjung tidak mengirim apa pun dan dilengkapi di sini.
-            configure: (proxy: any) => {
-              proxy.on('proxyReq', (proxyReq: any) => {
-                if (!aiApiKey) return;
-                if (proxyReq.getHeader('authorization') || proxyReq.getHeader('x-api-key')) return;
-                // Kedua bentuk dikirim sekaligus: jalur /v1/chat/completions
-                // membaca Authorization, /v1/messages membaca x-api-key, dan
-                // masing-masing mengabaikan yang bukan miliknya.
-                proxyReq.setHeader('authorization', `Bearer ${aiApiKey}`);
-                proxyReq.setHeader('x-api-key', aiApiKey);
-              });
-            },
-          },
+  };
+
+  // ── /ai — satu-satunya jalur yang memegang kunci model ───────────────────
+  //
+  // Kenapa lewat server dan bukan langsung dari browser: 9router TIDAK menjawab
+  // preflight CORS di jalur /v1 (`OPTIONS /v1/chat/completions` → 401 tanpa
+  // access-control-allow-origin), jadi fetch lintas-origin dari browser SELALU
+  // diblokir, berapa pun benarnya kunci dan endpointnya. Lewat jalur se-origin
+  // ini preflight tidak pernah terjadi dan CSP lolos lewat `'self'`.
+  //
+  // Kunci untuk asisten di halaman PUBLIK memang harus hidup di server, dan
+  // server ini melayani siapa saja yang bisa menjangkau situsnya — sampai di
+  // situ desainnya masih sah. Yang dulu tidak ada adalah pembatas DAMPAK: setiap
+  // permintaan ke /ai/* diteruskan ke gateway dengan kunci itu menempel, tanpa
+  // batas jalur, batas ukuran, maupun batas laju. Satu perintah curl tanpa login
+  // sudah cukup untuk menghabiskan kuota kunci tersebut.
+  //
+  // Karena itu jalur ini tidak lagi memakai proxy bawaan Vite. Proxy bawaan
+  // menyuntikkan header di `proxyReq` — saat permintaannya sudah mengalir ke
+  // hulu dan badannya sudah terkirim. Terlalu telat untuk menolak apa pun.
+  //
+  // Yang diperiksa, semuanya SEBELUM kunci disuntikkan: metode dan jalur yang
+  // benar-benar dipakai aplikasi, ukuran badan, batas laju per pemanggil,
+  // batas laju menyeluruh, serta `max_tokens` dan panjang pesan. Permintaan
+  // yang MEMBAWA auth sendiri (panel admin memakai kunci dari tabel `settings`)
+  // tidak pernah diberi kunci server dan tidak dikenai batas per pemanggil;
+  // batas menyeluruh tetap berlaku untuk semuanya.
+  const angka = (nilai: string | undefined, bawaan: number): number => {
+    const n = Number(nilai);
+    return Number.isFinite(n) && n > 0 ? n : bawaan;
+  };
+
+  /** "30/60" → 30 permintaan per 60 detik. */
+  const lajuDari = (nilai: string | undefined, jumlah: number, detik: number) => {
+    const m = /^(\d{1,6})\/(\d{1,6})$/.exec((nilai ?? '').trim());
+    return m ? { jumlah: Number(m[1]), detik: Number(m[2]) } : { jumlah, detik };
+  };
+
+  const BATAS_AI_BODY = angka(env.AI_MAX_BODY_BYTES, 128 * 1024);
+  const BATAS_AI_TOKEN = angka(env.AI_MAX_TOKENS, 2048);
+  const BATAS_AI_PESAN = angka(env.AI_MAX_MESSAGE_CHARS, 24_000);
+  const BATAS_AI_RESPON = angka(env.AI_MAX_RESPONSE_BYTES, 4 * 1024 * 1024);
+  const JEDA_AI_MS = angka(env.AI_TIMEOUT_MS, 240_000);
+  const LAJU_AI = lajuDari(env.AI_RATE_LIMIT, 30, 60);
+  const LAJU_AI_GLOBAL = lajuDari(env.AI_RATE_LIMIT_GLOBAL, 300, 60);
+  const AI_PERCAYA_PROXY = env.AI_TRUST_PROXY === '1';
+
+  // Jalur yang benar-benar dipanggil aplikasi: `aiUrl()` menghasilkan
+  // `/ai/v1/chat/completions`, `/ai/v1/messages`, atau `/ai/vN/...` kalau admin
+  // mengetik versi lain di base_url-nya. Di luar bentuk itu tidak ada yang perlu
+  // diteruskan, dan meneruskan "apa saja" berarti membuka seluruh permukaan
+  // gateway yang sama — jalur adminnya, unggah berkasnya, kunci-kunci lain.
+  const JALUR_AI = /^\/v\d+\/(?:chat\/completions|messages)$/;
+
+  const jejakLaju = new Map<string, number[]>();
+  let jejakLajuGlobal: number[] = [];
+
+  /** Sudah melewati batas? `tanda` kosong berarti ember menyeluruh. */
+  const lewatBatas = (tanda: string, batas: { jumlah: number; detik: number }): boolean => {
+    const sekarang = Date.now();
+    const ambang = sekarang - batas.detik * 1000;
+    if (tanda === '') {
+      jejakLajuGlobal = jejakLajuGlobal.filter((t) => t > ambang);
+      if (jejakLajuGlobal.length >= batas.jumlah) return true;
+      jejakLajuGlobal.push(sekarang);
+      return false;
+    }
+    // Cap waktu pemanggil lama dibuang sekalian: kalau tidak, tabel ini hanya
+    // tumbuh dan batas laju berubah jadi kebocoran memori.
+    for (const [k, v] of jejakLaju) {
+      const sisa = v.filter((t) => t > ambang);
+      if (sisa.length) jejakLaju.set(k, sisa);
+      else jejakLaju.delete(k);
+    }
+    const punya = jejakLaju.get(tanda) ?? [];
+    if (punya.length >= batas.jumlah) return true;
+    punya.push(sekarang);
+    jejakLaju.set(tanda, punya);
+    return false;
+  };
+
+  /**
+   * Siapa pemanggilnya, sejauh yang bisa dipercaya.
+   *
+   * `x-forwarded-for` hanya dilihat kalau `AI_TRUST_PROXY=1`. Header itu ditulis
+   * klien, dan tanpa proxy di depan, mempercayainya berarti memberi setiap
+   * penyerang ember batas-lajunya sendiri hanya dengan mengarang header.
+   * Sebaliknya, kalau situs ini memang di belakang openresty/Tailscale, setel
+   * `AI_TRUST_PROXY=1` — tanpa itu SEMUA pengunjung berbagi satu ember (alamat
+   * proxy-nya), termasuk kuota admin sendiri.
+   */
+  const ipPemanggil = (req: any): string => {
+    if (AI_PERCAYA_PROXY) {
+      const xff = req.headers?.['x-forwarded-for'];
+      const pertama = (Array.isArray(xff) ? xff[0] : xff)?.split(',')[0]?.trim();
+      if (pertama) return pertama;
+      const nyata = req.headers?.['x-real-ip'];
+      if (typeof nyata === 'string' && nyata) return nyata;
+    }
+    return req.socket?.remoteAddress ?? 'tanpa-alamat';
+  };
+
+  /** Badan permintaan → teks, atau alasan penolakan kalau melewati batas. */
+  const bacaBadan = async (req: any, batas: number): Promise<{ isi?: string; tolak?: string }> => {
+    const kepala = Number(req.headers?.['content-length']);
+    if (Number.isFinite(kepala) && kepala > batas) return { tolak: 'badan permintaan terlalu besar' };
+    const potong: Buffer[] = [];
+    let total = 0;
+    for await (const c of req) {
+      total += c.length;
+      if (total > batas) {
+        // Diputus di tengah aliran: sisanya tidak ditampung, dan klien berhenti
+        // mengirim. `content-length` tidak wajib ada (badan bisa chunked), jadi
+        // hitungan byte ini yang jadi batas sesungguhnya.
+        req.destroy?.();
+        return { tolak: 'badan permintaan terlalu besar' };
+      }
+      potong.push(c as Buffer);
+    }
+    return { isi: Buffer.concat(potong).toString('utf8') };
+  };
+
+  /** Badan jawaban hulu → Buffer, atau null kalau melewati batas. */
+  const bacaJawaban = async (hulu: any, batas: number): Promise<Buffer | null> => {
+    if (!hulu.body) return Buffer.alloc(0);
+    const pembaca = hulu.body.getReader();
+    const kumpul: Buffer[] = [];
+    let total = 0;
+    for (;;) {
+      const { done, value } = await pembaca.read();
+      if (done) break;
+      total += value.length;
+      if (total > batas) {
+        await pembaca.cancel();
+        return null;
+      }
+      kumpul.push(Buffer.from(value));
+    }
+    return Buffer.concat(kumpul);
+  };
+
+  const aiProxy = () => {
+    const tangani = async (req: any, res: any, next: any) => {
+      if (!req.url?.startsWith('/ai') || !aiOrigins[0]) return next();
+      const kirim = (kode: number, isi: unknown, kepala: Record<string, string> = {}) => {
+        if (res.headersSent) return res.end();
+        res.statusCode = kode;
+        res.setHeader('content-type', 'application/json; charset=utf-8');
+        res.setHeader('cache-control', 'no-store');
+        for (const [k, v] of Object.entries(kepala)) res.setHeader(k, v);
+        res.end(JSON.stringify(isi));
+      };
+      try {
+        if (req.method !== 'POST') return kirim(405, { error: 'hanya menerima POST' }, { allow: 'POST' });
+
+        const lengkap = new URL(req.url, 'http://lokal');
+        const jalur = lengkap.pathname.replace(/^\/ai/, '').replace(/\/+$/, '') || '/';
+        // Pesannya sengaja tidak menyebut jalur mana yang dilayani: peta
+        // gateway bukan urusan pemanggil yang menebak-nebak.
+        if (!JALUR_AI.test(jalur)) return kirim(404, { error: 'jalur tidak dilayani' });
+
+        const bawaAuth = Boolean(req.headers?.authorization || req.headers?.['x-api-key']);
+        if (!bawaAuth && lewatBatas(ipPemanggil(req), LAJU_AI)) {
+          return kirim(429, { error: 'terlalu banyak permintaan, coba lagi sebentar lagi' },
+            { 'retry-after': String(LAJU_AI.detik) });
         }
-      : {}),
+        if (lewatBatas('', LAJU_AI_GLOBAL)) {
+          return kirim(429, { error: 'layanan sedang sibuk, coba lagi sebentar lagi' },
+            { 'retry-after': String(LAJU_AI_GLOBAL.detik) });
+        }
+
+        const baca = await bacaBadan(req, BATAS_AI_BODY);
+        if (baca.tolak) return kirim(413, { error: baca.tolak });
+
+        let body: any;
+        try {
+          body = JSON.parse(baca.isi || '{}');
+        } catch {
+          return kirim(400, { error: 'badan permintaan bukan JSON' });
+        }
+        if (!body || typeof body !== 'object' || Array.isArray(body)) {
+          return kirim(400, { error: 'badan permintaan harus objek JSON' });
+        }
+
+        if (!bawaAuth) {
+          // Dua penjaga kuota terakhir. Tanpa yang pertama, satu permintaan
+          // tanpa auth boleh meminta keluaran sepanjang apa pun — batas laju
+          // tidak menolong, kuotanya habis di permintaan pertama.
+          const minta = Number(body.max_tokens);
+          if (!Number.isFinite(minta) || minta > BATAS_AI_TOKEN) body.max_tokens = BATAS_AI_TOKEN;
+          const panjangPesan = JSON.stringify(body.messages ?? body.input ?? '').length;
+          if (panjangPesan > BATAS_AI_PESAN) return kirim(413, { error: 'pesan terlalu panjang' });
+          // Tanpa kunci server, permintaan publik tidak bisa dilayani sama
+          // sekali — jangan diteruskan ke gateway sebagai permintaan anonim.
+          if (!aiApiKey) return kirim(503, { error: 'kunci AI belum dipasang di server' });
+        }
+
+        const kepala: Record<string, string> = { 'content-type': 'application/json', accept: 'application/json' };
+        for (const h of ['authorization', 'x-api-key', 'anthropic-version', 'anthropic-dangerous-direct-browser-access']) {
+          const v = req.headers?.[h];
+          if (typeof v === 'string' && v) kepala[h] = v;
+        }
+        if (!bawaAuth && aiApiKey) {
+          // Kedua bentuk dikirim sekaligus: jalur /v1/chat/completions membaca
+          // Authorization, /v1/messages membaca x-api-key, dan masing-masing
+          // mengabaikan yang bukan miliknya.
+          kepala.authorization = `Bearer ${aiApiKey}`;
+          kepala['x-api-key'] = aiApiKey;
+        }
+
+        let hulu: Response;
+        try {
+          hulu = await fetch(`${aiOrigins[0]}${jalur}${lengkap.search}`, {
+            method: 'POST',
+            headers: kepala,
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(JEDA_AI_MS),
+          });
+        } catch (e: any) {
+          const habis = e?.name === 'TimeoutError' || e?.name === 'AbortError';
+          return kirim(
+            habis ? 504 : 502,
+            { error: habis ? 'gateway tidak menjawab dalam batas waktu' : `gateway tidak terjangkau: ${e?.message ?? e}` },
+          );
+        }
+
+        const isi = await bacaJawaban(hulu, BATAS_AI_RESPON);
+        if (isi === null) return kirim(502, { error: 'jawaban gateway terlalu besar' });
+        res.statusCode = hulu.status;
+        res.setHeader('content-type', hulu.headers.get('content-type') ?? 'application/json; charset=utf-8');
+        res.setHeader('cache-control', 'no-store');
+        res.end(isi);
+      } catch (e: any) {
+        kirim(500, { error: String(e?.message ?? e) });
+      }
+    };
+    return {
+      name: 'ai-proxy-terjaga',
+      // Badan blok, bukan arrow ringkas — lihat catatan di `riset()`.
+      configureServer: (s: any) => {
+        s.middlewares.use(tangani);
+      },
+      configurePreviewServer: (s: any) => {
+        s.middlewares.use(tangani);
+      },
+    };
   };
 
   // ── /riset — pengunduh sumber untuk penulis artikel AI ───────────────────
@@ -160,6 +379,17 @@ export default defineConfig(({mode}) => {
   // tidak bisa dipakai untuk mengintip jaringan dalam.
   const UA = 'desain-web-riset/1.0 (+penulis artikel panel admin)';
   const BATAS_UNDUH = 2_000_000;
+
+  // Batas untuk jalur ini sendiri. Ia tidak berautentikasi, dan container web
+  // dibatasi `mem_limit: 1g` — tanpa batas badan, satu permintaan sebesar apa
+  // pun berakhir sebagai container yang di-restart (dan situsnya ikut mati),
+  // bukan sebagai error yang rapi.
+  const BATAS_RISET_BODY = 256 * 1024; // cukup untuk 8 URL + konteks tambahan
+  const BATAS_RISET_TOPIK = 200;
+  // Satu riset = satu panggilan GitHub + sampai 8 unduhan keluar. Beberapa
+  // permintaan sekaligus berarti puluhan sambungan dari satu container.
+  const BATAS_RISET_SERENTAK = 2;
+  let risetSerentak = 0;
 
   /** Repositori GitHub teratas untuk sebuah topik → situs resmi dan README-nya. */
   async function jejakGithub(topik: string): Promise<{ situsResmi: string[]; kandidat: string[] }> {
@@ -275,26 +505,57 @@ export default defineConfig(({mode}) => {
         res.end(JSON.stringify(isi));
       };
       try {
+        // Batas ukuran diperiksa DUA kali, dan keduanya perlu: `content-length`
+        // menolak lebih awal tanpa menampung apa pun, sementara hitungan byte
+        // saat aliran berjalan menangkap badan chunked yang tidak menyebut
+        // panjangnya sama sekali.
+        const kepala = Number(req.headers?.['content-length']);
+        if (Number.isFinite(kepala) && kepala > BATAS_RISET_BODY) {
+          return kirim(413, { error: 'badan permintaan terlalu besar' });
+        }
         const potong: Buffer[] = [];
-        for await (const c of req) potong.push(c);
+        let total = 0;
+        for await (const c of req) {
+          total += (c as Buffer).length;
+          if (total > BATAS_RISET_BODY) {
+            req.destroy?.();
+            return kirim(413, { error: 'badan permintaan terlalu besar' });
+          }
+          potong.push(c as Buffer);
+        }
         const body = JSON.parse(Buffer.concat(potong).toString('utf8') || '{}');
         const topik = String(body.topik ?? '').trim();
         if (!topik) return kirim(400, { error: 'topik kosong' });
+        if (topik.length > BATAS_RISET_TOPIK) {
+          return kirim(400, { error: `topik terlalu panjang (maksimal ${BATAS_RISET_TOPIK} karakter)` });
+        }
+        if (risetSerentak >= BATAS_RISET_SERENTAK) {
+          return kirim(429, { error: 'riset lain sedang berjalan, coba lagi sebentar lagi' });
+        }
 
-        const jejak = await jejakGithub(topik);
-        const daftar = [
-          ...jejak.kandidat,
-          ...(Array.isArray(body.kandidat) ? body.kandidat.map(String) : []),
-        ];
-        // Maksimal 8 unduhan per permintaan: cukup untuk artikel, dan menjaga
-        // jalur ini tidak bisa dipakai memuntahkan lalu lintas ke pihak lain.
-        const unik = [...new Set(daftar)].slice(0, 8);
-        const hasil = await Promise.all(unik.map((u) => unduhSumber(u, jejak.situsResmi)));
+        risetSerentak += 1;
+        try {
+          const jejak = await jejakGithub(topik);
+          const daftar = [
+            ...jejak.kandidat,
+            // Daftar dari pemanggil dipotong SEBELUM dipetakan: larik sepanjang
+            // apa pun dari badan permintaan tidak perlu dibaca seluruhnya.
+            ...(Array.isArray(body.kandidat) ? body.kandidat.slice(0, 20).map(String) : []),
+          ];
+          // Maksimal 8 unduhan per permintaan: cukup untuk artikel, dan menjaga
+          // jalur ini tidak bisa dipakai memuntahkan lalu lintas ke pihak lain.
+          const unik = [...new Set(daftar)].slice(0, 8);
+          const hasil = await Promise.all(unik.map((u) => unduhSumber(u, jejak.situsResmi)));
 
-        kirim(200, {
-          sumber: hasil.filter((h): h is SumberRujukan => 'teks' in h),
-          ditolak: hasil.filter((h): h is { url: string; tolak: string } => 'tolak' in h),
-        });
+          kirim(200, {
+            sumber: hasil.filter((h): h is SumberRujukan => 'teks' in h),
+            ditolak: hasil.filter((h): h is { url: string; tolak: string } => 'tolak' in h),
+          });
+        } finally {
+          // Selalu dilepas, termasuk saat pengunduhan melempar — kalau tidak,
+          // dua kegagalan berturut-turut mematikan jalur ini sampai restart.
+          risetSerentak -= 1;
+        }
       } catch (e: any) {
         kirim(500, { error: String(e?.message ?? e) });
       }
@@ -317,7 +578,7 @@ export default defineConfig(({mode}) => {
 
   return {
     assetsInclude: ['**/*.glb'],
-    plugins: [react(), tailwindcss(), riset()],
+    plugins: [aiProxy(), react(), tailwindcss(), riset()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

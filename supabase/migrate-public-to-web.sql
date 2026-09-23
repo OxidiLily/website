@@ -58,16 +58,23 @@ end $$;
 -- ── Isi fungsi masih menyebut `public.profiles` ──────────────────────────
 -- `create or replace` mempertahankan OID yang sama, jadi policy yang menunjuk
 -- fungsi ini tetap sah sementara badannya diperbarui ke schema baru.
+--
+-- Badannya sengaja disamakan dengan require-password-change.sql, bukan dibiarkan
+-- sesingkat dulu ("role = admin" saja). Ketiganya memakai `create or replace`,
+-- jadi berkas mana pun yang dijalankan TERAKHIR menentukan aturannya; versi
+-- ringkas di sini akan membatalkan penjagaan password awal tanpa jejak.
+-- Kesamaannya dijaga scripts/is-admin.check.mjs.
 create or replace function web.is_admin()
 returns boolean language sql stable security definer set search_path = web as $$
   select exists (
-    select 1 from web.profiles
-    where id = auth.uid() and role = 'admin'
+    select 1 from web.profiles p join auth.users u on u.id = p.id
+    where p.id = auth.uid() and p.role = 'admin'
+      and coalesce(u.raw_app_meta_data ->> 'require_password_change', 'false') = 'false'
   )
 $$;
 
 revoke execute on function web.is_admin() from public;
-grant execute on function web.is_admin() to authenticated;
+grant execute on function web.is_admin() to authenticated, service_role;
 
 create or replace function web.handle_new_user()
 returns trigger language plpgsql security definer set search_path = web as $$

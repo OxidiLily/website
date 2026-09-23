@@ -133,4 +133,10 @@ for (const ip of ['10.0.0.1', '127.0.0.1', '172.16.5.5', '172.31.255.255', '192.
 for (const ip of ['8.8.8.8', '172.32.0.1', '172.15.0.1', '100.63.255.255', '100.128.0.1', '2606:4700::1111', '140.82.121.4']) {
   assert.equal(ipPrivat(ip), false, `${ip} harus dianggap publik`);
 }
+// Rentang yang tidak mungkin jadi rumah dokumentasi publik. Nama host yang
+// menuju ke sini berarti permintaan diarahkan ke infrastruktur, bukan ke
+// halaman — jadi ditolak sebelum satu byte dikirim.
+for (const ip of ['192.0.0.1', '192.0.2.5', '198.18.0.1', '198.19.255.255', '198.51.100.7', '203.0.113.9', '192.88.99.1', '224.0.0.1', '240.0.0.1', '255.255.255.255', '2001:db8::1', 'ff02::1']) {
+  assert.equal(ipPrivat(ip), true, `${ip} tidak boleh bisa dihubungi lewat jalur ini`);
+}
 console.log('[✓] riset: ipPrivat lolos');

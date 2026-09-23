@@ -46,18 +46,39 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function web.handle_new_user();
 
--- security definer: dipanggil dari dalam policy tabel profiles sendiri, jadi
--- tanpa ini rekursif tak berujung.
+-- ── Peran admin, dengan syarat password awal sudah diganti ───────────────
+--
+-- security definer: dipanggil dari dalam policy tabel `profiles` sendiri, jadi
+-- tanpa ini pengecekannya rekursif tak berujung.
+--
+-- Dua syarat sekaligus: perannya `admin`, DAN penanda
+-- `raw_app_meta_data.require_password_change` sudah tidak `true`. Satu fungsi,
+-- bukan dua, karena seluruh policy tulis di berkas ini bertumpu pada hasilnya —
+-- kalau fungsi ini meloloskan akun yang masih memakai password awal dari
+-- admin-init, siapa pun yang pernah melihat password itu mendapat admin penuh
+-- lewat REST, bukan cuma lewat panel.
+--
+-- Penandanya dibaca dari `auth.users.raw_app_meta_data`, yang hanya bisa
+-- ditulis lewat Admin API. `user_metadata` TIDAK dipakai: itu bisa diubah
+-- pemilik akunnya sendiri.
+--
+-- Badan fungsi ini WAJIB sama persis dengan supabase/require-password-change.sql
+-- dan supabase/migrate-public-to-web.sql. Ketiganya memakai
+-- `create or replace`, jadi menjalankan berkas ini SETELAH migrasi akan
+-- mengembalikan versi permisif kalau badannya berbeda — dan urutan itu justru
+-- yang wajar dilakukan orang saat memasang ulang dari nol. Kesamaannya dijaga
+-- scripts/is-admin.check.mjs.
 create or replace function web.is_admin()
 returns boolean language sql stable security definer set search_path = web as $$
   select exists (
-    select 1 from web.profiles
-    where id = auth.uid() and role = 'admin'
+    select 1 from web.profiles p join auth.users u on u.id = p.id
+    where p.id = auth.uid() and p.role = 'admin'
+      and coalesce(u.raw_app_meta_data ->> 'require_password_change', 'false') = 'false'
   )
 $$;
 
 revoke execute on function web.is_admin() from public;
-grant execute on function web.is_admin() to authenticated;
+grant execute on function web.is_admin() to authenticated, service_role;
 
 -- ── Sentuh updated_at ────────────────────────────────────────────────────
 create or replace function web.touch_updated_at()

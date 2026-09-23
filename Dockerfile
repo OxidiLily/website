@@ -25,8 +25,17 @@ WORKDIR /app
 # Lapisan dependensi dipisah dari kode, dan cache npm dipasang sebagai mount:
 # build ulang setelah edit kode tidak mengunduh ulang apa pun, dan cache-nya
 # tidak ikut ke lapisan image.
+#
+# `--ignore-scripts` juga di sini, bukan cuma di tahap runtime. Tanpa itu,
+# preinstall/postinstall SELURUH pohon dependensi build dijalankan di dalam
+# image — termasuk paket yang tidak pernah diimpor kode, seperti
+# `@google/genai` (preinstall) dan `protobufjs` (postinstall). Berkas
+# `.npmrc`/`allowScripts` tidak mengikat `npm ci`; yang mengikat hanya flag ini.
+# esbuild dan @tailwindcss/oxide memasang binarinya lewat optionalDependencies
+# per-platform, jadi keduanya tetap ada tanpa skrip — diuji: `npm ci
+# --ignore-scripts` lalu `npm run build` selesai dengan exit 0.
 COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm npm ci --no-audit --no-fund
+RUN --mount=type=cache,target=/root/.npm npm ci --ignore-scripts --no-audit --no-fund
 
 COPY . .
 
@@ -57,27 +66,28 @@ ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
 # hanya perayap tanpa JavaScript yang kehilangan meta per artikel.
 RUN npm run build
 
-# Manifes untuk tahap jalan: HANYA paket yang diimpor vite.config.ts, dengan
-# versi PERSIS dari package-lock.json — bukan rentang `^` dari package.json —
-# supaya yang jalan di container sama dengan yang diuji di host. Dibuat di
-# sini, bukan disimpan sebagai berkas kedua di repo yang harus dijaga sinkron.
-RUN node -e '\
-  const lock = require("./package-lock.json").packages; \
-  const paket = ["vite", "@vitejs/plugin-react", "@tailwindcss/vite", "tailwindcss"]; \
-  const deps = Object.fromEntries(paket.map((p) => [p, lock["node_modules/" + p].version])); \
-  require("fs").mkdirSync("/runtime", { recursive: true }); \
-  require("fs").writeFileSync("/runtime/package.json", JSON.stringify({ name: "desain-web-runtime", private: true, type: "module", dependencies: deps }, null, 2)); \
-  console.log(deps);'
+# Manifes + lockfile untuk tahap jalan: HANYA paket yang diimpor vite.config.ts,
+# dengan versi PERSIS dari package-lock.json — bukan rentang `^` dari
+# package.json — supaya yang jalan di container sama dengan yang diuji di host.
+# Pohonnya dipotong dari lockfile itu apa adanya (resolusi + hash-nya ikut),
+# jadi tidak ada satu pun permintaan jaringan di langkah ini dan hasilnya tidak
+# bergantung pada registry saat build. Penjelasan lengkapnya ada di kepala
+# scripts/runtime-manifest.mjs; ujinya di scripts/runtime-manifest.check.mjs.
+RUN node scripts/runtime-manifest.mjs /runtime
 
 # ── Tahap 2: dependensi runtime saja ───────────────────────────────────────
 FROM ${NODE_IMAGE} AS runtime-deps
 WORKDIR /app
-COPY --from=build /runtime/package.json ./package.json
+COPY --from=build /runtime/package.json /runtime/package-lock.json ./
+# `npm ci` dan bukan `npm install`: dengan lockfile yang ikut, pemasangannya
+# deterministik dan berhenti kalau manifesnya tidak sinkron — bukan diam-diam
+# menyelesaikan sendiri versi yang berbeda.
+#
 # --ignore-scripts: tidak ada skrip postinstall pihak ketiga yang dijalankan
 # di dalam image. esbuild dan @tailwindcss/oxide memakai optionalDependencies
 # per-platform, jadi binari mereka tetap terpasang tanpa skrip.
 RUN --mount=type=cache,target=/root/.npm \
-    npm install --omit=dev --ignore-scripts --no-audit --no-fund
+    npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 
 # ── Tahap 3: image akhir ───────────────────────────────────────────────────
 FROM ${NODE_IMAGE}

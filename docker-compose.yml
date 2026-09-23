@@ -21,6 +21,11 @@ name: web
 services:
   # Otomatis sebelum web; akun lama tidak direset.
   # Terapkan schema.sql lalu require-password-change.sql sebelum deploy.
+  # Urutan ketiga berkas SQL (termasuk migrate-public-to-web.sql) tidak lagi
+  # penting: definisi web.is_admin() sengaja dibuat identik di ketiganya, dan
+  # kesamaan itu dijaga scripts/is-admin.check.mjs. Sebelumnya menjalankan
+  # schema.sql setelah migrasi mengembalikan versi yang tidak menuntut
+  # penggantian password awal.
   admin-init:
     image: node:22.23.2-alpine3.24
     restart: 'no'
@@ -94,6 +99,11 @@ services:
       # Yang lewat sini cuma LOKASI berkasnya. Nilainya masuk sebagai secret di
       # bawah, dan vite.config.ts membacanya dari berkas itu.
       AI_API_KEY_FILE: /run/secrets/ai_api_key
+      # AI_TRUST_PROXY SENGAJA tidak diisi di sini. Port 3000 dipublikasikan ke
+      # host, jadi container ini juga bisa dihubungi langsung dengan header
+      # X-Forwarded-For karangan klien sendiri. Isi `1` hanya kalau port itu
+      # nanti ditutup dan seluruh lalu lintas lewat reverse proxy — lihat
+      # penjelasannya di .env.example.
     secrets:
       - ai_api_key
     healthcheck:

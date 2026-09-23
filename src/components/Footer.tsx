@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { PageId } from '../types';
 import { useSettings } from '../lib/content';
+import { tautanAman } from '../lib/sanitasi';
 
 interface FooterProps {
   onNavigate?: (page: PageId) => void;
@@ -71,7 +72,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   [t.social_linkedin_label, t.social_linkedin],
                   [t.social_facebook_label, t.social_facebook],
                 ] as const)
-                  .filter(([label, url]) => label && url)
+                  // Tautan sosial datang dari tabel `settings`, bukan dari kode.
+                  // Nilai yang tidak berawalan skema yang sah (`javascript:`,
+                  // `data:`) dibuang di sini, bukan dirender jadi tautan.
+                  .filter(([label, url]) => label && url && tautanAman(url))
                   .map(([label, url]) => (
                     <a
                       key={label}
