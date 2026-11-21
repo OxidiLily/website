@@ -70,23 +70,19 @@ export async function createAdmin(env = process.env) {
     user = result.users.find((item) => item.email?.toLowerCase() === email);
     if (result.users.length < 100) break;
   }
-  if (user) {
-    // Admin yang sudah ada tidak direset atau diuji dengan password awal lagi.
-    const profiles = await request(`/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}&select=role`, {
-      headers: { 'Accept-Profile': 'web' },
-    });
-    if (profiles[0]?.role !== 'admin') throw new Error('Akun sudah ada tetapi bukan admin. Perubahan peran perlu dilakukan manual.');
-  } else {
+  if (!user) {
     user = await request('/auth/v1/admin/users', {
       method: 'POST', body: JSON.stringify({ email, password, email_confirm: true, app_metadata: { require_password_change: true } }),
     });
-    if (!user.id) throw new Error('Supabase tidak mengembalikan ID akun.');
-    await request('/rest/v1/profiles?on_conflict=id', {
-      method: 'POST',
-      headers: { 'Content-Profile': 'web', Prefer: 'resolution=merge-duplicates,return=representation' },
-      body: JSON.stringify({ id: user.id, role: 'admin' }),
-    });
   }
+  if (!user.id) throw new Error('Supabase tidak mengembalikan ID akun.');
+  // Recover a missing profile for this configured admin only. Ignore conflicts:
+  // never replace an existing profile or elevate its role implicitly.
+  await request('/rest/v1/profiles?on_conflict=id', {
+    method: 'POST',
+    headers: { 'Content-Profile': 'web', Prefer: 'resolution=ignore-duplicates,return=representation' },
+    body: JSON.stringify({ id: user.id, role: 'admin' }),
+  });
   const profiles = await request(`/rest/v1/profiles?id=eq.${encodeURIComponent(user.id)}&select=role`, {
     headers: { 'Accept-Profile': 'web' },
   });

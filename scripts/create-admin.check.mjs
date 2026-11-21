@@ -35,7 +35,10 @@ try {
     else if (path === '/auth/v1/token') data = { user };
     else if (path === '/rest/v1/profiles' && options.method === 'POST') {
       assert.equal(options.headers['Content-Profile'], 'web');
-      writes++; role = JSON.parse(options.body).role; data = [{ role }];
+      writes++;
+      assert.equal(options.headers.Prefer, 'resolution=ignore-duplicates,return=representation');
+      if (!role) role = JSON.parse(options.body).role;
+      data = role ? [{ role }] : [];
     } else if (path === '/rest/v1/profiles') {
       assert.equal(options.headers['Accept-Profile'], 'web'); data = role ? [{ role }] : [];
     } else assert.fail('Permintaan tak terduga');
@@ -45,9 +48,21 @@ try {
   assert.equal(role, 'admin');
   assert.equal(writes, 2);
   await createAdmin(env);
-  assert.equal(writes, 2, 'Eksekusi ulang tidak boleh mengubah akun');
+  assert.equal(writes, 3, 'Eksekusi ulang memastikan profil ada tanpa mengganti peran');
   role = 'viewer';
-  await assert.rejects(createAdmin(env), /bukan admin/);
+  await assert.rejects(createAdmin(env), /Verifikasi peran admin gagal/);
+  assert.equal(role, 'viewer');
+  assert.equal(writes, 4);
+
+  user = { id: 'orphan-id', email: env.ADMIN_EMAIL };
+  role = null;
+  writes = 0;
+  await createAdmin(env);
+  assert.equal(role, 'admin', 'Profil admin yang hilang dipulihkan');
+  assert.equal(writes, 1, 'Akun pengguna lama tidak dibuat ulang');
+  role = 'viewer';
+  await assert.rejects(createAdmin(env), /Verifikasi peran admin gagal/);
+  assert.equal(role, 'viewer', 'Role profil lama tidak dinaikkan');
   assert.equal(writes, 2);
   globalThis.fetch = async () => new Response(null, { status: 401 });
   await assert.rejects(createAdmin(env), /HTTP 401/);
